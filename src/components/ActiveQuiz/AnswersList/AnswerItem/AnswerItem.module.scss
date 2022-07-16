@@ -8,4 +8,12 @@
     background: rgba(255, 255, 255, 0.2);
     transition: background 0.3s ease-in-out;
   }
+  &.success {
+    background: rgba(0, 255, 0, 0.2);
+    transition: background 0.3s ease-in-out;
+  }
+  &.error {
+    background: rgba(255, 0, 0, 0.2);
+    transition: background 0.3s ease-in-out;
+  }
 }

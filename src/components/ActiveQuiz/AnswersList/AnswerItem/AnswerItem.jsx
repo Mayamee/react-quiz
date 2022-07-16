@@ -1,9 +1,13 @@
 import classes from "./AnswerItem.module.scss";
 
 const AnswerItem = (props) => {
+  const classesOfAnswer = [classes.AnswerItem];
+  if (props.state) {
+    classesOfAnswer.push(classes[props.state]);
+  }
   return (
     <li
-      className={classes.AnswerItem}
+      className={classesOfAnswer.join(" ")}
       onClick={() => {
         props.onAnswerClick(props.answer.id);
       }}
