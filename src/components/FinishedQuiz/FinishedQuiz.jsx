@@ -1,4 +1,5 @@
 import classes from "./FinishedQuiz.module.scss";
+import Button from "../UI/Button/Button";
 
 const FinishedQuiz = (props) => {
   const countResults = Object.keys(props.results).reduce((total, key) => {
@@ -31,7 +32,10 @@ const FinishedQuiz = (props) => {
         Правильно {countResults} из {props.quiz.length}
       </p>
       <div>
-        <button onClick={props.onRetry}>Повторить</button>
+        <Button btnType="primary" onClick={props.onRetry}>
+          Повторить
+        </Button>
+        <Button btnType="success">Перейти в список тестов</Button>
       </div>
     </div>
   );
