@@ -6,17 +6,14 @@ const links = [
   {
     to: "/",
     label: "Список тестов",
-    exact: true,
   },
   {
-    to: "/auth",
+    to: "auth",
     label: "Авторизация",
-    exact: false,
   },
   {
-    to: "/quiz-creator",
+    to: "quiz-creator",
     label: "Создать тест",
-    exact: false,
   },
 ];
 class Drawer extends Component {
@@ -30,8 +27,7 @@ class Drawer extends Component {
         <li key={index}>
           <NavLink
             to={link.to}
-            exact={link.exact}
-            activeClassName={classes.active}
+            className={({ isActive }) => (isActive ? classes.active : "")}
             onClick={this.handleClick}
           >
             {link.label}

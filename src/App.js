@@ -11,9 +11,9 @@ class App extends React.Component {
     return (
       <Layout>
         <Routes>
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/quiz-creator" element={<QuizCreator />} />
-          <Route path="/quid/:id" element={<Quiz />} />
+          <Route path="auth" element={<Auth />} />
+          <Route path="quiz-creator" element={<QuizCreator />} />
+          <Route path="quiz/:id" element={<Quiz />} />
           <Route path="/" element={<QuizList />} />
         </Routes>
       </Layout>

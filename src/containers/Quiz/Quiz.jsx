@@ -2,6 +2,15 @@ import React, { Component } from "react";
 import classes from "./Quiz.module.scss";
 import ActiveQuiz from "../../components/ActiveQuiz/ActiveQuiz";
 import FinishedQuiz from "../../components/FinishedQuiz/FinishedQuiz";
+import { useParams } from "react-router-dom";
+
+const withRouter = (Component) => {
+  return (props) => {
+    const params = useParams();
+    return <Component {...{ ...props, ...params }} />;
+  };
+};
+
 class Quiz extends Component {
   state = {
     results: {}, // {[id]: "success" || "error"}
@@ -44,6 +53,9 @@ class Quiz extends Component {
       },
     ],
   };
+  componentDidMount() {
+    console.log("Quiz id: ", this.props.id);
+  }
   onAnswerClickHandler = (answerId) => {
     if (this.state.answerState) {
       const key = Object.keys(this.state.answerState)[0];
@@ -119,4 +131,4 @@ class Quiz extends Component {
     );
   }
 }
-export default Quiz;
+export default withRouter(Quiz);
