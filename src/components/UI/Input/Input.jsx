@@ -1,21 +1,12 @@
 import classes from "./Input.module.scss";
-
+import { getRandomHash } from "../../../helpers/random";
 const Input = (props) => {
   const inputType = props.type || "text";
   const cls = [classes.Input];
   const isInvalid = ({ valid, touched, shouldValidate }) => {
     return !valid && shouldValidate && touched;
   };
-  const getRandomHash = (length) => {
-    let result = "";
-    let characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-  };
+
   const htmlFor = `${inputType}-${getRandomHash(5)}`;
   if (isInvalid(props)) {
     cls.push(classes.invalid);
