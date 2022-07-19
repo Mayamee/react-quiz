@@ -4,6 +4,7 @@ import Button from "../../components/UI/Button/Button";
 import Input from "../../components/UI/Input/Input";
 class Auth extends Component {
   state = {
+    isFormValid: false,
     formControls: {
       email: {
         value: "",
@@ -52,15 +53,22 @@ class Auth extends Component {
     return isValid;
   }
   onChangeHandler(event, controlName) {
-    // console.log({ eventTV: event.target.value, controlName });
     const formControls = { ...this.state.formControls };
     const control = { ...formControls[controlName] };
     control.value = event.target.value;
     control.touched = true;
     control.valid = this.validateControl(control.value, control.validation);
+    const isFormValid = Object.keys(formControls).reduce(
+      (isFormValid, controlName) => {
+        isFormValid = formControls[controlName].valid && isFormValid;
+        return isFormValid;
+      },
+      true
+    );
     formControls[controlName] = control;
     this.setState({
       formControls,
+      isFormValid,
     });
   }
   renderInputs() {
@@ -92,10 +100,18 @@ class Auth extends Component {
           <h1>Авторизация</h1>
           <form className={classes.AuthForm} onSubmit={this.submitHandler}>
             {this.renderInputs()}
-            <Button type="success" onClick={this.loginHandler}>
+            <Button
+              btnType="success"
+              onClick={this.loginHandler}
+              disabled={!this.state.isFormValid}
+            >
               Войти
             </Button>
-            <Button type="primary" onClick={this.registerHandler}>
+            <Button
+              btnType="primary"
+              onClick={this.registerHandler}
+              disabled={!this.state.isFormValid}
+            >
               Регистрация
             </Button>
           </form>

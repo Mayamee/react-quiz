@@ -53,9 +53,7 @@ class Quiz extends Component {
       },
     ],
   };
-  componentDidMount() {
-    console.log("Quiz id: ", this.props.id);
-  }
+  componentDidMount() {}
   onAnswerClickHandler = (answerId) => {
     if (this.state.answerState) {
       const key = Object.keys(this.state.answerState)[0];
