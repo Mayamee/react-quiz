@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import classes from "./Auth.module.scss";
 import Button from "../../components/UI/Button/Button";
 import Input from "../../components/UI/Input/Input";
+import { validateControl } from "../../form/formFramework";
 class Auth extends Component {
   state = {
     isFormValid: false,
@@ -34,30 +35,13 @@ class Auth extends Component {
   };
   loginHandler = () => {};
   registerHandler() {}
-  validateControl(value, validation) {
-    if (!validation) {
-      return true;
-    }
-    let isValid = true;
-    if (validation.required) {
-      isValid = value.trim() !== "" && isValid;
-    }
-    if (validation.email) {
-      const pattern =
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      isValid = pattern.test(value) && isValid;
-    }
-    if (validation.minLength) {
-      isValid = value.length >= validation.minLength && isValid;
-    }
-    return isValid;
-  }
+
   onChangeHandler(event, controlName) {
     const formControls = { ...this.state.formControls };
     const control = { ...formControls[controlName] };
     control.value = event.target.value;
     control.touched = true;
-    control.valid = this.validateControl(control.value, control.validation);
+    control.valid = validateControl(control.value, control.validation);
     const isFormValid = Object.keys(formControls).reduce(
       (isFormValid, controlName) => {
         isFormValid = formControls[controlName].valid && isFormValid;
