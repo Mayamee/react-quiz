@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import axios from "axios";
 import classes from "./QuizList.module.scss";
 import { NavLink } from "react-router-dom";
+import Loader from "../../components/UI/Loader/Loader";
 class QuizList extends Component {
   state = {
     quizes: [],
+    isLoading: true,
   };
   renderQuizesList() {
     return this.state.quizes.map((quiz) => {
@@ -39,7 +41,7 @@ class QuizList extends Component {
           name: `Тест №${index + 1}`,
         };
       });
-      this.setState({ quizes });
+      this.setState({ quizes, isLoading: false });
     } catch (error) {
       console.log("Error: ", { error });
     }
@@ -50,7 +52,11 @@ class QuizList extends Component {
       <div className={classes.QuizList}>
         <div>
           <h1>Список тестов</h1>
-          <ul>{this.renderQuizesList()}</ul>
+          {this.state.isLoading ? (
+            <Loader />
+          ) : (
+            <ul>{this.renderQuizesList()}</ul>
+          )}
         </div>
       </div>
     );
