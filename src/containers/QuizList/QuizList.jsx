@@ -3,6 +3,7 @@ import axios from "../../axios/axiosQuiz";
 import classes from "./QuizList.module.scss";
 import { NavLink } from "react-router-dom";
 import Loader from "../../components/UI/Loader/Loader";
+import Nodata from "../../components/Nodata/Nodata";
 class QuizList extends Component {
   state = {
     quizes: [],
@@ -26,7 +27,9 @@ class QuizList extends Component {
     try {
       const response = await axios.request(reqOptions);
       if (response.data.data.length === 0) {
-        console.log("No data");
+        this.setState({
+          isLoading: false,
+        });
         return;
       }
       const quizes = response.data.data.map((question, index) => {
@@ -48,6 +51,8 @@ class QuizList extends Component {
           <h1>Список тестов</h1>
           {this.state.isLoading ? (
             <Loader />
+          ) : this.state.quizes.length === 0 ? (
+            <Nodata iconColor="#fff" isShowButton={false} />
           ) : (
             <ul>{this.renderQuizesList()}</ul>
           )}
