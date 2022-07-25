@@ -1,7 +1,10 @@
 import React, { Component } from "react";
+import axios from "../../axios/axiosQuiz";
 import classes from "./Quiz.module.scss";
 import ActiveQuiz from "../../components/ActiveQuiz/ActiveQuiz";
 import FinishedQuiz from "../../components/FinishedQuiz/FinishedQuiz";
+import Nodata from "../../components/Nodata/Nodata";
+import Loader from "../../components/UI/Loader/Loader";
 import { useParams } from "react-router-dom";
 
 const withRouter = (Component) => {
@@ -13,47 +16,36 @@ const withRouter = (Component) => {
 
 class Quiz extends Component {
   state = {
-    results: {}, // {[id]: "success" || "error"}
+    results: {},
     isQuizFinished: false,
+    isLoading: true,
     activeQuestion: 0,
-    answerState: null, // { [id]: success | error }
-    quiz: [
-      {
-        question: "Какого цвета небо?",
-        rightAnswerId: 2,
-        id: 1,
-        answers: [
-          { text: "Черный", id: 1 },
-          { text: "Синий", id: 2 },
-          { text: "Зеленый", id: 3 },
-          { text: "Желтый", id: 4 },
-        ],
-      },
-      {
-        question: "Какого цвета луна?",
-        rightAnswerId: 1,
-        id: 2,
-        answers: [
-          { text: "Черный", id: 1 },
-          { text: "Синий", id: 2 },
-          { text: "Зеленый", id: 3 },
-          { text: "Желтый", id: 4 },
-        ],
-      },
-      {
-        question: "Какого цвета звезды?",
-        rightAnswerId: 3,
-        id: 3,
-        answers: [
-          { text: "Черный", id: 1 },
-          { text: "Синий", id: 2 },
-          { text: "Зеленый", id: 3 },
-          { text: "Желтый", id: 4 },
-        ],
-      },
-    ],
+    answerState: null,
+    //TODO: quiz пустой проработать момент
+    quiz: [],
   };
-  componentDidMount() {}
+  async componentDidMount() {
+    const id = this.props.id;
+    if (!id) return;
+
+    const reqOptions = {
+      url: `${id}`,
+      method: "GET",
+    };
+
+    try {
+      const response = await axios.request(reqOptions);
+      if (response.data.data.length === 0) {
+        console.log("No data");
+        return;
+      }
+      //TODO 404 status
+      const quiz = response.data.data.info;
+      this.setState({ quiz, isLoading: false });
+    } catch (error) {
+      this.setState({ isLoading: false });
+    }
+  }
   onAnswerClickHandler = (answerId) => {
     if (this.state.answerState) {
       const key = Object.keys(this.state.answerState)[0];
@@ -108,12 +100,16 @@ class Quiz extends Component {
       <div className={classes.Quiz}>
         <div className={classes.QuizWrapper}>
           <h1>Ответьте на все вопросы</h1>
-          {this.state.isQuizFinished ? (
+          {this.state.isLoading ? (
+            <Loader />
+          ) : this.state.isQuizFinished ? (
             <FinishedQuiz
               results={this.state.results}
               quiz={this.state.quiz}
               onRetry={this.onRetryHandler}
             />
+          ) : this.state.quiz.length === 0 ? (
+            <Nodata />
           ) : (
             <ActiveQuiz
               answers={this.state.quiz[this.state.activeQuestion].answers}

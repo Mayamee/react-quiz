@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import axios from "axios";
+import axios from "../../axios/axiosQuiz";
 import classes from "./QuizList.module.scss";
 import { NavLink } from "react-router-dom";
 import Loader from "../../components/UI/Loader/Loader";
@@ -20,13 +20,7 @@ class QuizList extends Component {
 
   async componentDidMount() {
     const reqOptions = {
-      url: "http://localhost:8080/api/quiz",
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-      },
     };
 
     try {

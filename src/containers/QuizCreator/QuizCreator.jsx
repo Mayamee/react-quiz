@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import classes from "./QuizCreator.module.scss";
 import Button from "../../components/UI/Button/Button";
 import { checkObjectPropertyDeepByPath } from "../../helpers/valid";
-import axios from "axios";
+import axios from "../../axios/axiosQuiz";
 import {
   createControl,
   validateControl,
@@ -85,18 +85,11 @@ class QuizCreator extends Component {
   async createQuizHandler(event) {
     const bodyContent = JSON.stringify(this.state.quiz);
     const reqOptions = {
-      url: "http://127.0.0.1:8080/api/quiz",
       method: "POST",
       data: bodyContent,
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-      },
     };
     try {
-      const res = await axios.request(reqOptions);
-      console.log(res);
+      await axios.request(reqOptions);
     } catch (error) {
       if (
         checkObjectPropertyDeepByPath(error, ["response", "data", "status"])
