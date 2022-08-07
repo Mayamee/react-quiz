@@ -83,10 +83,10 @@ class QuizCreator extends Component {
     });
   };
   async createQuizHandler(event) {
-    const bodyContent = JSON.stringify(this.state.quiz);
+    const payload = { title: "Новый тест", body: this.state.quiz };
     const reqOptions = {
       method: "POST",
-      data: bodyContent,
+      data: payload,
     };
     try {
       await axios.request(reqOptions);
