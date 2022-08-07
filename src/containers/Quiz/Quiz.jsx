@@ -40,7 +40,7 @@ class Quiz extends Component {
         return;
       }
       //TODO 404 status
-      const quiz = response.data.data.info;
+      const quiz = response.data.data.body;
       this.setState({ quiz, isLoading: false });
     } catch (error) {
       this.setState({ isLoading: false });

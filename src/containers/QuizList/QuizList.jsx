@@ -32,10 +32,11 @@ class QuizList extends Component {
         });
         return;
       }
+
       const quizes = response.data.data.map((question, index) => {
         return {
-          id: question.hashsum,
-          name: `Тест №${index + 1}`,
+          id: question.id,
+          name: question.title,
         };
       });
       this.setState({ quizes, isLoading: false });
