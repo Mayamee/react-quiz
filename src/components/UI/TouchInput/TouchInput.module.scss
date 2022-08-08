@@ -1,0 +1,22 @@
+textarea {
+  border: none;
+  background-color: transparent;
+  resize: none;
+  outline: none;
+}
+.TouchInput {
+}
+
+.TextArea {
+  width: 100%;
+  padding: 0 15px;
+  font-family: inherit;
+  font-weight: inherit;
+  color: #fff;
+  font-size: 2rem;
+  text-align: center;
+  background-color: transparent;
+  &::placeholder {
+    color: rgb(200, 200, 200);
+  }
+}

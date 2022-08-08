@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import classes from "./QuizCreator.module.scss";
 import Button from "../../components/UI/Button/Button";
+import TouchInput from "../../components/UI/TouchInput/TouchInput";
 import { checkObjectPropertyDeepByPath } from "../../helpers/valid";
 import axios from "../../axios/axiosQuiz";
 import {
@@ -44,6 +45,7 @@ class QuizCreator extends Component {
     isFormValid: false,
     rightAnswerId: 1,
     formControls: createFormControls(),
+    touchInputValue: "Мой тест",
   };
 
   addQuestionHandler = (event) => {
@@ -83,7 +85,10 @@ class QuizCreator extends Component {
     });
   };
   async createQuizHandler(event) {
-    const payload = { title: "Новый тест", body: this.state.quiz };
+    const payload = {
+      title: this.state.touchInputValue || "Мой тест",
+      body: this.state.quiz,
+    };
     const reqOptions = {
       method: "POST",
       data: payload,
@@ -147,7 +152,16 @@ class QuizCreator extends Component {
     return (
       <div className={classes.QuizCreator}>
         <div>
-          <h1>Создание теста</h1>
+          <h1>
+            <TouchInput
+              touchInputValue={this.state.touchInputValue}
+              touchInputonChangeHandler={(target, value) => {
+                this.setState({ touchInputValue: value });
+                target.style.height = "inherit";
+                target.style.height = target.scrollHeight + "px";
+              }}
+            />
+          </h1>
           <form
             onSubmit={(e) => {
               e.preventDefault();
