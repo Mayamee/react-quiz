@@ -3,7 +3,7 @@ import classes from "./QuizCreator.module.scss";
 import Button from "../../components/UI/Button/Button";
 import TouchInput from "../../components/UI/TouchInput/TouchInput";
 import { checkObjectPropertyDeepByPath } from "../../helpers/valid";
-import axios from "../../axios/axiosQuiz";
+import axios from "../../http/axiosQuiz";
 import {
   createControl,
   validateControl,
@@ -156,6 +156,9 @@ class QuizCreator extends Component {
             <TouchInput
               touchInputValue={this.state.touchInputValue}
               touchInputonChangeHandler={(target, value) => {
+                if (value.length > 50) {
+                  return;
+                }
                 this.setState({ touchInputValue: value });
                 target.style.height = "inherit";
                 target.style.height = target.scrollHeight + "px";
