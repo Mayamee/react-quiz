@@ -29,6 +29,7 @@ class Auth extends Component {
         validation: {
           required: true,
           minLength: 6,
+          maxLength: 32,
         },
       },
     },

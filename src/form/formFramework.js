@@ -23,6 +23,9 @@ export function validateControl(value, validation = null) {
   if (validation.minLength) {
     isValid = value.length >= validation.minLength && isValid;
   }
+  if (validation.maxLength) {
+    isValid = value.length <= validation.maxLength && isValid;
+  }
   return isValid;
 }
 export function validateForm(formControls) {
