@@ -9,14 +9,17 @@ textarea {
 
 .TextArea {
   width: 100%;
-  // padding: 0 15px;
-  padding: 0;
+  padding: 0 0 5px 0;
   font-family: inherit;
   font-weight: inherit;
   color: #fff;
   font-size: 2rem;
   text-align: center;
   background-color: transparent;
+  border-bottom: 1px solid transparent;
+  &:hover {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.479);
+  }
   &::placeholder {
     color: rgb(200, 200, 200);
   }
