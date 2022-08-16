@@ -3,6 +3,7 @@ import classes from "./Auth.module.scss";
 import Button from "../../components/UI/Button/Button";
 import Input from "../../components/UI/Input/Input";
 import { validateControl, validateForm } from "../../form/formFramework";
+import { axiosAuth } from "../../http/axiosRequests";
 class Auth extends Component {
   state = {
     isFormValid: false,
@@ -34,8 +35,36 @@ class Auth extends Component {
       },
     },
   };
-  loginHandler() {}
-  registerHandler() {}
+  async loginHandler() {
+    const authData = {
+      email: this.state.formControls.email.value,
+      password: this.state.formControls.password.value,
+    };
+    try {
+      this.setState({ isFormValid: false });
+      const response = await axiosAuth.post("/login", authData);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.setState({ isFormValid: true });
+    }
+  }
+  async registerHandler() {
+    const authData = {
+      email: this.state.formControls.email.value,
+      password: this.state.formControls.password.value,
+    };
+    try {
+      this.setState({ isFormValid: false });
+      const response = await axiosAuth.post("/registration", authData);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.setState({ isFormValid: true });
+    }
+  }
 
   onChangeHandler(event, controlName) {
     const formControls = { ...this.state.formControls };
@@ -78,17 +107,23 @@ class Auth extends Component {
         <div>
           <h1>Авторизация</h1>
           <form className={classes.AuthForm} onSubmit={this.submitHandler}>
-            {this.renderInputs()}
+            <div className="inputsContainer">{this.renderInputs()}</div>
             <Button
               btnType={"success"}
-              onClick={this.loginHandler}
+              onClick={(e) => {
+                e.preventDefault();
+                this.loginHandler();
+              }}
               disabled={!this.state.isFormValid}
             >
               Войти
             </Button>
             <Button
               btnType="primary"
-              onClick={this.registerHandler}
+              onClick={(e) => {
+                e.preventDefault();
+                this.registerHandler();
+              }}
               disabled={!this.state.isFormValid}
             >
               Регистрация

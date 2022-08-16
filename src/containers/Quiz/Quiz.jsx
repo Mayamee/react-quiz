@@ -21,7 +21,6 @@ class Quiz extends Component {
     isLoading: true,
     activeQuestion: 0,
     answerState: null,
-    //TODO: quiz пустой проработать момент
     quiz: [],
   };
   async componentDidMount() {
