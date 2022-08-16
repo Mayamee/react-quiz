@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import axios from "../../http/axiosQuiz";
+import { axiosQuiz } from "../../http/axiosRequests";
 import classes from "./Quiz.module.scss";
 import ActiveQuiz from "../../components/ActiveQuiz/ActiveQuiz";
 import FinishedQuiz from "../../components/FinishedQuiz/FinishedQuiz";
@@ -34,7 +34,7 @@ class Quiz extends Component {
     };
 
     try {
-      const response = await axios.request(reqOptions);
+      const response = await axiosQuiz.request(reqOptions);
       if (response.data.data.length === 0) {
         console.log("No data");
         return;

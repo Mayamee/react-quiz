@@ -1,12 +1,13 @@
 import axios from "axios";
 const API_URL = "http://127.0.0.1:8080/api/quiz/";
+const AUTH_URL = "http://127.0.0.1:8080/api/auth/";
 
-export default axios.create({
+export const axiosQuiz= axios.create({
   baseURL: API_URL,
 });
 
-export const axiosRepeatable = axios.create({
-  baseURL: API_URL,
+export const axiosAuth = axios.create({
+  baseURL: AUTH_URL,
 });
 
 function retryAxiosWrapper(AxiosInstance, { retryCount = 0, retryDelay = 0 }) {
@@ -32,4 +33,3 @@ function retryAxiosWrapper(AxiosInstance, { retryCount = 0, retryDelay = 0 }) {
   );
   return AxiosInstance;
 }
-retryAxiosWrapper(axiosRepeatable, { retryCount: 15, retryDelay: 3000 });

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import axios from "../../http/axiosQuiz";
+import { axiosQuiz } from "../../http/axiosRequests";
 import classes from "./QuizList.module.scss";
 import { NavLink } from "react-router-dom";
 import Loader from "../../components/UI/Loader/Loader";
@@ -25,7 +25,7 @@ class QuizList extends Component {
     };
 
     try {
-      const response = await axios.request(reqOptions);
+      const response = await axiosQuiz.request(reqOptions);
       if (response.data.data.length === 0) {
         this.setState({
           isLoading: false,

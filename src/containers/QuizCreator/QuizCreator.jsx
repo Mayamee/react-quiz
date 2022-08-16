@@ -3,7 +3,7 @@ import classes from "./QuizCreator.module.scss";
 import Button from "../../components/UI/Button/Button";
 import TouchInput from "../../components/UI/TouchInput/TouchInput";
 import { checkObjectPropertyDeepByPath } from "../../helpers/valid";
-import axios from "../../http/axiosQuiz";
+import { axiosQuiz } from "../../http/axiosRequests";
 import {
   createControl,
   validateControl,
@@ -94,7 +94,7 @@ class QuizCreator extends Component {
       data: payload,
     };
     try {
-      await axios.request(reqOptions);
+      await axiosQuiz.request(reqOptions);
     } catch (error) {
       if (
         checkObjectPropertyDeepByPath(error, ["response", "data", "status"])

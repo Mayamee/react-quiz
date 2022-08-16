@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import classes from "./Auth.module.scss";
 import Button from "../../components/UI/Button/Button";
 import Input from "../../components/UI/Input/Input";
-import { validateControl } from "../../form/formFramework";
+import { validateControl, validateForm } from "../../form/formFramework";
 class Auth extends Component {
   state = {
     isFormValid: false,
@@ -23,7 +23,7 @@ class Auth extends Component {
         value: "",
         type: "password",
         label: "Пароль",
-        errorMessage: "Введите корректный пароль",
+        errorMessage: "Пароль должен быть от 6 до 32 символов включительно",
         valid: false,
         touched: false,
         validation: {
@@ -34,7 +34,7 @@ class Auth extends Component {
       },
     },
   };
-  loginHandler = () => {};
+  loginHandler() {}
   registerHandler() {}
 
   onChangeHandler(event, controlName) {
@@ -43,14 +43,8 @@ class Auth extends Component {
     control.value = event.target.value;
     control.touched = true;
     control.valid = validateControl(control.value, control.validation);
-    const isFormValid = Object.keys(formControls).reduce(
-      (isFormValid, controlName) => {
-        isFormValid = formControls[controlName].valid && isFormValid;
-        return isFormValid;
-      },
-      true
-    );
     formControls[controlName] = control;
+    const isFormValid = validateForm(formControls);
     this.setState({
       formControls,
       isFormValid,
@@ -86,7 +80,7 @@ class Auth extends Component {
           <form className={classes.AuthForm} onSubmit={this.submitHandler}>
             {this.renderInputs()}
             <Button
-              btnType="success"
+              btnType={"success"}
               onClick={this.loginHandler}
               disabled={!this.state.isFormValid}
             >
