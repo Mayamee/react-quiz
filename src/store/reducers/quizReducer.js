@@ -3,12 +3,19 @@ import {
   FETCH_QUIZES_SUCCESS,
   FETCH_QUIZES_ERROR,
   FETCH_QUIZES_NOT_FOUND,
+  FETCH_QUIZ_END,
+  FETCH_QUIZ_SUCCESS,
 } from "../actions/actionTypes";
 
 const initialState = {
   quizes: [],
   isLoading: true,
   error: null,
+  results: {},
+  isQuizFinished: false,
+  activeQuestion: 0,
+  answerState: null,
+  quiz: null,
 };
 export function quizReducer(state = initialState, action) {
   if (action.type === FETCH_QUIZES_START) {
@@ -35,6 +42,19 @@ export function quizReducer(state = initialState, action) {
     return {
       ...state,
       isLoading: false,
+    };
+  }
+  if (action.type === FETCH_QUIZ_END) {
+    return {
+      ...state,
+      isQuizFinished: true,
+    };
+  }
+  if (action.type === FETCH_QUIZ_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      quiz: action.payload,
     };
   }
   return state;
