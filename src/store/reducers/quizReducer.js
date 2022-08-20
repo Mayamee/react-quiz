@@ -5,6 +5,10 @@ import {
   FETCH_QUIZES_NOT_FOUND,
   FETCH_QUIZ_END,
   FETCH_QUIZ_SUCCESS,
+  QUIZ_SET_STATE,
+  QUIZ_FINISHED,
+  QUIZ_NEXT_QUESTION,
+  QUIZ_RESET,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -55,6 +59,35 @@ export function quizReducer(state = initialState, action) {
       ...state,
       isLoading: false,
       quiz: action.payload,
+    };
+  }
+  if (action.type === QUIZ_SET_STATE) {
+    return {
+      ...state,
+      answerState: action.payload.answerState,
+      results: action.payload.results,
+    };
+  }
+  if (action.type === QUIZ_FINISHED) {
+    return {
+      ...state,
+      isQuizFinished: true,
+    };
+  }
+  if (action.type === QUIZ_NEXT_QUESTION) {
+    return {
+      ...state,
+      activeQuestion: action.payload,
+      answerState: null,
+    };
+  }
+  if (action.type === QUIZ_RESET) {
+    return {
+      ...state,
+      activeQuestion: 0,
+      answerState: null,
+      isQuizFinished: false,
+      results: {},
     };
   }
   return state;

@@ -5,6 +5,10 @@ import {
   FETCH_QUIZES_NOT_FOUND,
   FETCH_QUIZ_END,
   FETCH_QUIZ_SUCCESS,
+  QUIZ_SET_STATE,
+  QUIZ_FINISHED,
+  QUIZ_NEXT_QUESTION,
+  QUIZ_RESET,
 } from "./actionTypes";
 import { axiosQuiz } from "../../http/axiosRequests";
 
@@ -82,4 +86,58 @@ export const fetchQuizEnd = () => ({
 export const fetchQuizSuccess = (quiz) => ({
   type: FETCH_QUIZ_SUCCESS,
   payload: quiz,
+});
+export const quizAnswerClick = (answerId) => {
+  return (dispatch, getState) => {
+    const state = getState().quiz;
+    const isQuizFinished = (state) =>
+      state.activeQuestion + 1 >= state.quiz.length;
+    if (state.answerState) {
+      const key = Object.keys(state.answerState)[0];
+      if (state.answerState[key] === "success") {
+        return;
+      }
+    }
+    const question = state.quiz[state.activeQuestion];
+    const results = state.results;
+    if (question.rightAnswerId === answerId) {
+      if (!results[question.id]) {
+        results[question.id] = "success";
+      }
+      dispatch(quizSetState({ [answerId]: "success" }, results));
+
+      const timeout = setTimeout(() => {
+        if (isQuizFinished(state)) {
+          dispatch(finishQuiz());
+        } else {
+          dispatch(quizNextQuestion(state.activeQuestion + 1));
+        }
+        clearTimeout(timeout);
+      }, 1000);
+    } else {
+      results[question.id] = "error";
+      dispatch(quizSetState({ [answerId]: "error" }, results));
+    }
+  };
+};
+
+export const quizSetState = (answerState, results) => {
+  return {
+    type: QUIZ_SET_STATE,
+    payload: {
+      answerState,
+      results,
+    },
+  };
+};
+export const finishQuiz = () => ({
+  type: QUIZ_FINISHED,
+});
+export const quizNextQuestion = (activeQuestion) => ({
+  type: QUIZ_NEXT_QUESTION,
+  payload: activeQuestion,
+});
+
+export const resetQuiz = () => ({
+  type: QUIZ_RESET,
 });
