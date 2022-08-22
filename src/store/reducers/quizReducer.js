@@ -51,7 +51,7 @@ export function quizReducer(state = initialState, action) {
   if (action.type === FETCH_QUIZ_END) {
     return {
       ...state,
-      isQuizFinished: true,
+      isLoading: false,
     };
   }
   if (action.type === FETCH_QUIZ_SUCCESS) {

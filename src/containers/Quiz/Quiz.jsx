@@ -18,7 +18,6 @@ const withRouter = (Component) => {
     return <Component {...{ ...props, ...params }} />;
   };
 };
-
 class Quiz extends Component {
   componentDidMount() {
     const id = this.props.id;
@@ -27,33 +26,43 @@ class Quiz extends Component {
   componentWillUnmount() {
     this.props.resetQuiz();
   }
-  render() {
-    console.log(this.props);
+  getQuiz() {
+    if (this.props.isLoading) {
+      return <Loader />;
+    }
+    if (this.props.isQuizFinished) {
+      return (
+        <FinishedQuiz
+          results={this.props.results}
+          quiz={this.props.quiz}
+          onRetry={this.props.resetQuiz}
+        />
+      );
+    }
+    if (!this.props.quiz) {
+      return <Nodata />;
+    }
+    if (this.props.quiz.length === 0) {
+      return <Nodata />;
+    }
 
+    return (
+      <ActiveQuiz
+        answers={this.props.quiz[this.props.activeQuestion].answers}
+        question={this.props.quiz[this.props.activeQuestion].question}
+        onAnswerClick={this.props.quizAnswerClick}
+        quizLength={this.props.quiz.length}
+        answerNumber={this.props.activeQuestion + 1}
+        state={this.props.answerState}
+      />
+    );
+  }
+  render() {
     return (
       <div className={classes.Quiz}>
         <div className={classes.QuizWrapper}>
           <h1>Ответьте на все вопросы</h1>
-          {this.props.isLoading ? (
-            <Loader />
-          ) : this.props.isQuizFinished ? (
-            <FinishedQuiz
-              results={this.props.results}
-              quiz={this.props.quiz}
-              onRetry={this.props.resetQuiz}
-            />
-          ) : this.props.quiz.length === 0 ? (
-            <Nodata />
-          ) : (
-            <ActiveQuiz
-              answers={this.props.quiz[this.props.activeQuestion].answers}
-              question={this.props.quiz[this.props.activeQuestion].question}
-              onAnswerClick={this.props.quizAnswerClick}
-              quizLength={this.props.quiz.length}
-              answerNumber={this.props.activeQuestion + 1}
-              state={this.props.answerState}
-            />
-          )}
+          {this.getQuiz()}
         </div>
       </div>
     );

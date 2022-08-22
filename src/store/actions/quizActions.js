@@ -73,7 +73,6 @@ export const fetchQuizById = (id) => async (dispatch) => {
       return dispatch(fetchQuizesNotFound());
     }
     const quiz = response.data.data.body;
-    // this.setState({ quiz, isLoading: false });
     dispatch(fetchQuizSuccess(quiz));
   } catch (error) {
     dispatch(fetchQuizEnd());
