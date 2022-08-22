@@ -12,6 +12,10 @@ import {
 } from "../../form/formFramework";
 import Input from "../../components/UI/Input/Input";
 import Select from "../../components/UI/Select/Select";
+import {
+  addQuestionToQuiz,
+  createQuiz,
+} from "../../store/actions/createQuizAction";
 
 function createOptionControl(number) {
   return createControl(
@@ -45,17 +49,15 @@ class QuizCreator extends Component {
     isFormValid: false,
     rightAnswerId: 1,
     formControls: createFormControls(),
-    touchInputValue: "Мой тест",
+    touchInputValue: "Мой тест", //TODO
   };
 
   addQuestionHandler = (event) => {
-    const quiz = this.state.quiz.concat();
-    const index = quiz.length + 1;
     const { question, option1, option2, option3, option4 } =
       this.state.formControls;
     const questionItem = {
       question: question.value,
-      id: index,
+      id: this.props.quiz.length + 1,
       rightAnswerId: this.state.rightAnswerId,
       answers: [
         {
@@ -76,40 +78,21 @@ class QuizCreator extends Component {
         },
       ],
     };
-    quiz.push(questionItem);
+    this.props.addQuestionToQuiz(questionItem);
     this.setState({
-      quiz,
       isFormValid: false,
       rightAnswerId: 1,
       formControls: createFormControls(),
     });
   };
-  async createQuizHandler(event) {
-    const payload = {
-      title: this.state.touchInputValue || "Мой тест",
-      body: this.state.quiz,
-    };
-    const reqOptions = {
-      method: "POST",
-      data: payload,
-    };
-    try {
-      await axiosQuiz.request(reqOptions);
-    } catch (error) {
-      if (
-        checkObjectPropertyDeepByPath(error, ["response", "data", "status"])
-      ) {
-        console.log(error.response.data.status);
-      } else {
-        console.log(error);
-      }
-    }
+  createQuizHandler(event) {
+    event.preventDefault();
     this.setState(() => ({
-      quiz: [],
       isFormValid: false,
       rightAnswerId: 1,
       formControls: createFormControls(),
     }));
+    this.props.createQuiz(this.state.touchInputValue);
   }
   onChangeHandler(value, controlName) {
     const formControls = { ...this.state.formControls };
@@ -192,7 +175,7 @@ class QuizCreator extends Component {
             <Button
               btnType="success"
               onClick={this.createQuizHandler.bind(this)}
-              disabled={this.state.quiz.length === 0}
+              disabled={this.props.quiz.length === 0}
             >
               Создать тест
             </Button>
@@ -208,7 +191,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = (dispatch) => ({
   addQuestionToQuiz: (question) => dispatch(addQuestionToQuiz(question)),
-  createQuiz: () => dispatch(createQuiz()),
+  createQuiz: (touchInputValue) => dispatch(createQuiz(touchInputValue)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuizCreator);
