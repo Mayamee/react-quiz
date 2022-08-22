@@ -6,11 +6,12 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
-import rootReducer from "./store/reducers/rootReducer";
 import thunk from "redux-thunk";
+import { quizReducer } from "./store/reducers/quizReducer";
+import { createQuizReducer } from "./store/reducers/createQuizReducer";
 
 const Store = configureStore({
-  reducer: rootReducer,
+  reducer: { quiz: quizReducer, createQuiz: createQuizReducer },
   devTools: true,
   middleware: [thunk],
 });

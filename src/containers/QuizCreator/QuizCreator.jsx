@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import classes from "./QuizCreator.module.scss";
 import Button from "../../components/UI/Button/Button";
 import TouchInput from "../../components/UI/TouchInput/TouchInput";
@@ -41,7 +42,6 @@ function createFormControls() {
 
 class QuizCreator extends Component {
   state = {
-    quiz: [],
     isFormValid: false,
     rightAnswerId: 1,
     formControls: createFormControls(),
@@ -203,4 +203,12 @@ class QuizCreator extends Component {
   }
 }
 
-export default QuizCreator;
+const mapStateToProps = (state) => ({
+  quiz: state.createQuiz.quiz,
+});
+const mapDispatchToProps = (dispatch) => ({
+  addQuestionToQuiz: (question) => dispatch(addQuestionToQuiz(question)),
+  createQuiz: () => dispatch(createQuiz()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuizCreator);
