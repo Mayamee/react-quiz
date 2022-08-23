@@ -1,4 +1,7 @@
-import { ADD_QUESTION_TO_QUIZ } from "../actions/actionTypes";
+import {
+  ADD_QUESTION_TO_QUIZ,
+  QUIZ_CREATOR_RESET,
+} from "../actions/actionTypes";
 
 const initialState = {
   quiz: [],
@@ -9,6 +12,13 @@ export function createQuizReducer(state = initialState, action) {
     return {
       ...state,
       quiz: [...state.quiz, action.payload],
+    };
+  }
+  if (action.type === QUIZ_CREATOR_RESET) {
+    console.log("reset");
+    return {
+      ...state,
+      quiz: [],
     };
   }
   return state;

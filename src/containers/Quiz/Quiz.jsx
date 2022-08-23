@@ -61,7 +61,7 @@ class Quiz extends Component {
     return (
       <div className={classes.Quiz}>
         <div className={classes.QuizWrapper}>
-          <h1>Ответьте на все вопросы</h1>
+          <h1>{this.props.title}</h1>
           {this.getQuiz()}
         </div>
       </div>
@@ -69,14 +69,17 @@ class Quiz extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  results: state.quiz.results,
-  isQuizFinished: state.quiz.isQuizFinished,
-  activeQuestion: state.quiz.activeQuestion,
-  answerState: state.quiz.answerState,
-  quiz: state.quiz.quiz,
-  isLoading: state.quiz.isLoading,
-});
+const mapStateToProps = (state) => {
+  return {
+    results: state.quiz.results,
+    isQuizFinished: state.quiz.isQuizFinished,
+    activeQuestion: state.quiz.activeQuestion,
+    answerState: state.quiz.answerState,
+    quiz: state.quiz.quiz?.body,
+    title: state.quiz.quiz?.title,
+    isLoading: state.quiz.isLoading,
+  };
+};
 const mapDispatchToProps = (dispatch) => ({
   fetchQuizById: (id) => dispatch(fetchQuizById(id)),
   quizAnswerClick: (answerId) => dispatch(quizAnswerClick(answerId)),

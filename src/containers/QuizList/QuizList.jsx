@@ -18,7 +18,6 @@ class QuizList extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     this.props.fetchQuizes();
   }
 

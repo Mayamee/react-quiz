@@ -22,12 +22,10 @@ export const fetchQuizes = () => async (dispatch) => {
     if (response.data.data.length === 0) {
       return dispatch(fetchQuizesNotFound());
     }
-    const quizes = response.data.data.map((question, index) => {
-      return {
-        id: question.id,
-        name: question.title,
-      };
-    });
+    const quizes = response.data.data.map((question) => ({
+      id: question.id,
+      name: question.title,
+    }));
     dispatch(fetchQuizesSuccess(quizes));
   } catch (error) {
     dispatch(fetchQuizesError(error));
@@ -72,9 +70,14 @@ export const fetchQuizById = (id) => async (dispatch) => {
       console.info("No data");
       return dispatch(fetchQuizesNotFound());
     }
-    const quiz = response.data.data.body;
+    const data = response.data.data;
+    const quiz = {
+      title: data.title,
+      body: data.body,
+    };
     dispatch(fetchQuizSuccess(quiz));
   } catch (error) {
+    console.log(error);
     dispatch(fetchQuizEnd());
   }
 };
@@ -90,14 +93,14 @@ export const quizAnswerClick = (answerId) => {
   return (dispatch, getState) => {
     const state = getState().quiz;
     const isQuizFinished = (state) =>
-      state.activeQuestion + 1 >= state.quiz.length;
+      state.activeQuestion + 1 >= state.quiz?.body.length;
     if (state.answerState) {
       const key = Object.keys(state.answerState)[0];
       if (state.answerState[key] === "success") {
         return;
       }
     }
-    const question = state.quiz[state.activeQuestion];
+    const question = state.quiz?.body[state.activeQuestion];
     const results = state.results;
     if (question.rightAnswerId === answerId) {
       if (!results[question.id]) {

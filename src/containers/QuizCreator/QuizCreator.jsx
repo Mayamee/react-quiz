@@ -49,7 +49,7 @@ class QuizCreator extends Component {
     isFormValid: false,
     rightAnswerId: 1,
     formControls: createFormControls(),
-    touchInputValue: "Мой тест", //TODO
+    touchInputValue: "Мой тест",
   };
 
   addQuestionHandler = (event) => {
@@ -91,6 +91,7 @@ class QuizCreator extends Component {
       isFormValid: false,
       rightAnswerId: 1,
       formControls: createFormControls(),
+      touchInputValue: "Мой тест",
     }));
     this.props.createQuiz(this.state.touchInputValue);
   }
@@ -186,9 +187,12 @@ class QuizCreator extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  quiz: state.createQuiz.quiz,
-});
+const mapStateToProps = (state) => {
+  console.log(state);
+  return {
+    quiz: state.createQuiz.quiz,
+  };
+};
 const mapDispatchToProps = (dispatch) => ({
   addQuestionToQuiz: (question) => dispatch(addQuestionToQuiz(question)),
   createQuiz: (touchInputValue) => dispatch(createQuiz(touchInputValue)),

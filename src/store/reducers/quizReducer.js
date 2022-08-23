@@ -20,6 +20,7 @@ const initialState = {
   activeQuestion: 0,
   answerState: null,
   quiz: null,
+  title: "Ответьте на все вопросы",
 };
 export function quizReducer(state = initialState, action) {
   if (action.type === FETCH_QUIZES_START) {
@@ -90,5 +91,6 @@ export function quizReducer(state = initialState, action) {
       results: {},
     };
   }
+
   return state;
 }
