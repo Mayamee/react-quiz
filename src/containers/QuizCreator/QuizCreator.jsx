@@ -3,8 +3,6 @@ import { connect } from "react-redux";
 import classes from "./QuizCreator.module.scss";
 import Button from "../../components/UI/Button/Button";
 import TouchInput from "../../components/UI/TouchInput/TouchInput";
-import { checkObjectPropertyDeepByPath } from "../../helpers/valid";
-import { axiosQuiz } from "../../http/axiosRequests";
 import {
   createControl,
   validateControl,
@@ -37,10 +35,8 @@ function createFormControls() {
       },
       { required: true }
     ),
-    option1: createOptionControl(1),
-    option2: createOptionControl(2),
-    option3: createOptionControl(3),
-    option4: createOptionControl(4),
+    option_1: createOptionControl(1),
+    option_2: createOptionControl(2),
   };
 }
 
@@ -53,28 +49,19 @@ class QuizCreator extends Component {
   };
 
   addQuestionHandler = (event) => {
-    const { question, option1, option2, option3, option4 } =
-      this.state.formControls;
+    const { question, option_1, option_2 } = this.state.formControls;
     const questionItem = {
       question: question.value,
       id: this.props.quiz.length + 1,
       rightAnswerId: this.state.rightAnswerId,
       answers: [
         {
-          text: option1.value,
-          id: option1.id,
+          text: option_1.value,
+          id: option_1.id,
         },
         {
-          text: option2.value,
-          id: option2.id,
-        },
-        {
-          text: option3.value,
-          id: option3.id,
-        },
-        {
-          text: option4.value,
-          id: option4.id,
+          text: option_2.value,
+          id: option_2.id,
         },
       ],
     };
@@ -155,6 +142,8 @@ class QuizCreator extends Component {
             }}
           >
             {this.renderInputs()}
+            <button type="button">Добавить вопрос</button>
+
             <Select
               label="Выберите правильный ответ"
               value={this.state.rightAnswerId}
@@ -162,8 +151,6 @@ class QuizCreator extends Component {
               options={[
                 { text: 1, value: 1 },
                 { text: 2, value: 2 },
-                { text: 3, value: 3 },
-                { text: 4, value: 4 },
               ]}
             />
             <Button
@@ -188,7 +175,6 @@ class QuizCreator extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     quiz: state.createQuiz.quiz,
   };
