@@ -1,5 +1,5 @@
 import React from "react";
-import Layout from "./hoc/Layout";
+import Layout from "./hoc/Layout/Layout";
 import { Route, Routes } from "react-router-dom";
 import Quiz from "./containers/Quiz/Quiz";
 import QuizList from "./containers/QuizList/QuizList";

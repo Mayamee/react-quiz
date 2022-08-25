@@ -10,6 +10,7 @@ import {
   createQuiz,
 } from "../../store/actions/createQuizAction";
 import AppendButton from "../../components/UI/AppendButton/AppendButton";
+import Validation from "../../hoc/Validation/Validation";
 
 const createInputField = (label, value = "") => ({
   label,
@@ -77,12 +78,16 @@ class QuizCreator extends Component {
   renderOpts() {
     return this.state.formFields.options.map((option, index) => {
       return (
-        <Input
-          key={`${option.label}-${index}`}
-          label={option.label}
-          value={option.value}
-          onChange={(event) => this.onChangeHandler(index, event.target.value)}
-        />
+        <Validation rule="email" key={`${option.label}-${index}`}>
+          <Input
+            key={`${option.label}-${index}`}
+            label={option.label}
+            value={option.value}
+            onChange={(event) =>
+              this.onChangeHandler(index, event.target.value)
+            }
+          />
+        </Validation>
       );
     });
   }
