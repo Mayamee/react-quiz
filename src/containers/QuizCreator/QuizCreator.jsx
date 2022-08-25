@@ -3,74 +3,51 @@ import { connect } from "react-redux";
 import classes from "./QuizCreator.module.scss";
 import Button from "../../components/UI/Button/Button";
 import TouchInput from "../../components/UI/TouchInput/TouchInput";
-import {
-  createControl,
-  validateControl,
-  validateForm,
-} from "../../form/formFramework";
 import Input from "../../components/UI/Input/Input";
 import Select from "../../components/UI/Select/Select";
 import {
   addQuestionToQuiz,
   createQuiz,
 } from "../../store/actions/createQuizAction";
+import AppendButton from "../../components/UI/AppendButton/AppendButton";
 
-function createOptionControl() {
-  return createControl(
-    {
-      label: "Введите вариант ответа",
-      errorMessage: "Ответ не может быть пустым",
-    },
-    { required: true }
-  );
-}
+const createInputField = (label, value = "") => ({
+  label,
+  value,
+});
 
-function createFormControls() {
-  return {
-    question: createControl(
-      {
-        label: "Введите вопрос",
-        errorMessage: "Вопрос не может быть пустым",
-      },
-      { required: true }
-    ),
-    options: [createOptionControl(1), createOptionControl(2)],
-  };
-}
+const createFormFields = () => ({
+  options: [
+    createInputField("Введите вопрос"),
+    createInputField("Введите вариант ответа"),
+    createInputField("Введите вариант ответа"),
+  ],
+});
 
 class QuizCreator extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isFormValid: false,
-      rightAnswerId: 1,
-      formControls: createFormControls(),
-      touchInputValue: "Мой тест",
-    };
-  }
+  state = {
+    //TODO make validation
+    isFormValid: true,
+    rightAnswerId: 1,
+    formFields: createFormFields(),
+    touchInputValue: "Мой тест",
+  };
 
   addQuestionHandler = (event) => {
-    const { question, option_1, option_2 } = this.state.formControls;
+    const [question, ...options] = [...this.state.formFields.options];
     const questionItem = {
       question: question.value,
       id: this.props.quiz.length + 1,
       rightAnswerId: this.state.rightAnswerId,
-      answers: [
-        {
-          text: option_1.value,
-          id: option_1.id,
-        },
-        {
-          text: option_2.value,
-          id: option_2.id,
-        },
-      ],
+      answers: options.map((option, index) => ({
+        text: option.value,
+        id: index + 1,
+      })),
     };
     this.props.addQuestionToQuiz(questionItem);
     this.setState({
-      isFormValid: false,
       rightAnswerId: 1,
-      formControls: createFormControls(),
+      formFields: createFormFields(),
     });
   };
   createQuizHandler(event) {
@@ -78,45 +55,44 @@ class QuizCreator extends Component {
     this.setState(() => ({
       isFormValid: false,
       rightAnswerId: 1,
-      formControls: createFormControls(),
+      formFields: createFormFields(),
       touchInputValue: "Мой тест",
     }));
     this.props.createQuiz(this.state.touchInputValue);
   }
-  onChangeHandler(value, option) {
-    console.log(option);
-    //TODO watch for options need to replace option in options array
-    const options = [...this.state.formControls.options];
-    // return;
-    // const control = { ...formControls[controlName] };
-    // control.value = value;
-    // control.touched = true;
-    // control.valid = validateControl(control.value, control.validation);
-    // formControls[controlName] = control;
-    // this.setState({
-    //   formControls,
-    //   isFormValid: validateForm(formControls),
-    // });
+  onChangeHandler(id, value) {
+    const options = [...this.state.formFields.options];
+    const option = options[id];
+    option.value = value;
+    const formFields = { ...this.state.formFields };
+    formFields.options[id] = option;
+    this.setState({
+      formFields,
+    });
   }
 
   selectChangeHandler = (event) => {
     this.setState({ rightAnswerId: +event.target.value });
   };
   renderOpts() {
-    return this.state.formControls.options.map((option, index) => {
-      //TODO option id
+    return this.state.formFields.options.map((option, index) => {
       return (
         <Input
-          key={`${option.label}`}
+          key={`${option.label}-${index}`}
           label={option.label}
           value={option.value}
-          errorMessage={option.errorMessage}
-          shouldValidate={!!option.validation}
-          valid={option.valid}
-          touched={option.touched}
-          onChange={(event) => this.onChangeHandler(event.target.value, option)}
+          onChange={(event) => this.onChangeHandler(index, event.target.value)}
         />
       );
+    });
+  }
+  addOption() {
+    const options = [...this.state.formFields.options];
+    options.push(createInputField("Введите вариант ответа"));
+    const formFields = { ...this.state.formFields };
+    formFields.options = options;
+    this.setState({
+      formFields,
     });
   }
   render() {
@@ -142,16 +118,21 @@ class QuizCreator extends Component {
             }}
           >
             {this.renderOpts()}
-            <button type="button">Добавить вопрос</button>
-
+            {this.state.formFields.options.length < 5 && (
+              <AppendButton onClick={this.addOption.bind(this)}>
+                Добавить вариант ответа
+              </AppendButton>
+            )}
             <Select
               label="Выберите правильный ответ"
               value={this.state.rightAnswerId}
               onChange={this.selectChangeHandler}
-              options={[
-                { text: 1, value: 1 },
-                { text: 2, value: 2 },
-              ]}
+              options={this.state.formFields.options
+                .map((option, index) => ({
+                  text: index,
+                  value: index,
+                }))
+                .splice(1)}
             />
             <Button
               btnType="primary"
