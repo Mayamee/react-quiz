@@ -1,10 +1,13 @@
-const Validation = ({ rule, children: item }) => {
-  console.log(item.props.value);
-  //TODO MAYBE CALLBACK?
-  // cb(true/false);
-  console.log(rule);
-  return item;
+import React from "react";
+import validator from "./Validator";
+
+const Validation = ({ rules, children: item }) => {
+  return React.cloneElement(item, {
+    validate: (itemValue) =>
+      [].concat(rules).reduce((isValid, rule) => {
+        return isValid && validator(rule, itemValue);
+      }, true),
+  });
 };
 
 export default Validation;
-//TODO add some field or callback to make validation

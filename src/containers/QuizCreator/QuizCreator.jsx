@@ -11,10 +11,12 @@ import {
 } from "../../store/actions/createQuizAction";
 import AppendButton from "../../components/UI/AppendButton/AppendButton";
 import Validation from "../../hoc/Validation/Validation";
+import { minlength } from "../../hoc/Validation/RuleCreator";
 
-const createInputField = (label, value = "") => ({
+const createInputField = (label, value = "", isValid = false) => ({
   label,
   value,
+  isValid,
 });
 
 const createFormFields = () => ({
@@ -27,8 +29,7 @@ const createFormFields = () => ({
 
 class QuizCreator extends Component {
   state = {
-    //TODO make validation
-    isFormValid: true,
+    isFormValid: false,
     rightAnswerId: 1,
     formFields: createFormFields(),
     touchInputValue: "Мой тест",
@@ -61,14 +62,21 @@ class QuizCreator extends Component {
     }));
     this.props.createQuiz(this.state.touchInputValue);
   }
-  onChangeHandler(id, value) {
+  onChangeHandler(id, value, isValid) {
     const options = [...this.state.formFields.options];
     const option = options[id];
     option.value = value;
+    option.isValid = isValid;
     const formFields = { ...this.state.formFields };
     formFields.options[id] = option;
+
+    const isFormValid = options.reduce(
+      (isValid, option) => isValid && option.isValid,
+      true
+    );
     this.setState({
       formFields,
+      isFormValid,
     });
   }
 
@@ -78,14 +86,11 @@ class QuizCreator extends Component {
   renderOpts() {
     return this.state.formFields.options.map((option, index) => {
       return (
-        <Validation rule="email" key={`${option.label}-${index}`}>
+        <Validation rules={minlength(1)} key={`${option.label}-${index}`}>
           <Input
-            key={`${option.label}-${index}`}
             label={option.label}
             value={option.value}
-            onChange={(event) =>
-              this.onChangeHandler(index, event.target.value)
-            }
+            onChange={this.onChangeHandler.bind(this, index)}
           />
         </Validation>
       );
@@ -96,9 +101,9 @@ class QuizCreator extends Component {
     options.push(createInputField("Введите вариант ответа"));
     const formFields = { ...this.state.formFields };
     formFields.options = options;
-    this.setState({
+    this.setState((prevState) => ({
       formFields,
-    });
+    }));
   }
   render() {
     return (
@@ -155,9 +160,12 @@ class QuizCreator extends Component {
             </Button>
           </form>
         </div>
+
+        {/* <div className="div">{+this.state.isFormValid}</div> */}
       </div>
     );
   }
+  //TODO delete after work ^^^
 }
 
 const mapStateToProps = (state) => {
