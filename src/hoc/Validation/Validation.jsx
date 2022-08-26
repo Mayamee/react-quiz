@@ -1,13 +1,19 @@
 import React from "react";
+import { createContext } from "react";
 import validator from "./Validator";
 
-const Validation = ({ rules, children: item }) => {
-  return React.cloneElement(item, {
-    validate: (itemValue) =>
+export const ShareContext = createContext(null);
+
+const Validation = ({ rules, children: item }) => (
+  <ShareContext.Provider
+    value={(itemValue) =>
       [].concat(rules).reduce((isValid, rule) => {
         return isValid && validator(rule, itemValue);
-      }, true),
-  });
-};
+      }, true)
+    }
+  >
+    {item}
+  </ShareContext.Provider>
+);
 
 export default Validation;
