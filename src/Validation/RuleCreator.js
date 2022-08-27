@@ -1,7 +1,12 @@
-import { EMAIL, MIN_LENGTH } from "./Rules";
+import { EMAIL, MAX_LENGTH, MIN_LENGTH } from "./Rules";
 
-export const minlength = (length = 0) => ({
+export const minLength = (length = 0) => ({
   type: MIN_LENGTH,
+  payload: length,
+});
+
+export const maxLength = (length = 20) => ({
+  type: MAX_LENGTH,
   payload: length,
 });
 
@@ -9,4 +14,4 @@ export const email = () => ({
   type: EMAIL,
 });
 
-export const required = () => minlength(1);
+export const required = () => minLength(1);

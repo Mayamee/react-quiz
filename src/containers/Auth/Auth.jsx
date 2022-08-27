@@ -4,46 +4,44 @@ import Button from "../../components/UI/Button/Button";
 import Input from "../../components/UI/Input/Input";
 import { axiosAuth } from "../../http/axiosRequests";
 import Validation from "../../Validation/Validation";
-import { email, required } from "../../Validation/RuleCreator";
+import { email, maxLength, minLength } from "../../Validation/RuleCreator";
 import { validateFormFields } from "../../helpers/valid";
+import { createValidationInputField } from "../../helpers/formInputCreator";
+
+const initForm = () => [
+  createValidationInputField("Email", email(), "email"),
+  createValidationInputField(
+    "Password",
+    [minLength(6), maxLength(32)],
+    "password"
+  ),
+];
 
 class Auth extends Component {
   state = {
     isFormValid: false,
-    formFields: [
-      {
-        type: "email",
-        label: "Email",
-        value: "",
-        validationRules: [email()],
-      },
-      {
-        type: "password",
-        label: "Password",
-        value: "",
-        validationRules: [required()],
-      },
-    ],
+    formFields: initForm(),
   };
   async loginHandler() {
     const authData = {
-      email: this.state.formControls.email.value,
-      password: this.state.formControls.password.value,
+      email: this.state.formFields[0].value,
+      password: this.state.formFields[1].value,
     };
+    console.log(authData);
     try {
       this.setState({ isFormValid: false });
       const response = await axiosAuth.post("/login", authData);
       console.log(response);
+      this.setState({ formFields: initForm(), isFormValid: false });
     } catch (error) {
       console.error(error);
-    } finally {
       this.setState({ isFormValid: true });
     }
   }
   async registerHandler() {
     const authData = {
-      email: this.state.formControls.email.value,
-      password: this.state.formControls.password.value,
+      email: this.state.formFields[0].value,
+      password: this.state.formFields[1].value,
     };
     try {
       this.setState({ isFormValid: false });
@@ -81,18 +79,18 @@ class Auth extends Component {
     ));
   }
 
-  submitHandler(event) {
-    event.preventDefault();
-  }
   render() {
     return (
       <div className={classes.Auth}>
         <div>
           <h1>Авторизация</h1>
-          <form className={classes.AuthForm} onSubmit={this.submitHandler}>
+          <form
+            className={classes.AuthForm}
+            onSubmit={(e) => e.preventDefault()}
+          >
             <div className="inputsContainer">{this.renderInputs()}</div>
             <Button
-              btnType={"success"}
+              btnType="success"
               onClick={(e) => {
                 e.preventDefault();
                 this.loginHandler();

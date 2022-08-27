@@ -13,23 +13,19 @@ import AppendButton from "../../components/UI/AppendButton/AppendButton";
 import Validation from "../../Validation/Validation";
 import { required } from "../../Validation/RuleCreator";
 import { validateFormFields } from "../../helpers/valid";
+import { createValidationInputField } from "../../helpers/formInputCreator";
 
-const createInputField = (label = "Пустой Label", value = "") => ({
-  label,
-  value,
-});
-
-const createFormFields = () => [
-  createInputField("Введите вопрос"),
-  createInputField("Введите вариант ответа"),
-  createInputField("Введите вариант ответа"),
+const initForm = () => [
+  createValidationInputField("Введите вопрос", required()),
+  createValidationInputField("Введите вариант ответа", required()),
+  createValidationInputField("Введите вариант ответа", required()),
 ];
 
 class QuizCreator extends Component {
   state = {
     isFormValid: false,
     rightAnswerId: 1,
-    formFields: createFormFields(),
+    formFields: initForm(),
     touchInputValue: "Мой тест",
   };
 
@@ -48,7 +44,7 @@ class QuizCreator extends Component {
     this.props.addQuestionToQuiz(questionItem);
     this.setState({
       rightAnswerId: 1,
-      formFields: createFormFields(),
+      formFields: initForm(),
       isFormValid: false,
     });
   };
@@ -57,7 +53,7 @@ class QuizCreator extends Component {
     this.setState(() => ({
       isFormValid: false,
       rightAnswerId: 1,
-      formFields: createFormFields(),
+      formFields: initForm(),
       touchInputValue: "Мой тест",
     }));
     this.props.createQuiz(this.state.touchInputValue);
@@ -79,22 +75,22 @@ class QuizCreator extends Component {
     this.setState({ rightAnswerId: +event.target.value });
   };
   renderOpts() {
-    return this.state.formFields.map((field, index) => {
-      return (
-        <Validation rules={required()} key={`${field.label}-${index}`}>
-          <Input
-            label={field.label}
-            value={field.value}
-            type="text"
-            onChange={this.onChangeHandler.bind(this, index)}
-          />
-        </Validation>
-      );
-    });
+    return this.state.formFields.map((field, index) => (
+      <Validation rules={field.validationRules} key={`${field.label}-${index}`}>
+        <Input
+          label={field.label}
+          value={field.value}
+          type={field.type}
+          onChange={this.onChangeHandler.bind(this, index)}
+        />
+      </Validation>
+    ));
   }
   addOption() {
     const formFields = [...this.state.formFields];
-    formFields.push(createInputField("Введите вариант ответа"));
+    formFields.push(
+      createValidationInputField("Введите вариант ответа", required())
+    );
     this.setState({
       formFields,
     });

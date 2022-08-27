@@ -1,9 +1,9 @@
 import classes from "./Input.module.scss";
 import { getRandomHash } from "../../../helpers/random";
 import { useContext } from "react";
-import { ShareContext } from "../../../Validation/Validation";
+import { ValidationContext } from "../../../Validation/Validation";
 const Input = ({ label, type, onChange, value }) => {
-  const validate = useContext(ShareContext);
+  const validate = useContext(ValidationContext);
   const inputType = type || "text";
   const cls = [classes.Input];
   const htmlFor = `${inputType}-${getRandomHash(5)}`;
