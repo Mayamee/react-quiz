@@ -15,7 +15,6 @@ export function createQuizReducer(state = initialState, action) {
     };
   }
   if (action.type === QUIZ_CREATOR_RESET) {
-    console.log("reset");
     return {
       ...state,
       quiz: [],

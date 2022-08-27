@@ -1,0 +1,12 @@
+.AppendButton {
+  font-size: 0.8rem;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid transparent;
+  padding: 0 0 5px 0;
+  margin: 0 0 10px 0;
+  cursor: pointer;
+  &:hover {
+    border-bottom: 1px solid #000;
+  }
+}

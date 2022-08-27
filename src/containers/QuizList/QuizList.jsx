@@ -40,7 +40,6 @@ class QuizList extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     quizes: state.quiz.quizes,
     isLoading: state.quiz.isLoading,

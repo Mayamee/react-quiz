@@ -1,27 +1,23 @@
 import classes from "./Input.module.scss";
 import { getRandomHash } from "../../../helpers/random";
-const Input = (props) => {
-  const inputType = props.type || "text";
+import { useContext } from "react";
+import { ValidationContext } from "../../../Validation/Validation";
+const Input = ({ label, type, onChange, value }) => {
+  const validate = useContext(ValidationContext);
+  const inputType = type || "text";
   const cls = [classes.Input];
-  const isInvalid = ({ valid, touched, shouldValidate }) => {
-    return !valid && shouldValidate && touched;
-  };
-
   const htmlFor = `${inputType}-${getRandomHash(5)}`;
-  if (isInvalid(props)) {
-    cls.push(classes.invalid);
-  }
-
   return (
     <div className={cls.join(" ")}>
-      <label htmlFor={htmlFor}>{props.label}</label>
+      <label htmlFor={htmlFor}>{label}</label>
       <input
         id={htmlFor}
         type={inputType}
-        value={props.value}
-        onChange={props.onChange}
+        value={value}
+        onChange={(event) =>
+          onChange(event.target.value, validate(event.target.value))
+        }
       />
-      {isInvalid(props) ? <span>{props.errorMessage}</span> : null}
     </div>
   );
 };

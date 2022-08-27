@@ -26,6 +26,7 @@ class Quiz extends Component {
   componentWillUnmount() {
     this.props.resetQuiz();
   }
+
   getQuiz() {
     if (this.props.isLoading) {
       return <Loader />;
