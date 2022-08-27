@@ -8,3 +8,6 @@ export const checkObjectPropertyDeepByPath = (obj, path) => {
   }
   return checkObjectPropertyDeepByPath(obj[key], rest);
 };
+
+export const validateFormFields = (formFields = []) =>
+  formFields.reduce((isValid, field) => isValid && field.isValid, true);

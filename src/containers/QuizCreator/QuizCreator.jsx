@@ -10,22 +10,20 @@ import {
   createQuiz,
 } from "../../store/actions/createQuizAction";
 import AppendButton from "../../components/UI/AppendButton/AppendButton";
-import Validation from "../../hoc/Validation/Validation";
-import { minlength } from "../../hoc/Validation/RuleCreator";
+import Validation from "../../Validation/Validation";
+import { required } from "../../Validation/RuleCreator";
+import { validateFormFields } from "../../helpers/valid";
 
-const createInputField = (label, value = "", isValid = false) => ({
+const createInputField = (label = "Пустой Label", value = "") => ({
   label,
   value,
-  isValid,
 });
 
-const createFormFields = () => ({
-  options: [
-    createInputField("Введите вопрос"),
-    createInputField("Введите вариант ответа"),
-    createInputField("Введите вариант ответа"),
-  ],
-});
+const createFormFields = () => [
+  createInputField("Введите вопрос"),
+  createInputField("Введите вариант ответа"),
+  createInputField("Введите вариант ответа"),
+];
 
 class QuizCreator extends Component {
   state = {
@@ -35,14 +33,15 @@ class QuizCreator extends Component {
     touchInputValue: "Мой тест",
   };
 
-  addQuestionHandler = (event) => {
-    const [question, ...options] = [...this.state.formFields.options];
+  addQuestionHandler = () => {
+    const [question, ...inputs] = [...this.state.formFields];
+    console.log(inputs);
     const questionItem = {
       question: question.value,
       id: this.props.quiz.length + 1,
       rightAnswerId: this.state.rightAnswerId,
-      answers: options.map((option, index) => ({
-        text: option.value,
+      answers: inputs.map((input, index) => ({
+        text: input.value,
         id: index + 1,
       })),
     };
@@ -50,6 +49,7 @@ class QuizCreator extends Component {
     this.setState({
       rightAnswerId: 1,
       formFields: createFormFields(),
+      isFormValid: false,
     });
   };
   createQuizHandler(event) {
@@ -63,17 +63,12 @@ class QuizCreator extends Component {
     this.props.createQuiz(this.state.touchInputValue);
   }
   onChangeHandler(id, value, isValid) {
-    const options = [...this.state.formFields.options];
-    const option = options[id];
-    option.value = value;
-    option.isValid = isValid;
-    const formFields = { ...this.state.formFields };
-    formFields.options[id] = option;
-
-    const isFormValid = options.reduce(
-      (isValid, option) => isValid && option.isValid,
-      true
-    );
+    const formFields = [...this.state.formFields];
+    const field = formFields[id];
+    field.value = value;
+    field.isValid = isValid;
+    formFields[id] = field;
+    const isFormValid = validateFormFields(formFields);
     this.setState({
       formFields,
       isFormValid,
@@ -84,12 +79,13 @@ class QuizCreator extends Component {
     this.setState({ rightAnswerId: +event.target.value });
   };
   renderOpts() {
-    return this.state.formFields.options.map((option, index) => {
+    return this.state.formFields.map((field, index) => {
       return (
-        <Validation rules={minlength(1)} key={`${option.label}-${index}`}>
+        <Validation rules={required()} key={`${field.label}-${index}`}>
           <Input
-            label={option.label}
-            value={option.value}
+            label={field.label}
+            value={field.value}
+            type="text"
             onChange={this.onChangeHandler.bind(this, index)}
           />
         </Validation>
@@ -97,13 +93,11 @@ class QuizCreator extends Component {
     });
   }
   addOption() {
-    const options = [...this.state.formFields.options];
-    options.push(createInputField("Введите вариант ответа"));
-    const formFields = { ...this.state.formFields };
-    formFields.options = options;
-    this.setState((prevState) => ({
+    const formFields = [...this.state.formFields];
+    formFields.push(createInputField("Введите вариант ответа"));
+    this.setState({
       formFields,
-    }));
+    });
   }
   render() {
     return (
@@ -122,13 +116,9 @@ class QuizCreator extends Component {
               }}
             />
           </h1>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
-          >
+          <form onSubmit={(e) => e.preventDefault()}>
             {this.renderOpts()}
-            {this.state.formFields.options.length < 5 && (
+            {this.state.formFields.length < 5 && (
               <AppendButton onClick={this.addOption.bind(this)}>
                 Добавить вариант ответа
               </AppendButton>
@@ -137,7 +127,7 @@ class QuizCreator extends Component {
               label="Выберите правильный ответ"
               value={this.state.rightAnswerId}
               onChange={this.selectChangeHandler}
-              options={this.state.formFields.options
+              options={this.state.formFields
                 .map((option, index) => ({
                   text: index,
                   value: index,
@@ -160,12 +150,9 @@ class QuizCreator extends Component {
             </Button>
           </form>
         </div>
-
-        {/* <div className="div">{+this.state.isFormValid}</div> */}
       </div>
     );
   }
-  //TODO delete after work ^^^
 }
 
 const mapStateToProps = (state) => {
