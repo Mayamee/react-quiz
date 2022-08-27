@@ -1,7 +1,7 @@
 import classes from "./Input.module.scss";
 import { getRandomHash } from "../../../helpers/random";
 import { useContext } from "react";
-import { ValidationContext } from "../../../Validation/Validation";
+import { ValidationContext } from "../../../validation/Validation";
 const Input = ({ label, type, onChange, value }) => {
   const validate = useContext(ValidationContext);
   const inputType = type || "text";
@@ -15,7 +15,7 @@ const Input = ({ label, type, onChange, value }) => {
         type={inputType}
         value={value}
         onChange={(event) =>
-          onChange(event.target.value, validate(event.target.value))
+          onChange(event.target.value, validate(event.target.value) || true)
         }
       />
     </div>

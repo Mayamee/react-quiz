@@ -2,11 +2,16 @@ import React, { Component } from "react";
 import classes from "./Auth.module.scss";
 import Button from "../../components/UI/Button/Button";
 import Input from "../../components/UI/Input/Input";
-import { axiosAuth } from "../../http/axiosRequests";
-import Validation from "../../Validation/Validation";
-import { email, maxLength, minLength } from "../../Validation/RuleCreator";
+import Validation from "../../validation/Validation";
+import { email, maxLength, minLength } from "../../validation/RuleCreator";
 import { validateFormFields } from "../../helpers/valid";
 import { createValidationInputField } from "../../helpers/formInputCreator";
+import { connect } from "react-redux";
+import {
+  authLogin,
+  authLogout,
+  authRegister,
+} from "../../store/actions/authorization";
 
 const initForm = () => [
   createValidationInputField("Email", email(), "email"),
@@ -22,36 +27,19 @@ class Auth extends Component {
     isFormValid: false,
     formFields: initForm(),
   };
-  async loginHandler() {
-    const authData = {
-      email: this.state.formFields[0].value,
-      password: this.state.formFields[1].value,
-    };
-    console.log(authData);
-    try {
-      this.setState({ isFormValid: false });
-      const response = await axiosAuth.post("/login", authData);
-      console.log(response);
-      this.setState({ formFields: initForm(), isFormValid: false });
-    } catch (error) {
-      console.error(error);
-      this.setState({ isFormValid: true });
-    }
+  loginHandler() {
+    this.props.auth(
+      this.state.formFields[0].value,
+      this.state.formFields[1].value,
+      true
+    );
   }
-  async registerHandler() {
-    const authData = {
-      email: this.state.formFields[0].value,
-      password: this.state.formFields[1].value,
-    };
-    try {
-      this.setState({ isFormValid: false });
-      const response = await axiosAuth.post("/registration", authData);
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      this.setState({ isFormValid: true });
-    }
+  registerHandler() {
+    this.props.auth(
+      this.state.formFields[0].value,
+      this.state.formFields[1].value,
+      false
+    );
   }
 
   onChangeHandler(id, value, isValid) {
@@ -116,4 +104,10 @@ class Auth extends Component {
   }
 }
 
-export default Auth;
+const mapDispatchToProps = (dispatch) => ({
+  login: (email, password) => dispatch(authLogin(email, password)),
+  register: (email, password) => dispatch(authRegister(email, password)),
+  logout: () => dispatch(authLogout()),
+});
+
+export default connect(null, mapDispatchToProps)(Auth);

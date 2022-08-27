@@ -4,20 +4,14 @@ import ActiveQuiz from "../../components/ActiveQuiz/ActiveQuiz";
 import FinishedQuiz from "../../components/FinishedQuiz/FinishedQuiz";
 import Nodata from "../../components/Nodata/Nodata";
 import Loader from "../../components/UI/Loader/Loader";
-import { useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import {
   fetchQuizById,
   quizAnswerClick,
   resetQuiz,
 } from "../../store/actions/quizActions";
+import { paramsAdapter } from "../../hoc/ParamsAdapter/ParamsAdapter";
 
-const withRouter = (Component) => {
-  return (props) => {
-    const params = useParams();
-    return <Component {...{ ...props, ...params }} />;
-  };
-};
 class Quiz extends Component {
   componentDidMount() {
     const id = this.props.id;
@@ -87,4 +81,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetQuiz: () => dispatch(resetQuiz()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Quiz));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(paramsAdapter(Quiz));

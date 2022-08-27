@@ -10,8 +10,8 @@ import {
   createQuiz,
 } from "../../store/actions/createQuizAction";
 import AppendButton from "../../components/UI/AppendButton/AppendButton";
-import Validation from "../../Validation/Validation";
-import { required } from "../../Validation/RuleCreator";
+import Validation from "../../validation/Validation";
+import { required } from "../../validation/RuleCreator";
 import { validateFormFields } from "../../helpers/valid";
 import { createValidationInputField } from "../../helpers/formInputCreator";
 
