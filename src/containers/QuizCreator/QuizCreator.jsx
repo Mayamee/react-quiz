@@ -93,6 +93,7 @@ class QuizCreator extends Component {
     );
     this.setState({
       formFields,
+      isFormValid: false,
     });
   }
   render() {

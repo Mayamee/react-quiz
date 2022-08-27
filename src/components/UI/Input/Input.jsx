@@ -15,7 +15,7 @@ const Input = ({ label, type, onChange, value }) => {
         type={inputType}
         value={value}
         onChange={(event) =>
-          onChange(event.target.value, validate(event.target.value) || true)
+          onChange(event.target.value, validate(event.target.value))
         }
       />
     </div>
