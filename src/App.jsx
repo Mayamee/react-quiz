@@ -5,8 +5,16 @@ import Quiz from "./containers/Quiz/Quiz";
 import QuizList from "./containers/QuizList/QuizList";
 import Auth from "./containers/Auth/Auth";
 import QuizCreator from "./containers/QuizCreator/QuizCreator";
+import { connect } from "react-redux";
+import { authCheck } from "./store/actions/authorization";
 
 class App extends React.Component {
+  componentDidMount() {
+    if (localStorage.getItem("token")) {
+      console.log("check is started");
+      this.props.checkAuth();
+    }
+  }
   render() {
     return (
       <Layout>
@@ -21,4 +29,8 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => ({
+  checkAuth: () => dispatch(authCheck()),
+});
+
+export default connect(null, mapDispatchToProps)(App);

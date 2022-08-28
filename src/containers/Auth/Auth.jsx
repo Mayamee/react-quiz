@@ -32,6 +32,10 @@ class Auth extends Component {
       this.state.formFields[0].value,
       this.state.formFields[1].value
     );
+    this.setState({
+      formFields: initForm(),
+      isFormValid: false,
+    });
   }
   registerHandler() {
     this.props.register(

@@ -5,6 +5,8 @@ import {
   AUTH_REGISTER_ERROR,
   AUTH_REGISTER_STARTED,
   AUTH_REGISTER_SUCCESS,
+  SET_AUTH,
+  SET_USER,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -25,7 +27,6 @@ export function authReducer(state = initialState, action) {
   if (action.type === AUTH_LOGIN_SUCCESS) {
     return {
       ...state,
-      isAuthentificated: true,
       user: {
         id: action.payload.id,
         email: action.payload.email,
@@ -47,12 +48,6 @@ export function authReducer(state = initialState, action) {
   if (action.type === AUTH_REGISTER_SUCCESS) {
     return {
       ...state,
-      isAuthentificated: true,
-      user: {
-        id: action.payload.id,
-        email: action.payload.email,
-        isActivated: action.payload.activated,
-      },
       accessToken: action.payload.accessToken,
       msg: "Register Success",
     };
@@ -61,6 +56,22 @@ export function authReducer(state = initialState, action) {
     return {
       ...state,
       msg: `${action.payload}`,
+    };
+  }
+  if (action.type === SET_AUTH) {
+    return {
+      ...state,
+      isAuthentificated: action.payload,
+    };
+  }
+  if (action.type === SET_USER) {
+    return {
+      ...state,
+      user: {
+        id: action.payload.id,
+        email: action.payload.email,
+        isActivated: action.payload.activated,
+      },
     };
   }
   return state;
