@@ -28,17 +28,15 @@ class Auth extends Component {
     formFields: initForm(),
   };
   loginHandler() {
-    this.props.auth(
+    this.props.login(
       this.state.formFields[0].value,
-      this.state.formFields[1].value,
-      true
+      this.state.formFields[1].value
     );
   }
   registerHandler() {
-    this.props.auth(
+    this.props.register(
       this.state.formFields[0].value,
-      this.state.formFields[1].value,
-      false
+      this.state.formFields[1].value
     );
   }
 
@@ -72,6 +70,7 @@ class Auth extends Component {
       <div className={classes.Auth}>
         <div>
           <h1>Авторизация</h1>
+          <div className="message">{this.props.msg}</div>
           <form
             className={classes.AuthForm}
             onSubmit={(e) => e.preventDefault()}
@@ -104,10 +103,14 @@ class Auth extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  msg: state.auth.msg,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   login: (email, password) => dispatch(authLogin(email, password)),
   register: (email, password) => dispatch(authRegister(email, password)),
-  logout: () => dispatch(authLogout()),
+  // logout: () => dispatch(authLogout()),
 });
 
-export default connect(null, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);

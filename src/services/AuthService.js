@@ -2,7 +2,7 @@ import { $axiosAuth } from "../http/axiosRequests";
 
 export default class AuthService {
   static login(email, password) {
-    return $axiosAuth.post("/registration", {
+    return $axiosAuth.post("/login", {
       email,
       password,
     });

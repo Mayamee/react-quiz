@@ -1,12 +1,70 @@
 import AuthService from "../../services/AuthService";
+import {
+  AUTH_LOGIN_ERROR,
+  AUTH_LOGIN_STARTED,
+  AUTH_LOGIN_SUCCESS,
+  AUTH_REGISTER_ERROR,
+  AUTH_REGISTER_STARTED,
+  AUTH_REGISTER_SUCCESS,
+} from "./actionTypes";
 
 export const authLogin = (email, password) => async (dispatch) => {
-  const res = await AuthService.login(email, password);
+  try {
+    dispatch(authLoginStarted());
+    const res = await AuthService.login(email, password);
+    const { data } = res;
+    localStorage.setItem("token", data.accessToken);
+    dispatch(authLoginSuccess(data));
+  } catch (error) {
+    if (error.code === "ERR_BAD_REQUEST") {
+      dispatch(authLoginError(error.response.data.message));
+    }
+  }
 };
 export const authRegister = (email, password) => async (dispatch) => {
-  const res = AuthService.register(email, password);
+  try {
+    dispatch(authRegisterStarted());
+    const res = await AuthService.register(email, password);
+    const { data } = res;
+    localStorage.setItem("token", data.accessToken);
+    dispatch(authRegisterSuccess(data));
+  } catch (error) {
+    if (error.code === "ERR_BAD_REQUEST") {
+      dispatch(authRegisterError(error.response.data.message));
+    }
+  }
 };
 export const authLogout = () => async (dispatch) => {
-  const res = AuthService.logout();
+  try {
+    const res = AuthService.logout();
+  } catch (error) {}
 };
 //TODO make axios auth instanses {login, passwd}
+
+export const authLoginStarted = () => ({
+  type: AUTH_LOGIN_STARTED,
+});
+
+export const authLoginSuccess = (responseData) => ({
+  type: AUTH_LOGIN_SUCCESS,
+  payload: responseData,
+});
+
+export const authLoginError = (msg) => ({
+  type: AUTH_LOGIN_ERROR,
+  payload: msg,
+});
+
+export const authRegisterStarted = () => ({
+  type: AUTH_REGISTER_STARTED,
+});
+
+export const authRegisterSuccess = (responseData) => ({
+  type: AUTH_REGISTER_SUCCESS,
+  payload: responseData,
+});
+
+export const authRegisterError = (msg) => ({
+  type: AUTH_REGISTER_ERROR,
+  payload: msg,
+});
