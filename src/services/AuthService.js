@@ -2,32 +2,18 @@ import { $axiosAuth } from "../http/axiosRequests";
 
 export default class AuthService {
   static login(email, password) {
-    return $axiosAuth.post(
-      "/login",
-      {
-        email,
-        password,
-      },
-      { withCredentials: true }
-    );
+    return $axiosAuth.post("/login", {
+      email,
+      password,
+    });
   }
   static register(email, password) {
-    return $axiosAuth.post(
-      "/registration",
-      { email, password },
-      {
-        withCredentials: true,
-      }
-    );
+    return $axiosAuth.post("/registration", { email, password });
   }
   static logout() {
     return $axiosAuth.get("/logout");
   }
   static checkAuth() {
-    return $axiosAuth.get("/refresh", {
-      withCredentials: true,
-    });
+    return $axiosAuth.get("/refresh");
   }
 }
-//TODO разобраться с COOKIES
-//TODO код не рабочий
