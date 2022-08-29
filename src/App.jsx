@@ -16,10 +16,11 @@ class App extends React.Component {
     }
   }
   render() {
+    console.log(this.props.isAuth);
     return (
       <Layout>
         <Routes>
-          <Route path="auth" element={<Auth />} />
+          {!this.props.isAuth && <Route path="auth" element={<Auth />} />}
           <Route path="quiz-creator" element={<QuizCreator />} />
           <Route path="quiz/:id" element={<Quiz />} />
           <Route path="/" element={<QuizList />} />
@@ -28,9 +29,14 @@ class App extends React.Component {
     );
   }
 }
+//TODO 404 error
 
 const mapDispatchToProps = (dispatch) => ({
   checkAuth: () => dispatch(authCheck()),
 });
 
-export default connect(null, mapDispatchToProps)(App);
+const mapStateToProps = (state) => ({
+  isAuth: state.auth.isAuthentificated,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
