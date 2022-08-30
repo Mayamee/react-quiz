@@ -79,17 +79,15 @@ export const authRegisterError = (msg) => ({
   payload: msg,
 });
 
-export const authCheck = (navigate) => async (dispatch) => {
+export const authCheck = () => async (dispatch) => {
   //TODO setLoading <==
   console.log("cheching auth");
   try {
-    console.log(navigate);
     const res = await AuthService.checkAuth();
     const { data } = res;
     localStorage.setItem("token", data.accessToken);
     dispatch(setUser(data));
     dispatch(setAuth(true));
-    // navigate("/");
   } catch (error) {
     console.log(error);
   }

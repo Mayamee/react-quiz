@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import Layout from "./hoc/Layout/Layout";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Quiz from "./containers/Quiz/Quiz";
 import QuizList from "./containers/QuizList/QuizList";
 import Auth from "./containers/Auth/Auth";
@@ -20,7 +20,7 @@ function App(props) {
   return (
     <Layout isAuth={isAuth}>
       <Routes>
-        {!isAuth && <Route path="auth" element={<Auth />} />}
+        <Route path="auth" element={isAuth ? <Navigate to="/" /> : <Auth />} />
         <Route path="quiz-creator" element={<QuizCreator />} />
         <Route path="quiz/:id" element={<Quiz />} />
         <Route path="/" element={<QuizList />} />
