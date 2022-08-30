@@ -7,6 +7,7 @@ import Auth from "./containers/Auth/Auth";
 import QuizCreator from "./containers/QuizCreator/QuizCreator";
 import { connect } from "react-redux";
 import { authCheck } from "./store/actions/authorization";
+import NotFound from "./components/NotFound/NotFound";
 
 class App extends React.Component {
   componentDidMount() {
@@ -20,10 +21,11 @@ class App extends React.Component {
     return (
       <Layout>
         <Routes>
-          {!this.props.isAuth && <Route path="auth" element={<Auth />} />}
+          <Route path="auth" element={<Auth />} />
           <Route path="quiz-creator" element={<QuizCreator />} />
           <Route path="quiz/:id" element={<Quiz />} />
           <Route path="/" element={<QuizList />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
     );
