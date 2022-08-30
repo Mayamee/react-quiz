@@ -2,27 +2,13 @@ import React, { Component } from "react";
 import classes from "./Drawer.module.scss";
 import Backdrop from "../../UI/Backdrop/Backdrop";
 import { NavLink } from "react-router-dom";
-const links = [
-  {
-    to: "/",
-    label: "Список тестов",
-  },
-  {
-    to: "auth",
-    label: "Авторизация",
-  },
-  {
-    to: "quiz-creator",
-    label: "Создать тест",
-  },
-];
+
 class Drawer extends Component {
-  state = {};
   handleClick = () => {
     this.props.onClose();
   };
   renderLinks() {
-    return links.map((link, index) => {
+    return this.props.links.map((link, index) => {
       return (
         <li key={index}>
           <NavLink

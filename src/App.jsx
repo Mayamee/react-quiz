@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect } from "react";
 import Layout from "./hoc/Layout/Layout";
 import { Route, Routes } from "react-router-dom";
 import Quiz from "./containers/Quiz/Quiz";
@@ -9,29 +9,26 @@ import { connect } from "react-redux";
 import { authCheck } from "./store/actions/authorization";
 import NotFound from "./components/NotFound/NotFound";
 
-class App extends React.Component {
-  componentDidMount() {
+function App(props) {
+  useEffect(() => {
     if (localStorage.getItem("token")) {
       console.log("check is started");
-      this.props.checkAuth();
+      checkAuth();
     }
-  }
-  render() {
-    console.log(this.props.isAuth);
-    return (
-      <Layout>
-        <Routes>
-          <Route path="auth" element={<Auth />} />
-          <Route path="quiz-creator" element={<QuizCreator />} />
-          <Route path="quiz/:id" element={<Quiz />} />
-          <Route path="/" element={<QuizList />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Layout>
-    );
-  }
+  }, []);
+  const { isAuth, checkAuth } = props;
+  return (
+    <Layout isAuth={isAuth}>
+      <Routes>
+        {!isAuth && <Route path="auth" element={<Auth />} />}
+        <Route path="quiz-creator" element={<QuizCreator />} />
+        <Route path="quiz/:id" element={<Quiz />} />
+        <Route path="/" element={<QuizList />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Layout>
+  );
 }
-//TODO 404 error
 
 const mapDispatchToProps = (dispatch) => ({
   checkAuth: () => dispatch(authCheck()),

@@ -46,7 +46,7 @@ export const authRegister = (email, password) => async (dispatch) => {
 };
 export const authLogout = () => async (dispatch) => {
   try {
-    const res = AuthService.logout();
+    await AuthService.logout();
   } catch (error) {}
 };
 //TODO make axios auth instanses {login, passwd}
@@ -79,15 +79,17 @@ export const authRegisterError = (msg) => ({
   payload: msg,
 });
 
-export const authCheck = () => async (dispatch) => {
+export const authCheck = (navigate) => async (dispatch) => {
   //TODO setLoading <==
   console.log("cheching auth");
   try {
+    console.log(navigate);
     const res = await AuthService.checkAuth();
     const { data } = res;
     localStorage.setItem("token", data.accessToken);
     dispatch(setUser(data));
     dispatch(setAuth(true));
+    // navigate("/");
   } catch (error) {
     console.log(error);
   }

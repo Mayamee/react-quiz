@@ -6,8 +6,8 @@ const NotFound = () => {
     <div className={classes.NotFound}>
       <div className={classes.block}>
         <h2>
-          Ой
-          <i className="fas fa-circle-exclamation" />
+          Ой&nbsp;
+          <i className="fas fa-exclamation-triangle" />
         </h2>
         <p>Эта страница не может быть отображена</p>
         <Link to="/">
