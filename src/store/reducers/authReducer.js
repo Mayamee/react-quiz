@@ -2,6 +2,7 @@ import {
   AUTH_LOGIN_ERROR,
   AUTH_LOGIN_STARTED,
   AUTH_LOGIN_SUCCESS,
+  AUTH_LOGOUT,
   AUTH_REGISTER_ERROR,
   AUTH_REGISTER_STARTED,
   AUTH_REGISTER_SUCCESS,
@@ -72,6 +73,14 @@ export function authReducer(state = initialState, action) {
         email: action.payload.email,
         isActivated: action.payload.activated,
       },
+    };
+  }
+  if (action.type === AUTH_LOGOUT) {
+    return {
+      isAuthentificated: false,
+      user: { ...state.user, id: null, email: null, isActivated: null },
+      accessToken: null,
+      msg: null,
     };
   }
   return state;

@@ -3,6 +3,7 @@ import {
   AUTH_LOGIN_ERROR,
   AUTH_LOGIN_STARTED,
   AUTH_LOGIN_SUCCESS,
+  AUTH_LOGOUT,
   AUTH_REGISTER_ERROR,
   AUTH_REGISTER_STARTED,
   AUTH_REGISTER_SUCCESS,
@@ -47,8 +48,16 @@ export const authRegister = (email, password) => async (dispatch) => {
 export const authLogout = () => async (dispatch) => {
   try {
     await AuthService.logout();
-  } catch (error) {}
+    localStorage.removeItem("token");
+    dispatch(authLogoutState());
+  } catch (error) {
+    console.error(error);
+  }
 };
+export const authLogoutState = () => ({
+  type: AUTH_LOGOUT,
+});
+
 //TODO make axios auth instanses {login, passwd}
 
 export const authLoginStarted = () => ({
