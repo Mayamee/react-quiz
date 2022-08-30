@@ -26,6 +26,7 @@ class QuizList extends Component {
       <div className={classes.QuizList}>
         <div>
           <h1>Список тестов</h1>
+          {this.props.isAuth && <h2>Привет: {this.props.userName}</h2>}
           {this.props.isLoading ? (
             <Loader />
           ) : this.props.quizes.length === 0 ? (
@@ -43,6 +44,8 @@ const mapStateToProps = (state) => {
   return {
     quizes: state.quiz.quizes,
     isLoading: state.quiz.isLoading,
+    userName: state.auth.user.email,
+    isAuth: state.auth.isAuthentificated,
   };
 };
 const mapDispatchToProps = (dispatch) => {

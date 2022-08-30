@@ -2,20 +2,11 @@ import React, { Component } from "react";
 import classes from "./Layout.module.scss";
 import MenuToggle from "../../components/Navigation/MenuToggle/MenuToggle";
 import Drawer from "../../components/Navigation/Drawer/Drawer";
-let links = [
-  {
-    to: "/",
-    label: "Список тестов",
-  },
-  {
-    to: "auth",
-    label: "Авторизация",
-  },
-  {
-    to: "quiz-creator",
-    label: "Создать тест",
-  },
-];
+import {
+  makeLinkToDrawer,
+  removeLinksFromDrawer,
+} from "../../helpers/makeLinksToDrawer";
+
 class Layout extends Component {
   state = {
     isMenuOpen: false,
@@ -27,8 +18,14 @@ class Layout extends Component {
     this.setState({ isMenuOpen: false });
   };
   render() {
+    let links = [
+      makeLinkToDrawer("/", "Список тестов"),
+      makeLinkToDrawer("auth", "Авторизация"),
+      makeLinkToDrawer("quiz-creator", "Создать тест"),
+    ];
     if (this.props.isAuth) {
-      links = links.filter((link, index, array) => link.to !== "auth");
+      links = removeLinksFromDrawer("auth", links);
+      links.push(makeLinkToDrawer("logout", "Выйти"));
     }
     return (
       <div className={classes.Layout}>
