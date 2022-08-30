@@ -10,7 +10,7 @@ import {
   quizAnswerClick,
   resetQuiz,
 } from "../../store/actions/quizActions";
-import { paramsAdapter } from "../../hoc/ParamsAdapter/ParamsAdapter";
+import { paramsAdapter } from "../../hoc/adapters/ParamsAdapter";
 
 class Quiz extends Component {
   componentDidMount() {
