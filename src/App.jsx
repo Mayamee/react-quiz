@@ -8,6 +8,7 @@ import QuizCreator from "./containers/QuizCreator/QuizCreator";
 import { connect } from "react-redux";
 import { authCheck } from "./store/actions/authorization";
 import NotFound from "./components/NotFound/NotFound";
+import Logout from "./components/Logout/Logout";
 
 function App(props) {
   useEffect(() => {
@@ -24,6 +25,7 @@ function App(props) {
         <Route path="quiz-creator" element={<QuizCreator />} />
         <Route path="quiz/:id" element={<Quiz />} />
         <Route path="/" element={<QuizList />} />
+        <Route path="logout" element={<Logout />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Layout>
