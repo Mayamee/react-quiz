@@ -1,10 +1,10 @@
 import NavBar from "../../components/NavBar/NavBar";
 import classes from "./Layout.module.scss";
 
-const Layout = () => {
+const Layout = ({ isAuth }) => {
   return (
     <div className={classes.Layout}>
-      <NavBar isAuth={this.props.isAuth} />
+      <NavBar isAuth={isAuth} />
       <main>{this.props.children}</main>
     </div>
   );
