@@ -1,15 +1,17 @@
 import axios from "axios";
-const API_URL = "http://127.0.0.1:8080/api/";
+const API_URL = "http://127.0.0.1:8080/api";
 
-export const $api = axios.create({
+const $api = axios.create({
   baseURL: API_URL,
   withCredentials: true,
 });
 
 $api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (!token) return config;
   config.headers = {
     ...config.headers,
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
+    Authorization: `Bearer ${token}`,
   };
   return config;
 });
@@ -29,7 +31,7 @@ $api.interceptors.response.use(
       originalRequest._retry = true;
       try {
         // если не авторизован, то пробуем получить новый accessToken
-        const response = await axios.get(`${API_URL}/refresh`, {
+        const response = await axios.get(`${API_URL}/auth/refresh`, {
           withCredentials: true,
         });
         // записываем новый accessToken в localStorage
@@ -45,3 +47,4 @@ $api.interceptors.response.use(
     throw error;
   }
 );
+export { $api };
