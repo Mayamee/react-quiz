@@ -1,19 +1,19 @@
-import { $axiosAuth } from "../http/axiosRequests";
+import { $api } from "../http/axiosRequests";
 
 export default class AuthService {
   static login(email, password) {
-    return $axiosAuth.post("/login", {
+    return $api.post("auth/login", {
       email,
       password,
     });
   }
   static register(email, password) {
-    return $axiosAuth.post("/registration", { email, password });
+    return $api.post("auth/registration", { email, password });
   }
   static logout() {
-    return $axiosAuth.get("/logout");
+    return $api.get("auth/logout");
   }
   static checkAuth() {
-    return $axiosAuth.get("/refresh");
+    return $api.get("auth/refresh");
   }
 }

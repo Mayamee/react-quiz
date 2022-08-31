@@ -10,15 +10,13 @@ import {
   QUIZ_NEXT_QUESTION,
   QUIZ_RESET,
 } from "./actionTypes";
-import { axiosQuiz } from "../../http/axiosRequests";
+import { QuizService } from "../../services/QuizService";
 
 export const fetchQuizes = () => async (dispatch) => {
   dispatch(fetchQuizesStart());
-  const reqOptions = {
-    method: "GET",
-  };
+
   try {
-    const response = await axiosQuiz.request(reqOptions);
+    const response = await QuizService.getQuizes();
     if (response.data.data.length === 0) {
       return dispatch(fetchQuizesNotFound());
     }
@@ -60,12 +58,9 @@ export const fetchQuizesNotFound = () => {
 export const fetchQuizById = (id) => async (dispatch) => {
   dispatch(fetchQuizesStart());
   if (!id) return dispatch(fetchQuizEnd());
-  const reqOptions = {
-    url: `${id}`,
-    method: "GET",
-  };
+
   try {
-    const response = await axiosQuiz.request(reqOptions);
+    const response = await QuizService.getQuizById(id);
     if (response.data.data.length === 0) {
       console.info("No data");
       return dispatch(fetchQuizesNotFound());
