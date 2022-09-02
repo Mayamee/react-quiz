@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import { connect } from "react-redux";
 import classes from "./QuizCreator.module.scss";
 import Button from "../../components/UI/Button/Button";
@@ -14,6 +13,7 @@ import Validation from "../../validation/Validation";
 import { required } from "../../validation/RuleCreator";
 import { validateFormFields } from "../../helpers/valid";
 import { createValidationInputField } from "../../helpers/formInputCreator";
+import { useState } from "react";
 
 const initForm = () => [
   createValidationInputField("Введите вопрос", required()),
@@ -21,135 +21,129 @@ const initForm = () => [
   createValidationInputField("Введите вариант ответа", required()),
 ];
 
-class QuizCreator extends Component {
-  state = {
-    isFormValid: false,
-    rightAnswerId: 1,
-    formFields: initForm(),
-    touchInputValue: "Мой тест",
-  };
+const QuizCreator = ({ quiz, addQuestionToQuiz, createQuiz }) => {
+  const [isFormValid, setFormValid] = useState(false);
+  const [rightAnswerId, setRightAnswerId] = useState(1);
+  const [formFields, setFormFields] = useState(initForm());
+  const [touchInputValue, setTouchInputValue] = useState("Мой тест");
 
-  addQuestionHandler = () => {
-    const [question, ...inputs] = [...this.state.formFields];
+  const addQuestionHandler = () => {
+    const [question, ...inputs] = [...formFields];
     const questionItem = {
       question: question.value,
-      id: this.props.quiz.length + 1,
-      rightAnswerId: this.state.rightAnswerId,
+      id: quiz.length + 1,
+      rightAnswerId: rightAnswerId,
       answers: inputs.map((input, index) => ({
         text: input.value,
         id: index + 1,
       })),
     };
-    this.props.addQuestionToQuiz(questionItem);
-    this.setState({
-      rightAnswerId: 1,
-      formFields: initForm(),
-      isFormValid: false,
-    });
+    addQuestionToQuiz(questionItem);
+
+    setRightAnswerId(1);
+    setFormFields(initForm());
+    setFormValid(false);
   };
-  createQuizHandler(event) {
+
+  const createQuizHandler = (event) => {
     event.preventDefault();
-    this.setState(() => ({
-      isFormValid: false,
-      rightAnswerId: 1,
-      formFields: initForm(),
-      touchInputValue: "Мой тест",
-    }));
-    this.props.createQuiz(this.state.touchInputValue);
-  }
-  onChangeHandler(id, value, isValid) {
-    const formFields = [...this.state.formFields];
-    const field = formFields[id];
+
+    setRightAnswerId(1);
+    setFormFields(initForm());
+    setFormValid(false);
+    setTouchInputValue("Мой тест");
+
+    createQuiz(touchInputValue);
+  };
+  const onChangeHandler = (id, value, isValid) => {
+    const formFieldsCopy = [...formFields];
+    const field = formFieldsCopy[id];
     field.value = value;
     field.isValid = isValid;
-    formFields[id] = field;
-    const isFormValid = validateFormFields(formFields);
-    this.setState({
-      formFields,
-      isFormValid,
-    });
-  }
+    formFieldsCopy[id] = field;
+    const isFormValidCopy = validateFormFields(formFieldsCopy);
 
-  selectChangeHandler = (event) => {
-    this.setState({ rightAnswerId: +event.target.value });
+    setFormFields(formFieldsCopy);
+    setFormValid(isFormValidCopy);
   };
-  renderOpts() {
-    return this.state.formFields.map((field, index) => (
+
+  const selectChangeHandler = (event) => {
+    setRightAnswerId(+event.target.value);
+  };
+  const renderOpts = () => {
+    return formFields.map((field, index) => (
       <Validation rules={field.validationRules} key={`${field.label}-${index}`}>
         <Input
           label={field.label}
           value={field.value}
           type={field.type}
-          onChange={this.onChangeHandler.bind(this, index)}
+          onChange={onChangeHandler.bind(this, index)}
         />
       </Validation>
     ));
-  }
-  addOption() {
-    const formFields = [...this.state.formFields];
-    formFields.push(
+  };
+  const addOption = () => {
+    const formFieldsCopy = [...formFields];
+    formFieldsCopy.push(
       createValidationInputField("Введите вариант ответа", required())
     );
-    this.setState({
-      formFields,
-      isFormValid: false,
-    });
-  }
-  render() {
-    return (
-      <div className={classes.QuizCreator}>
-        <div>
-          <h1>
-            <TouchInput
-              touchInputValue={this.state.touchInputValue}
-              touchInputonChangeHandler={(target, value) => {
-                if (value.length > 50) {
-                  return;
-                }
-                this.setState({ touchInputValue: value });
-                target.style.height = "inherit";
-                target.style.height = target.scrollHeight + "px";
-              }}
-            />
-          </h1>
-          <form onSubmit={(e) => e.preventDefault()}>
-            {this.renderOpts()}
-            {this.state.formFields.length < 5 && (
-              <AppendButton onClick={this.addOption.bind(this)}>
-                Добавить вариант ответа
-              </AppendButton>
-            )}
-            <Select
-              label="Выберите правильный ответ"
-              value={this.state.rightAnswerId}
-              onChange={this.selectChangeHandler}
-              options={this.state.formFields
-                .map((option, index) => ({
-                  text: index,
-                  value: index,
-                }))
-                .splice(1)}
-            />
-            <Button
-              btnType="primary"
-              onClick={this.addQuestionHandler}
-              disabled={!this.state.isFormValid}
-            >
-              Добавить вопрос
-            </Button>
-            <Button
-              btnType="success"
-              onClick={this.createQuizHandler.bind(this)}
-              disabled={this.props.quiz.length === 0}
-            >
-              Создать тест
-            </Button>
-          </form>
-        </div>
+    setFormFields(formFieldsCopy);
+    setFormValid(false);
+  };
+
+  return (
+    <div className={classes.QuizCreator}>
+      <div>
+        <h1>
+          <TouchInput
+            touchInputValue={touchInputValue}
+            touchInputonChangeHandler={(target, value) => {
+              if (value.length > 50) {
+                return;
+              }
+              setTouchInputValue(value);
+              target.style.height = "inherit";
+              target.style.height = target.scrollHeight + "px";
+            }}
+          />
+        </h1>
+        <form onSubmit={(e) => e.preventDefault()}>
+          {renderOpts()}
+          {formFields.length < 5 && (
+            <AppendButton onClick={addOption.bind(this)}>
+              Добавить вариант ответа
+            </AppendButton>
+          )}
+          <Select
+            label="Выберите правильный ответ"
+            value={rightAnswerId}
+            onChange={selectChangeHandler}
+            options={formFields
+              .map((option, index) => ({
+                text: index,
+                value: index,
+              }))
+              .splice(1)}
+          />
+          <Button
+            btnType="primary"
+            onClick={addQuestionHandler}
+            disabled={!isFormValid}
+          >
+            Добавить вопрос
+          </Button>
+          <Button
+            btnType="success"
+            onClick={createQuizHandler.bind(this)}
+            disabled={quiz.length === 0}
+          >
+            Создать тест
+          </Button>
+        </form>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 const mapStateToProps = (state) => {
   return {
