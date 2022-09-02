@@ -67,8 +67,8 @@ const QuizCreator = ({ quiz, addQuestionToQuiz, createQuiz }) => {
     setFormValid(isFormValidCopy);
   };
 
-  const selectChangeHandler = (event) => {
-    setRightAnswerId(+event.target.value);
+  const selectChangeHandler = ({ target: { value } }) => {
+    setRightAnswerId(+value);
   };
   const renderOpts = () => {
     return formFields.map((field, index) => (
