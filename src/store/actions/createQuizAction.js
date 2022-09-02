@@ -1,6 +1,7 @@
 import { checkObjectPropertyDeepByPath } from "../../helpers/valid";
 import { QuizService } from "../../services/QuizService";
 import { ADD_QUESTION_TO_QUIZ, QUIZ_CREATOR_RESET } from "./actionTypes";
+import { authLogout } from "./authorization";
 
 export const addQuestionToQuiz = (question) => ({
   type: ADD_QUESTION_TO_QUIZ,
@@ -15,6 +16,10 @@ export const createQuiz = (touchInputValue) => async (dispatch, getState) => {
   try {
     await QuizService.createQuiz(payload);
   } catch (error) {
+    console.log(error);
+    if (error.isRefreshFailed) {
+      dispatch(authLogout());
+    }
     if (checkObjectPropertyDeepByPath(error, ["response", "data", "status"])) {
       console.log(error.response.data.status);
     } else {

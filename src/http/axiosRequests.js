@@ -1,6 +1,5 @@
 import axios from "axios";
 const API_URL = "http://127.0.0.1:8080/api";
-
 const $api = axios.create({
   baseURL: API_URL,
   withCredentials: true,
@@ -22,6 +21,7 @@ $api.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
+    let isRefreshFailed = false;
     if (
       error.response.status === 401 &&
       originalRequest &&
@@ -42,8 +42,10 @@ $api.interceptors.response.use(
       } catch (error) {
         // если не удалось получить новый accessToken, то перенаправляем на страницу авторизации
         console.log("Not authorized");
+        isRefreshFailed = true;
       }
     }
+    error.isRefreshFailed = isRefreshFailed;
     throw error;
   }
 );

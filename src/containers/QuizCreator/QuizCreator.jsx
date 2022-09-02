@@ -31,7 +31,6 @@ class QuizCreator extends Component {
 
   addQuestionHandler = () => {
     const [question, ...inputs] = [...this.state.formFields];
-    console.log(inputs);
     const questionItem = {
       question: question.value,
       id: this.props.quiz.length + 1,

@@ -98,6 +98,9 @@ export const authCheck = () => async (dispatch) => {
     dispatch(setUser(data));
     dispatch(setAuth(true));
   } catch (error) {
+    if (error.isRefreshFailed) {
+      dispatch(authLogout());
+    }
     console.log(error);
   }
   // finally {
