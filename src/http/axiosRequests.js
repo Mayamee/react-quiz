@@ -42,7 +42,8 @@ $api.interceptors.response.use(
       } catch (error) {
         // если не удалось получить новый accessToken, то перенаправляем на страницу авторизации
         console.log("Not authorized");
-        isRefreshFailed = true;
+        console.log(error);
+        if (error.code !== "ERR_NETWORK") isRefreshFailed = true;
       }
     }
     error.isRefreshFailed = isRefreshFailed;

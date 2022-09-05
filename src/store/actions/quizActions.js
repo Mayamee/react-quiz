@@ -12,9 +12,19 @@ import {
 } from "./actionTypes";
 import { QuizService } from "../../services/QuizService";
 
-export const fetchQuizes = () => async (dispatch) => {
-  dispatch(fetchQuizesStart());
+export const fetchQuizes = () => async (dispatch, getState) => {
+  const state = getState();
+  const { isAuthentificated } = state.auth;
 
+  if (!isAuthentificated) {
+    const cache = state.cache;
+    //TODO cache
+    // console.log(cache.cached);
+    // dispatch(fetchQuizesSuccess(cache.cached));
+    return;
+  }
+
+  dispatch(fetchQuizesStart());
   try {
     const response = await QuizService.getQuizes();
     if (response.data.data.length === 0) {
@@ -24,6 +34,7 @@ export const fetchQuizes = () => async (dispatch) => {
       id: question.id,
       name: question.title,
     }));
+    console.log({ quizes });
     dispatch(fetchQuizesSuccess(quizes));
   } catch (error) {
     dispatch(fetchQuizesError(error));

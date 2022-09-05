@@ -18,6 +18,8 @@ class QuizList extends Component {
   }
 
   componentDidMount() {
+    // if(!isAuth) return
+    //TODO переделывай бек надо прислать всю пачку сразу а не отдельные поля
     this.props.fetchQuizes();
   }
 
