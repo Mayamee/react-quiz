@@ -3,14 +3,19 @@ import classes from "./Auth.module.scss";
 import Button from "../../components/UI/Button/Button";
 import Input from "../../components/UI/Input/Input";
 import Validation from "../../validation/Validation";
-import { email, maxLength, minLength } from "../../validation/RuleCreator";
+import {
+  email,
+  maxLength,
+  minLength,
+  onlyEnglishEmail,
+} from "../../validation/RuleCreator";
 import { validateFormFields } from "../../helpers/valid";
 import { createValidationInputField } from "../../helpers/formInputCreator";
 import { connect } from "react-redux";
 import { authLogin, authRegister } from "../../store/actions/authorization";
 
 const initForm = () => [
-  createValidationInputField("Email", email(), "email"),
+  createValidationInputField("Email", [email(), onlyEnglishEmail()], "email"),
   createValidationInputField(
     "Password",
     [minLength(6), maxLength(32)],
