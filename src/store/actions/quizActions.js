@@ -59,9 +59,12 @@ export const fetchQuizesNotFound = () => {
 export const getQuizFromCacheById = (id) => (dispatch, getState) => {
   const { cached } = getState().cache;
   dispatch(fetchQuizesStart());
-  console.log(cached.find((quiz) => quiz.id === id));
-  dispatch(fetchQuizEnd());
-  //TODO do it
+  const quiz = cached.find((quiz) => quiz.id === id);
+  if (quiz) {
+    dispatch(fetchQuizSuccess(quiz));
+  } else {
+    dispatch(fetchQuizEnd());
+  }
 };
 
 export const fetchQuizById = (id) => async (dispatch) => {
@@ -103,14 +106,7 @@ export const quizAnswerClick = (answerId) => {
         return;
       }
     }
-    const question = state.quiz?.body[state.activeQuestion];
-    const results = state.results;
-    if (question.rightAnswerId === answerId) {
-      if (!results[question.id]) {
-        results[question.id] = "success";
-      }
-      dispatch(quizSetState({ [answerId]: "success" }, results));
-
+    const checkNextQuestion = () => {
       const timeout = setTimeout(() => {
         if (isQuizFinished(state)) {
           dispatch(finishQuiz());
@@ -119,9 +115,20 @@ export const quizAnswerClick = (answerId) => {
         }
         clearTimeout(timeout);
       }, 1000);
+    };
+    const question = state.quiz?.body[state.activeQuestion];
+    const results = state.results;
+    if (question.rightAnswerId === answerId) {
+      if (!results[question.id]) {
+        results[question.id] = "success";
+      }
+      dispatch(quizSetState({ [answerId]: "success" }, results));
+
+      checkNextQuestion();
     } else {
       results[question.id] = "error";
       dispatch(quizSetState({ [answerId]: "error" }, results));
+      checkNextQuestion();
     }
   };
 };

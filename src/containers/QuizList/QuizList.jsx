@@ -36,6 +36,7 @@ class QuizList extends Component {
         <div>
           <h1>Список тестов</h1>
           {this.props.isAuth && <h2>Привет: {this.props.userName}</h2>}
+          {!this.props.isAuth && <h2>Привет: Guest</h2>}
           {this.props.isLoading ? (
             <Loader />
           ) : this.props.quizes.length === 0 &&
