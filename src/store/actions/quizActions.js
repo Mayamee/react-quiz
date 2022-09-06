@@ -9,21 +9,11 @@ import {
   QUIZ_FINISHED,
   QUIZ_NEXT_QUESTION,
   QUIZ_RESET,
+  CLEAR_QUIZES,
 } from "./actionTypes";
 import { QuizService } from "../../services/QuizService";
 
 export const fetchQuizes = () => async (dispatch, getState) => {
-  const state = getState();
-  const { isAuthentificated } = state.auth;
-
-  if (!isAuthentificated) {
-    const cache = state.cache;
-    //TODO cache
-    // console.log(cache.cached);
-    // dispatch(fetchQuizesSuccess(cache.cached));
-    return;
-  }
-
   dispatch(fetchQuizesStart());
   try {
     const response = await QuizService.getQuizes();
@@ -32,7 +22,7 @@ export const fetchQuizes = () => async (dispatch, getState) => {
     }
     const quizes = response.data.data.map((question) => ({
       id: question.id,
-      name: question.title,
+      title: question.title,
     }));
     console.log({ quizes });
     dispatch(fetchQuizesSuccess(quizes));
@@ -148,4 +138,8 @@ export const quizNextQuestion = (activeQuestion) => ({
 
 export const resetQuiz = () => ({
   type: QUIZ_RESET,
+});
+
+export const clearQuizes = () => ({
+  type: CLEAR_QUIZES,
 });

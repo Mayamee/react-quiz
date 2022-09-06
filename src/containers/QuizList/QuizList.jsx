@@ -4,25 +4,32 @@ import classes from "./QuizList.module.scss";
 import { NavLink } from "react-router-dom";
 import Loader from "../../components/UI/Loader/Loader";
 import Nodata from "../../components/Nodata/Nodata";
-import { fetchQuizes } from "../../store/actions/quizActions";
+import {
+  clearQuizes,
+  fetchQuizEnd,
+  fetchQuizes,
+} from "../../store/actions/quizActions";
 
 class QuizList extends Component {
   renderQuizesList() {
-    return this.props.quizes.map((quiz) => {
-      return (
-        <li key={quiz.id}>
-          <NavLink to={`/quiz/${quiz.id}`}>{quiz.name}</NavLink>
-        </li>
-      );
-    });
+    const quizes = this.props.isAuth ? this.props.quizes : this.props.cached;
+    return quizes.map((quiz) => (
+      <li key={quiz.id}>
+        <NavLink to={`/quiz/${quiz.id}`}>{quiz.title}</NavLink>
+      </li>
+    ));
   }
 
   componentDidMount() {
-    // if(!isAuth) return
-    //TODO переделывай бек надо прислать всю пачку сразу а не отдельные поля
-    this.props.fetchQuizes();
+    if (this.props.isAuth) {
+      this.props.fetchQuizes();
+    } else {
+      this.props.stopLoad();
+    }
   }
-
+  componentWillUnmount() {
+    this.props.clearQuizes();
+  }
   render() {
     return (
       <div className={classes.QuizList}>
@@ -31,7 +38,8 @@ class QuizList extends Component {
           {this.props.isAuth && <h2>Привет: {this.props.userName}</h2>}
           {this.props.isLoading ? (
             <Loader />
-          ) : this.props.quizes.length === 0 ? (
+          ) : this.props.quizes.length === 0 &&
+            this.props.cached.length === 0 ? (
             <Nodata iconColor="#fff" isShowButton={false} />
           ) : (
             <ul>{this.renderQuizesList()}</ul>
@@ -45,6 +53,7 @@ class QuizList extends Component {
 const mapStateToProps = (state) => {
   return {
     quizes: state.quiz.quizes,
+    cached: state.cache.cached,
     isLoading: state.quiz.isLoading,
     userName: state.auth.user.email,
     isAuth: state.auth.isAuthentificated,
@@ -53,6 +62,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchQuizes: () => dispatch(fetchQuizes()),
+    stopLoad: () => dispatch(fetchQuizEnd()),
+    clearQuizes: () => dispatch(clearQuizes()),
   };
 };
 

@@ -3,7 +3,7 @@ import { QuizService } from "../../services/QuizService";
 import { ADD_QUESTION_TO_QUIZ, QUIZ_CREATOR_RESET } from "./actionTypes";
 import { authLogout } from "./authorization";
 import { cacheQuiz } from "./cacheQuizActions";
-
+import { getRandomHash } from "../../helpers/random";
 export const addQuestionToQuiz = (question) => ({
   type: ADD_QUESTION_TO_QUIZ,
   payload: question,
@@ -17,6 +17,7 @@ export const createQuiz = (touchInputValue) => async (dispatch, getState) => {
     body: state.quiz,
   };
   if (!isAuthentificated) {
+    payload.id = getRandomHash(20);
     dispatch(cacheQuiz(payload));
     dispatch(resetQuiz());
     return;

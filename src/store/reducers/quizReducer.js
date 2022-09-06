@@ -9,6 +9,7 @@ import {
   QUIZ_FINISHED,
   QUIZ_NEXT_QUESTION,
   QUIZ_RESET,
+  CLEAR_QUIZES,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -53,6 +54,12 @@ export function quizReducer(state = initialState, action) {
     return {
       ...state,
       isLoading: false,
+    };
+  }
+  if (action.type === CLEAR_QUIZES) {
+    return {
+      ...state,
+      quizes: [],
     };
   }
   if (action.type === FETCH_QUIZ_SUCCESS) {

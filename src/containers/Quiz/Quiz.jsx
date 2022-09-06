@@ -34,10 +34,7 @@ class Quiz extends Component {
         />
       );
     }
-    if (!this.props.quiz) {
-      return <Nodata />;
-    }
-    if (this.props.quiz.length === 0) {
+    if (this.props.quiz.length === 0 && !this.props.quiz) {
       return <Nodata />;
     }
 
