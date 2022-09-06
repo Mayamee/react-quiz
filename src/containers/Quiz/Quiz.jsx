@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 import classes from "./Quiz.module.scss";
 import ActiveQuiz from "../../components/ActiveQuiz/ActiveQuiz";
 import FinishedQuiz from "../../components/FinishedQuiz/FinishedQuiz";
@@ -11,78 +12,77 @@ import {
   quizAnswerClick,
   resetQuiz,
 } from "../../store/actions/quizActions";
-import { paramsAdapter } from "../../hoc/adapters/ParamsAdapter";
 
-class Quiz extends Component {
-  componentDidMount() {
-    const id = this.props.id;
-    if (this.props.isAuth) {
-      this.props.fetchQuizById(id);
+const Quiz = ({
+  isAuth,
+  results,
+  isQuizFinished,
+  activeQuestion,
+  answerState,
+  quiz,
+  title,
+  isLoading,
+  fetchQuizById,
+  getQuizFromCacheById,
+  quizAnswerClick,
+  resetQuiz,
+}) => {
+  const params = useParams();
+  useEffect(() => {
+    const { id } = params;
+    if (isAuth) {
+      fetchQuizById(id);
     } else {
-      this.props.getQuizFromCacheById(id);
+      getQuizFromCacheById(id);
     }
-  }
-  componentWillUnmount() {
-    this.props.resetQuiz();
-  }
+    return resetQuiz;
+  }, []);
 
-  getQuiz() {
-    if (this.props.isLoading) {
+  const getQuiz = () => {
+    if (isLoading) {
       return <Loader />;
     }
-    if (this.props.isQuizFinished) {
-      return (
-        <FinishedQuiz
-          results={this.props.results}
-          quiz={this.props.quiz}
-          onRetry={this.props.resetQuiz}
-        />
-      );
+    if (isQuizFinished) {
+      return <FinishedQuiz results={results} quiz={quiz} onRetry={resetQuiz} />;
     }
     //TODO quiz
-    if (!this.props.quiz) {
+    if (!quiz) {
       return <Nodata />;
     }
-    if (this.props.quiz.length === 0) {
+    if (quiz.length === 0) {
       return <Nodata />;
     }
 
     return (
       <ActiveQuiz
-        answers={this.props.quiz[this.props.activeQuestion].answers}
-        question={this.props.quiz[this.props.activeQuestion].question}
-        onAnswerClick={this.props.quizAnswerClick}
-        quizLength={this.props.quiz.length}
-        answerNumber={this.props.activeQuestion + 1}
-        state={this.props.answerState}
+        answers={quiz[activeQuestion].answers}
+        question={quiz[activeQuestion].question}
+        onAnswerClick={quizAnswerClick}
+        quizLength={quiz.length}
+        answerNumber={activeQuestion + 1}
+        state={answerState}
       />
     );
-  }
-  render() {
-    return (
-      <div className={classes.Quiz}>
-        <div className={classes.QuizWrapper}>
-          <h1>{this.props.title}</h1>
-          {this.getQuiz()}
-        </div>
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    results: state.quiz.results,
-    isQuizFinished: state.quiz.isQuizFinished,
-    activeQuestion: state.quiz.activeQuestion,
-    answerState: state.quiz.answerState,
-    quiz: state.quiz.quiz?.body,
-    title: state.quiz.quiz?.title,
-    isLoading: state.quiz.isLoading,
-    // cached: state.cache.cached,
-    isAuth: state.auth.isAuthentificated,
   };
+  return (
+    <div className={classes.Quiz}>
+      <div className={classes.QuizWrapper}>
+        <h1>{title}</h1>
+        {getQuiz()}
+      </div>
+    </div>
+  );
 };
+const mapStateToProps = (state) => ({
+  results: state.quiz.results,
+  isQuizFinished: state.quiz.isQuizFinished,
+  activeQuestion: state.quiz.activeQuestion,
+  answerState: state.quiz.answerState,
+  quiz: state.quiz.quiz?.body,
+  title: state.quiz.quiz?.title,
+  isLoading: state.quiz.isLoading,
+  isAuth: state.auth.isAuthentificated,
+});
 const mapDispatchToProps = (dispatch) => ({
   fetchQuizById: (id) => dispatch(fetchQuizById(id)),
   getQuizFromCacheById: (id) => dispatch(getQuizFromCacheById(id)),
@@ -90,7 +90,4 @@ const mapDispatchToProps = (dispatch) => ({
   resetQuiz: () => dispatch(resetQuiz()),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(paramsAdapter(Quiz));
+export default connect(mapStateToProps, mapDispatchToProps)(Quiz);

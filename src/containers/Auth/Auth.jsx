@@ -18,7 +18,7 @@ const initForm = () => [
   ),
 ];
 
-const Auth = ({ login, register, isAuth, msg }) => {
+const Auth = ({ login, register, msg }) => {
   const [isFormValid, setFormValid] = useState(false);
   const [formFields, setFormFields] = useState(initForm());
 
@@ -90,7 +90,6 @@ const Auth = ({ login, register, isAuth, msg }) => {
 
 const mapStateToProps = (state) => ({
   msg: state.auth.msg,
-  isAuth: state.auth.isAuthentificated,
 });
 
 const mapDispatchToProps = (dispatch) => ({
