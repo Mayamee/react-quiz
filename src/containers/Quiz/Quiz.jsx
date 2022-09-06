@@ -7,6 +7,7 @@ import Loader from "../../components/UI/Loader/Loader";
 import { connect } from "react-redux";
 import {
   fetchQuizById,
+  getQuizFromCacheById,
   quizAnswerClick,
   resetQuiz,
 } from "../../store/actions/quizActions";
@@ -15,7 +16,11 @@ import { paramsAdapter } from "../../hoc/adapters/ParamsAdapter";
 class Quiz extends Component {
   componentDidMount() {
     const id = this.props.id;
-    this.props.fetchQuizById(id);
+    if (this.props.isAuth) {
+      this.props.fetchQuizById(id);
+    } else {
+      this.props.getQuizFromCacheById(id);
+    }
   }
   componentWillUnmount() {
     this.props.resetQuiz();
@@ -34,7 +39,11 @@ class Quiz extends Component {
         />
       );
     }
-    if (this.props.quiz.length === 0 && !this.props.quiz) {
+    //TODO quiz
+    if (!this.props.quiz) {
+      return <Nodata />;
+    }
+    if (this.props.quiz.length === 0) {
       return <Nodata />;
     }
 
@@ -70,10 +79,13 @@ const mapStateToProps = (state) => {
     quiz: state.quiz.quiz?.body,
     title: state.quiz.quiz?.title,
     isLoading: state.quiz.isLoading,
+    // cached: state.cache.cached,
+    isAuth: state.auth.isAuthentificated,
   };
 };
 const mapDispatchToProps = (dispatch) => ({
   fetchQuizById: (id) => dispatch(fetchQuizById(id)),
+  getQuizFromCacheById: (id) => dispatch(getQuizFromCacheById(id)),
   quizAnswerClick: (answerId) => dispatch(quizAnswerClick(answerId)),
   resetQuiz: () => dispatch(resetQuiz()),
 });

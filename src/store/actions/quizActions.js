@@ -56,10 +56,17 @@ export const fetchQuizesNotFound = () => {
   };
 };
 
+export const getQuizFromCacheById = (id) => (dispatch, getState) => {
+  const { cached } = getState().cache;
+  dispatch(fetchQuizesStart());
+  console.log(cached.find((quiz) => quiz.id === id));
+  dispatch(fetchQuizEnd());
+  //TODO do it
+};
+
 export const fetchQuizById = (id) => async (dispatch) => {
   dispatch(fetchQuizesStart());
   if (!id) return dispatch(fetchQuizEnd());
-
   try {
     const response = await QuizService.getQuizById(id);
     if (response.data.data.length === 0) {
