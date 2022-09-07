@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import { authCheck } from "./store/actions/authorization";
 import NotFound from "./components/NotFound/NotFound";
 import Logout from "./components/Logout/Logout";
+import MyQuizList from "./containers/MyQuizList/MyQuizList";
 
 function App(props) {
   useEffect(() => {
@@ -16,12 +17,18 @@ function App(props) {
       console.log("check is started");
       checkAuth();
     }
+    //TODO Make hook
   }, []);
   const { isAuth, checkAuth } = props;
   return (
     <Layout isAuth={isAuth}>
       <Routes>
         <Route path="auth" element={isAuth ? <Navigate to="/" /> : <Auth />} />
+        <Route
+          path="my"
+          // element={!isAuth ? <Navigate to="auth" /> : <MyQuizList />}
+          element={<MyQuizList />}
+        />
         <Route path="quiz-creator" element={<QuizCreator />} />
         <Route path="quiz/:id" element={<Quiz />} />
         <Route path="/" element={<QuizList />} />

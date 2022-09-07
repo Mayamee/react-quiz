@@ -14,20 +14,29 @@ import {
 import { QuizService } from "../../services/QuizService";
 import QuizDTO from "../../dtos/QuizDTO";
 
-export const fetchQuizes = () => async (dispatch, getState) => {
-  dispatch(fetchQuizesStart());
-  try {
-    const response = await QuizService.getQuizes();
-    if (response.data.data.length === 0) {
-      return dispatch(fetchQuizesNotFound());
+export const fetchQuizes =
+  ({ self } = { self: false }) =>
+  async (dispatch, getState) => {
+    dispatch(fetchQuizesStart());
+    try {
+      let response;
+      console.log(self);
+      response = self
+        ? await QuizService.getMyQuizes()
+        : await QuizService.getQuizes();
+
+      if (response.data.data.length === 0) {
+        return dispatch(fetchQuizesNotFound());
+      }
+      const quizes = response.data.data.map(
+        (question) => new QuizDTO(question)
+      );
+      console.log({ quizes });
+      dispatch(fetchQuizesSuccess(quizes));
+    } catch (error) {
+      dispatch(fetchQuizesError(error));
     }
-    const quizes = response.data.data.map((question) => new QuizDTO(question));
-    console.log({ quizes });
-    dispatch(fetchQuizesSuccess(quizes));
-  } catch (error) {
-    dispatch(fetchQuizesError(error));
-  }
-};
+  };
 
 export const fetchQuizesStart = () => {
   return {

@@ -56,6 +56,7 @@ const QuizList = ({
       </div>
     </div>
   );
+  //TODO Refactor this ^^^
 };
 
 const mapStateToProps = (state) => {

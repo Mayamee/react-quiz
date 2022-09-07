@@ -10,4 +10,7 @@ export class QuizService {
   static createQuiz(payload) {
     return $api.post("quiz", payload);
   }
+  static getMyQuizes() {
+    return $api.get("quiz/my");
+  }
 }

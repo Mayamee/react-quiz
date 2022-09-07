@@ -16,6 +16,7 @@ const NavBar = ({ isAuth }) => {
   ];
   if (isAuth) {
     links = removeLinksFromDrawer("auth", links);
+    links.unshift(makeLinkToDrawer("my", "Мои тесты"));
     links.push(makeLinkToDrawer("logout", "Выйти"));
   }
   return (
