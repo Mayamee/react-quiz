@@ -12,6 +12,7 @@ import {
   CLEAR_QUIZES,
 } from "./actionTypes";
 import { QuizService } from "../../services/QuizService";
+import QuizDTO from "../../dtos/QuizDTO";
 
 export const fetchQuizes = () => async (dispatch, getState) => {
   dispatch(fetchQuizesStart());
@@ -20,10 +21,7 @@ export const fetchQuizes = () => async (dispatch, getState) => {
     if (response.data.data.length === 0) {
       return dispatch(fetchQuizesNotFound());
     }
-    const quizes = response.data.data.map((question) => ({
-      id: question.id,
-      title: question.title,
-    }));
+    const quizes = response.data.data.map((question) => new QuizDTO(question));
     console.log({ quizes });
     dispatch(fetchQuizesSuccess(quizes));
   } catch (error) {

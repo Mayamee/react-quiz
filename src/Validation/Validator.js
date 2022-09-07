@@ -13,7 +13,7 @@ export default function validator(rule, value) {
     );
   }
   if (rule.type === ONLY_ENGLISH_EMAIL) {
-    return /^[a-z@._\d]+$/.test(value.trim());
+    return /^[a-zA-Z@._\d]+$/.test(value.trim());
   }
   return true;
 }

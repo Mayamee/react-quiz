@@ -10,8 +10,10 @@ export const addQuestionToQuiz = (question) => ({
 });
 export const createQuiz = (touchInputValue) => async (dispatch, getState) => {
   const state = getState().createQuiz;
-  const { isAuthentificated } = getState().auth;
-
+  const {
+    isAuthentificated,
+    user: { id, email },
+  } = getState().auth;
   const payload = {
     title: touchInputValue || "Мой тест",
     body: state.quiz,
@@ -23,7 +25,9 @@ export const createQuiz = (touchInputValue) => async (dispatch, getState) => {
     return;
   }
   try {
-    await QuizService.createQuiz(payload);
+    const ownerInfo = { userId: id, name: email };
+    const payloadBackend = { ...payload, ownerInfo };
+    await QuizService.createQuiz(payloadBackend);
   } catch (error) {
     console.log(error);
     if (error.isRefreshFailed) {

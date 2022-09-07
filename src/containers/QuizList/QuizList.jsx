@@ -24,7 +24,10 @@ const QuizList = ({
     const quizes = isAuth ? Pquizes : cached;
     return quizes.map((quiz) => (
       <li key={quiz.id}>
-        <NavLink to={`/quiz/${quiz.id}`}>{quiz.title}</NavLink>
+        <NavLink to={`/quiz/${quiz.id}`}>
+          {quiz.title}
+          {isAuth && ` - by ${quiz.ownerName}`}
+        </NavLink>
       </li>
     ));
   };
