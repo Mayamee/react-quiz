@@ -11,6 +11,11 @@ import { quizReducer } from "./store/reducers/quizReducer";
 import { createQuizReducer } from "./store/reducers/createQuizReducer";
 import { authReducer } from "./store/reducers/authReducer";
 import { cacheReducer } from "./store/reducers/cacheQuizReducer";
+import {
+  StyledEngineProvider,
+  ThemeProvider,
+  createTheme,
+} from "@mui/material/styles";
 
 const Store = configureStore({
   reducer: {
@@ -23,11 +28,17 @@ const Store = configureStore({
   middleware: [thunk],
 });
 
+const theme = createTheme({});
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const app = (
   <Provider store={Store}>
     <Router>
-      <App />
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
+      </StyledEngineProvider>
     </Router>
   </Provider>
 );
