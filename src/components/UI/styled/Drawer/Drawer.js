@@ -10,7 +10,7 @@ export default styled(MuiDrawer, {
   whiteSpace: "nowrap",
   boxSizing: "border-box",
   ...(open && {
-    ...openedMixin(theme),
+    ...openedMixin(theme, drawerWidth),
     "& .MuiDrawer-paper": openedMixin(theme, drawerWidth),
   }),
   ...(!open && {
