@@ -1,6 +1,14 @@
-import { ChevronLeft, ChevronRight, Mail, Menu } from "@mui/icons-material";
 import {
-  Divider,
+  AddCircleOutline,
+  ChevronLeft,
+  ChevronRight,
+  Login,
+  Logout,
+  Menu,
+  Quiz,
+  Radar,
+} from "@mui/icons-material";
+import {
   IconButton,
   List,
   ListItem,
@@ -10,23 +18,79 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import { grey } from "@mui/material/colors";
 import { useTheme } from "@mui/material/styles";
 import { Box } from "@mui/system";
 import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import AppBar from "../../components/UI/styled/AppBar/AppBar";
 import AppBarGutter from "../../components/UI/styled/AppBar/AppBarGutter";
 import AppWrapper from "../../components/UI/styled/AppWrapper/AppWrapper";
 import Drawer from "../../components/UI/styled/Drawer/Drawer";
 import DrawerHeader from "../../components/UI/styled/Drawer/DrawerHeader";
 import Footer from "../../components/UI/styled/Footer/Footer";
+import { makeLinkToDrawer } from "../../helpers/makeLinksToDrawer";
 
 const drawerWidth = 220;
 
 const Layout = ({ isAuth, children }) => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
+  const location = useLocation();
   const handleDrawerOpen = () => setDrawerOpen(true);
   const handleDrawerClose = () => setDrawerOpen(false);
   const theme = useTheme();
+  console.log(location.pathname);
+  const renderLinks = () => {
+    let links = [
+      makeLinkToDrawer("/", "Тесты", <Quiz />),
+      makeLinkToDrawer("/create", "Создать", <AddCircleOutline />),
+    ];
+    if (isAuth) {
+      links.unshift(makeLinkToDrawer("/my", "Мои тесты", <Radar />));
+      links.push(makeLinkToDrawer("/logout", "Выйти", <Logout />));
+    } else {
+      links.push(makeLinkToDrawer("/auth", "Авторизация", <Login />));
+    }
+    return links.map((link, index) => (
+      <ListItem
+        key={`${link.to}-${index}`}
+        disablePadding
+        sx={{
+          display: "block",
+          "& a": {
+            textDecoration: "none",
+            color: "inherit",
+          },
+          background: link.to === location.pathname ? grey[300] : null,
+        }}
+      >
+        <Link to={link.to}>
+          <ListItemButton
+            sx={{
+              minHeight: 48,
+              justifyContent: isDrawerOpen ? "initial" : "center",
+              px: 2.5,
+            }}
+          >
+            <ListItemIcon
+              sx={{
+                minWidth: 0,
+                mr: isDrawerOpen ? 3 : "auto",
+                justifyContent: "center",
+              }}
+            >
+              {link.icon}
+            </ListItemIcon>
+            <ListItemText
+              primary={link.label}
+              sx={{ opacity: isDrawerOpen ? 1 : 0 }}
+            />
+          </ListItemButton>
+        </Link>
+      </ListItem>
+    ));
+  };
+
   return (
     <AppWrapper
       id="app-wrapper"
@@ -70,41 +134,21 @@ const Layout = ({ isAuth, children }) => {
         >
           <DrawerHeader>
             <IconButton onClick={handleDrawerClose}>
-              {theme.direction === "rtl" ? <ChevronRight /> : <ChevronLeft />}
+              {theme.direction === "rtl" ? <ChevronLeft /> : <ChevronRight />}
             </IconButton>
           </DrawerHeader>
-          <List>
-            <ListItem disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: isDrawerOpen ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: isDrawerOpen ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Mail />
-                </ListItemIcon>
-                <ListItemText
-                  primary={"text"}
-                  sx={{ opacity: isDrawerOpen ? 1 : 0 }}
-                />
-              </ListItemButton>
-            </ListItem>
-          </List>
+          <List>{renderLinks()}</List>
         </Drawer>
         <Box
           component="div"
           sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}
         >
           <AppBarGutter id="app-bar-gutter" />
-          <Box component="main" id="main-wrapper" sx={{ flexGrow: 1 }}>
+          <Box
+            component="main"
+            id="main-wrapper"
+            sx={{ flexGrow: 1, display: "flex" }}
+          >
             {children}
           </Box>
         </Box>
@@ -120,7 +164,7 @@ const Layout = ({ isAuth, children }) => {
           alignItems: "center",
         }}
       >
-        Yam
+        MewMay
       </Footer>
     </AppWrapper>
   );

@@ -29,7 +29,7 @@ function App(props) {
           // element={!isAuth ? <Navigate to="auth" /> : <MyQuizList />}
           element={<MyQuizList />}
         />
-        <Route path="quiz-creator" element={<QuizCreator />} />
+        <Route path="create" element={<QuizCreator />} />
         <Route path="quiz/:id" element={<Quiz />} />
         <Route path="/" element={<QuizList />} />
         <Route path="logout" element={<Logout />} />
