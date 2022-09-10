@@ -2,13 +2,17 @@ import {
   AddCircleOutline,
   ChevronLeft,
   ChevronRight,
+  GitHub,
   Login,
   Logout,
   Menu,
   Quiz,
   Radar,
+  Telegram,
 } from "@mui/icons-material";
 import {
+  Button,
+  ButtonGroup,
   IconButton,
   List,
   ListItem,
@@ -158,13 +162,24 @@ const Layout = ({ isAuth, children }) => {
         drawerWidth={drawerWidth}
         sx={{
           borderTop: "1px solid #ddd",
-          flexBasis: "40px",
+          flexBasis: "30px",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
         }}
       >
-        MewMay
+        <ButtonGroup sx={{ color: "#1191fa" }} variant="text">
+          <Button
+            color="inherit"
+            href="https://github.com/Mayamee"
+            target="_blank"
+          >
+            <GitHub />
+          </Button>
+          <Button color="inherit" href="https://t.me/Mayameee" target="_blank">
+            <Telegram />
+          </Button>
+        </ButtonGroup>
       </Footer>
     </AppWrapper>
   );
