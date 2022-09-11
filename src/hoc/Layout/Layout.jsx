@@ -23,7 +23,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { grey } from "@mui/material/colors";
+import { grey, indigo, teal } from "@mui/material/colors";
 import { useTheme } from "@mui/material/styles";
 import { Box } from "@mui/system";
 import { useEffect } from "react";
@@ -43,7 +43,7 @@ import {
 
 const drawerWidth = 220;
 
-const Layout = ({ isAuth, children }) => {
+const Layout = ({ isAuth, user, children }) => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [title, setTitle] = useState("");
   const location = useLocation();
@@ -159,8 +159,10 @@ const Layout = ({ isAuth, children }) => {
                 gap: 1.2,
               }}
             >
-              <Typography>Guest</Typography>
-              <Avatar>G</Avatar>
+              <Typography>{isAuth ? user.email : "Guest"}</Typography>
+              <Avatar sx={{ background: isAuth ? indigo[600] : teal[400] }}>
+                {isAuth ? user.email[0].toUpperCase() : "G"}
+              </Avatar>
             </Box>
           </Toolbar>
         </AppBar>
@@ -220,6 +222,7 @@ const Layout = ({ isAuth, children }) => {
 
 const mapStateToProps = (state) => ({
   isAuth: state.auth.isAuthentificated,
+  user: state.auth.user,
 });
 
 export default connect(mapStateToProps, null)(Layout);
