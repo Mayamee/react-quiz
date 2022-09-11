@@ -44,8 +44,6 @@ const QuizList = ({
     <div className={classes.QuizList}>
       <div>
         <h1>Список тестов</h1>
-        {isAuth && <h2>Привет: {userName}</h2>}
-        {!isAuth && <h2>Привет: Guest</h2>}
         {isLoading ? (
           <Loader />
         ) : Pquizes.length === 0 && cached.length === 0 ? (

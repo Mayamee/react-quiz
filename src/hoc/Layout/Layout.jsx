@@ -159,9 +159,9 @@ const Layout = ({ isAuth, user, children }) => {
                 gap: 1.2,
               }}
             >
-              <Typography>{isAuth ? user.email : "Guest"}</Typography>
+              <Typography>{isAuth ? user.email : "Гость"}</Typography>
               <Avatar sx={{ background: isAuth ? indigo[600] : teal[400] }}>
-                {isAuth ? user.email[0].toUpperCase() : "G"}
+                {isAuth ? user.email[0].toUpperCase() : "Г"}
               </Avatar>
             </Box>
           </Toolbar>
