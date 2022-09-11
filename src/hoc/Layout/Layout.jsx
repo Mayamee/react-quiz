@@ -25,6 +25,7 @@ import {
 import { grey } from "@mui/material/colors";
 import { useTheme } from "@mui/material/styles";
 import { Box } from "@mui/system";
+import { useEffect } from "react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import AppBar from "../../components/UI/styled/AppBar/AppBar";
@@ -39,16 +40,20 @@ const drawerWidth = 220;
 
 const Layout = ({ isAuth, children }) => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
+  const [title, setTitle] = useState("");
   const location = useLocation();
   const handleDrawerOpen = () => setDrawerOpen(true);
   const handleDrawerClose = () => setDrawerOpen(false);
   const theme = useTheme();
   console.log(location.pathname);
+  let links = [
+    makeLinkToDrawer("/", "Тесты", <Quiz />),
+    makeLinkToDrawer("/create", "Создать", <AddCircleOutline />),
+  ];
+  useEffect(() => {
+    setTitle(links.find((link) => link.to === location.pathname).label);
+  }, [location.pathname]);
   const renderLinks = () => {
-    let links = [
-      makeLinkToDrawer("/", "Тесты", <Quiz />),
-      makeLinkToDrawer("/create", "Создать", <AddCircleOutline />),
-    ];
     if (isAuth) {
       links.unshift(makeLinkToDrawer("/my", "Мои тесты", <Radar />));
       links.push(makeLinkToDrawer("/logout", "Выйти", <Logout />));
@@ -127,7 +132,7 @@ const Layout = ({ isAuth, children }) => {
               <Menu color="#fff" />
             </IconButton>
             <Typography noWrap variant="h6" component="div">
-              My quiz
+              {title}
             </Typography>
           </Toolbar>
         </AppBar>
