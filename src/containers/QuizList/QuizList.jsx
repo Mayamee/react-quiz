@@ -1,7 +1,5 @@
 import { useEffect } from "react";
 import { connect } from "react-redux";
-import classes from "./QuizList.module.scss";
-import { NavLink } from "react-router-dom";
 import Loader from "../../components/UI/Loader/Loader";
 import Nodata from "../../components/Nodata/Nodata";
 import {
@@ -9,12 +7,15 @@ import {
   fetchQuizEnd,
   fetchQuizes,
 } from "../../store/actions/quizActions";
+import PageContainer from "../../components/UI/styled/PageContainer/PageContainer";
+import { Fade, Grid } from "@mui/material";
+import QuizCard from "../../components/QuizCard/QuizCard";
 
 const QuizList = ({
   quizes: Pquizes,
   cached,
   isLoading,
-  userName,
+  user,
   isAuth,
   fetchQuizes,
   stopLoad,
@@ -23,12 +24,9 @@ const QuizList = ({
   const renderQuizesList = () => {
     const quizes = isAuth ? Pquizes : cached;
     return quizes.map((quiz) => (
-      <li key={quiz.id}>
-        <NavLink to={`/quiz/${quiz.id}`}>
-          {quiz.title}
-          {isAuth && ` - by ${quiz.ownerName}`}
-        </NavLink>
-      </li>
+      <Grid item xs={12} md={6} lg={3} key={quiz.id}>
+        <QuizCard quiz={quiz} isAuth={isAuth} user={user} />
+      </Grid>
     ));
   };
   useEffect(() => {
@@ -40,21 +38,41 @@ const QuizList = ({
     return clearQuizes;
   }, []);
 
+  if (isLoading) {
+    return (
+      <PageContainer
+        id="app-page-container"
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Loader />
+      </PageContainer>
+    );
+  }
+  if (Pquizes.length === 0 && cached.length === 0) {
+    return (
+      <PageContainer
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Nodata iconColor="#000" isShowButton={false} />
+      </PageContainer>
+    );
+  }
+
   return (
-    <div className={classes.QuizList}>
-      <div>
-        <h1>Список тестов</h1>
-        {isLoading ? (
-          <Loader />
-        ) : Pquizes.length === 0 && cached.length === 0 ? (
-          <Nodata iconColor="#fff" isShowButton={false} />
-        ) : (
-          <ul>{renderQuizesList()}</ul>
-        )}
-      </div>
-    </div>
+    <PageContainer id="app-page-container" sx={{ padding: 3 }}>
+      <Grid container spacing={3}>
+        {renderQuizesList()}
+      </Grid>
+    </PageContainer>
   );
-  //TODO Refactor this ^^^
 };
 
 const mapStateToProps = (state) => {
@@ -62,7 +80,7 @@ const mapStateToProps = (state) => {
     quizes: state.quiz.quizes,
     cached: state.cache.cached,
     isLoading: state.quiz.isLoading,
-    userName: state.auth.user.email,
+    user: state.auth.user,
     isAuth: state.auth.isAuthentificated,
   };
 };

@@ -5,13 +5,13 @@ import classes from "./Nodata.module.scss";
 const Nodata = ({ iconColor = "red", isShowButton = true }) => {
   return (
     <div className={classes.Nodata}>
-      <h2>
+      <p>
         Данные не найдены
         <i
           style={{ color: iconColor }}
           className="fas fa-exclamation-triangle"
         />
-      </h2>
+      </p>
 
       {isShowButton ? (
         <div className="btns">

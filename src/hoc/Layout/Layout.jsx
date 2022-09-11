@@ -53,7 +53,7 @@ const Layout = ({ isAuth, user, children }) => {
   console.log(location.pathname);
   let links = [
     makeLinkToDrawer("/my", "Мои тесты", <Radar />),
-    makeLinkToDrawer("/", "Тесты", <Quiz />),
+    makeLinkToDrawer("/", "Список тестов", <Quiz />),
     makeLinkToDrawer("/create", "Создать", <AddCircleOutline />),
     makeLinkToDrawer("/logout", "Выйти", <Logout />),
     makeLinkToDrawer("/auth", "Авторизация", <Login />),
