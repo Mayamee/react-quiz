@@ -21,7 +21,7 @@ function App(props) {
   }, []);
   const { isAuth, checkAuth } = props;
   return (
-    <Layout isAuth={isAuth}>
+    <Layout>
       <Routes>
         <Route path="auth" element={isAuth ? <Navigate to="/" /> : <Auth />} />
         <Route

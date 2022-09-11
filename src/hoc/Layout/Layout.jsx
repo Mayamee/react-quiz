@@ -28,6 +28,7 @@ import { useTheme } from "@mui/material/styles";
 import { Box } from "@mui/system";
 import { useEffect } from "react";
 import { useState } from "react";
+import { connect } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import AppBar from "../../components/UI/styled/AppBar/AppBar";
 import AppBarGutter from "../../components/UI/styled/AppBar/AppBarGutter";
@@ -35,7 +36,10 @@ import AppWrapper from "../../components/UI/styled/AppWrapper/AppWrapper";
 import Drawer from "../../components/UI/styled/Drawer/Drawer";
 import DrawerHeader from "../../components/UI/styled/Drawer/DrawerHeader";
 import Footer from "../../components/UI/styled/Footer/Footer";
-import { makeLinkToDrawer } from "../../helpers/makeLinksToDrawer";
+import {
+  makeLinkToDrawer,
+  removeLinksFromDrawer,
+} from "../../helpers/makeLinksToDrawer";
 
 const drawerWidth = 220;
 
@@ -48,18 +52,21 @@ const Layout = ({ isAuth, children }) => {
   const theme = useTheme();
   console.log(location.pathname);
   let links = [
+    makeLinkToDrawer("/my", "Мои тесты", <Radar />),
     makeLinkToDrawer("/", "Тесты", <Quiz />),
     makeLinkToDrawer("/create", "Создать", <AddCircleOutline />),
+    makeLinkToDrawer("/logout", "Выйти", <Logout />),
+    makeLinkToDrawer("/auth", "Авторизация", <Login />),
   ];
   useEffect(() => {
-    setTitle(links.find((link) => link.to === location.pathname).label);
+    const link = links.find((link) => link.to === location.pathname);
+    setTitle(link ? link.label : "");
   }, [location.pathname]);
-  const renderLinks = () => {
+  const renderLinks = (links) => {
     if (isAuth) {
-      links.unshift(makeLinkToDrawer("/my", "Мои тесты", <Radar />));
-      links.push(makeLinkToDrawer("/logout", "Выйти", <Logout />));
+      links = removeLinksFromDrawer(["/auth"], links);
     } else {
-      links.push(makeLinkToDrawer("/auth", "Авторизация", <Login />));
+      links = removeLinksFromDrawer(["/logout", "/my"], links);
     }
     return links.map((link, index) => (
       <ListItem
@@ -167,7 +174,7 @@ const Layout = ({ isAuth, children }) => {
               {theme.direction === "rtl" ? <ChevronLeft /> : <ChevronRight />}
             </IconButton>
           </DrawerHeader>
-          <List>{renderLinks()}</List>
+          <List>{renderLinks(links)}</List>
         </Drawer>
         <Box
           component="div"
@@ -211,4 +218,8 @@ const Layout = ({ isAuth, children }) => {
   );
 };
 
-export default Layout;
+const mapStateToProps = (state) => ({
+  isAuth: state.auth.isAuthentificated,
+});
+
+export default connect(mapStateToProps, null)(Layout);
