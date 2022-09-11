@@ -11,6 +11,7 @@ import {
   Telegram,
 } from "@mui/icons-material";
 import {
+  Avatar,
   Button,
   ButtonGroup,
   IconButton,
@@ -131,9 +132,29 @@ const Layout = ({ isAuth, children }) => {
             >
               <Menu color="#fff" />
             </IconButton>
-            <Typography noWrap variant="h6" component="div">
+            <Typography
+              noWrap
+              variant="h6"
+              component="div"
+              sx={{
+                flexGrow: 1,
+              }}
+            >
               {title}
             </Typography>
+            <Box
+              component="div"
+              id="app-avatar"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 1.2,
+              }}
+            >
+              <Typography>Guest</Typography>
+              <Avatar>G</Avatar>
+            </Box>
           </Toolbar>
         </AppBar>
         <Drawer
