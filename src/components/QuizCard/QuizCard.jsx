@@ -7,7 +7,6 @@ import {
   CardMedia,
   Divider,
   IconButton,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -39,11 +38,9 @@ const QuizCard = ({ quiz, isAuth, user }) => {
             title={quiz.ownerName}
             action={
               user.id === quiz.ownerId ? (
-                <Tooltip title="Действия" arrow>
-                  <IconButton aria-label="delete">
-                    <MoreVert />
-                  </IconButton>
-                </Tooltip>
+                <IconButton aria-label="delete">
+                  <MoreVert />
+                </IconButton>
               ) : null
             }
           />

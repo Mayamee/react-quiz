@@ -8,11 +8,10 @@ import {
   fetchQuizes,
 } from "../../store/actions/quizActions";
 import PageContainer from "../../components/UI/styled/PageContainer/PageContainer";
-import { Fade, Grid } from "@mui/material";
-import QuizCard from "../../components/QuizCard/QuizCard";
+import QuizItemsList from "../../components/QuizItemsList/QuizItemsList";
 
 const QuizList = ({
-  quizes: Pquizes,
+  quizes,
   cached,
   isLoading,
   user,
@@ -21,14 +20,6 @@ const QuizList = ({
   stopLoad,
   clearQuizes,
 }) => {
-  const renderQuizesList = () => {
-    const quizes = isAuth ? Pquizes : cached;
-    return quizes.map((quiz) => (
-      <Grid item xs={12} md={6} lg={3} key={quiz.id}>
-        <QuizCard quiz={quiz} isAuth={isAuth} user={user} />
-      </Grid>
-    ));
-  };
   useEffect(() => {
     if (isAuth) {
       fetchQuizes();
@@ -52,7 +43,7 @@ const QuizList = ({
       </PageContainer>
     );
   }
-  if (Pquizes.length === 0 && cached.length === 0) {
+  if (quizes.length === 0 && cached.length === 0) {
     return (
       <PageContainer
         sx={{
@@ -68,9 +59,8 @@ const QuizList = ({
 
   return (
     <PageContainer id="app-page-container" sx={{ padding: 3 }}>
-      <Grid container spacing={3}>
-        {renderQuizesList()}
-      </Grid>
+      {isAuth && <QuizItemsList isAuth={isAuth} user={user} quizes={quizes} />}
+      {!isAuth && <QuizItemsList isAuth={isAuth} user={user} quizes={cached} />}
     </PageContainer>
   );
 };
