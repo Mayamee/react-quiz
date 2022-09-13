@@ -3,7 +3,10 @@ import { Delete, Share } from "@mui/icons-material";
 import { Grid, Paper, Popper } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { Box } from "@mui/system";
+import { useEffect } from "react";
 import { useState } from "react";
+import { connect } from "react-redux";
+import { hasIdFromParents } from "../../helpers/DOMHelpers";
 import QuizCard from "../QuizCard/QuizCard";
 import DropDownList from "../UI/DropDownList/DropDownList";
 
@@ -15,14 +18,27 @@ const QuizItemsList = ({ isAuth, user, quizes }) => {
   const theme = useTheme();
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
-  const [placement, setPlacement] = useState();
-  const handleClick =
-    (newPlacement) =>
-    ({ currentTarget }) => {
-      setAnchor(currentTarget);
-      setOpen((prev) => placement !== newPlacement || !prev);
-      setPlacement(newPlacement);
+  const handleClick = ({ currentTarget }) => {
+    setAnchor(currentTarget);
+    if (anchor !== currentTarget) {
+      setOpen(true);
+    } else {
+      setOpen((openState) => !openState);
+    }
+  };
+
+  useEffect(() => {
+    const handleClickOutside = ({ target }) => {
+      if (
+        !hasIdFromParents(target, "popper-button") &&
+        !hasIdFromParents(target, "popper")
+      ) {
+        setOpen(false);
+      }
     };
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
   return (
     <>
       <Grid container spacing={3}>
@@ -38,9 +54,10 @@ const QuizItemsList = ({ isAuth, user, quizes }) => {
         ))}
       </Grid>
       <Popper
+        id={"popper"}
         open={open}
         anchorEl={anchor}
-        placement={placement}
+        placement="right"
         disablePortal={false}
         modifiers={[
           {
@@ -75,4 +92,4 @@ const QuizItemsList = ({ isAuth, user, quizes }) => {
   );
 };
 
-export default QuizItemsList;
+export default connect(null, null)(QuizItemsList);
