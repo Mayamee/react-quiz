@@ -13,7 +13,7 @@ const DropDownList = ({ config }) => {
     <List disablePadding>
       {config.map((item, index) => (
         <ListItem disablePadding key={`${item.title}-${index}`}>
-          <ListItemButton>
+          <ListItemButton onClick={item.onClickHandler}>
             <ListItemIcon
               sx={{
                 minWidth: theme.spacing(4),

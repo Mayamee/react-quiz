@@ -40,7 +40,7 @@ const QuizCard = ({ quiz, isAuth, user, onActionClick }) => {
               <IconButton
                 aria-label="settings"
                 id="popper-button"
-                onClick={onActionClick}
+                onClick={onActionClick(quiz.ownerId === user.id, quiz.id)}
               >
                 <MoreVert />
               </IconButton>

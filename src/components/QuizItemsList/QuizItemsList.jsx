@@ -11,21 +11,47 @@ import QuizCard from "../QuizCard/QuizCard";
 import DropDownList from "../UI/DropDownList/DropDownList";
 
 const QuizItemsList = ({ isAuth, user, quizes }) => {
-  const config = [
-    { title: "Поделиться", icon: <Share /> },
-    { title: "Удалить", icon: <Delete /> },
-  ];
   const theme = useTheme();
+  const [quizId, setQuizId] = useState(null);
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
-  const handleClick = ({ currentTarget }) => {
-    setAnchor(currentTarget);
-    if (anchor !== currentTarget) {
-      setOpen(true);
-    } else {
-      setOpen((openState) => !openState);
-    }
-  };
+  const config = [
+    {
+      title: "Поделиться",
+      icon: <Share />,
+      onClickHandler: () =>
+        navigator.clipboard.writeText(`http://localhost:8081/quiz/${quizId}`),
+    },
+  ];
+  const isAuthConfig = [
+    ...config,
+    {
+      title: "Удалить",
+      icon: <Delete />,
+      onClickHandler: () => {
+        console.log("Deleted");
+      },
+    },
+  ];
+
+  const [btnConfig, setBtnConfig] = useState(config);
+
+  const handleClick =
+    (isOwner, quizId) =>
+    ({ currentTarget }) => {
+      setQuizId(quizId);
+      if (isOwner) {
+        setBtnConfig(isAuthConfig);
+      } else {
+        setBtnConfig(config);
+      }
+      setAnchor(currentTarget);
+      if (anchor !== currentTarget) {
+        setOpen(true);
+      } else {
+        setOpen((openState) => !openState);
+      }
+    };
 
   useEffect(() => {
     const handleClickOutside = ({ target }) => {
@@ -84,7 +110,7 @@ const QuizItemsList = ({ isAuth, user, quizes }) => {
       >
         <Box sx={{ padding: `0px ${theme.spacing(1)}` }}>
           <Paper sx={{ background: grey[900], "& *": { color: grey[300] } }}>
-            <DropDownList config={config} />
+            <DropDownList config={btnConfig} />
           </Paper>
         </Box>
       </Popper>
