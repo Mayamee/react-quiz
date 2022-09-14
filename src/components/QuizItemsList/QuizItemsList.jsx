@@ -21,6 +21,7 @@ const QuizItemsList = ({ isAuth, user, quizes }) => {
       icon: <Share />,
       onClickHandler: (quizId) => {
         navigator.clipboard.writeText(`http://localhost:8081/quiz/${quizId}`);
+        setOpen(false);
       },
     },
   ];
@@ -31,10 +32,10 @@ const QuizItemsList = ({ isAuth, user, quizes }) => {
       icon: <Delete />,
       onClickHandler: () => {
         console.log("Deleted");
+        setOpen(false);
       },
     },
   ];
-
   const [btnConfig, setBtnConfig] = useState(config);
 
   useEffect(() => {

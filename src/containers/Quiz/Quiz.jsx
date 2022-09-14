@@ -36,7 +36,7 @@ const Quiz = ({
       getQuizFromCacheById(id);
     }
     return resetQuiz;
-  }, []);
+  }, [isAuth]);
 
   const getQuiz = () => {
     if (isLoading) {
@@ -45,7 +45,6 @@ const Quiz = ({
     if (isQuizFinished) {
       return <FinishedQuiz results={results} quiz={quiz} onRetry={resetQuiz} />;
     }
-    //TODO quiz
     if (!quiz) {
       return <Nodata />;
     }
