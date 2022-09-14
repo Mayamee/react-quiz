@@ -27,7 +27,7 @@ const QuizList = ({
       stopLoad();
     }
     return clearQuizes;
-  }, []);
+  }, [isAuth]);
 
   if (isLoading) {
     return (
