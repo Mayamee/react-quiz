@@ -12,15 +12,16 @@ import DropDownList from "../UI/DropDownList/DropDownList";
 
 const QuizItemsList = ({ isAuth, user, quizes }) => {
   const theme = useTheme();
-  const [quizId, setQuizId] = useState(null);
+  const [quizID, setQuizID] = useState(null);
   const [anchor, setAnchor] = useState(null);
   const [open, setOpen] = useState(false);
   const config = [
     {
       title: "Поделиться",
       icon: <Share />,
-      onClickHandler: () =>
-        navigator.clipboard.writeText(`http://localhost:8081/quiz/${quizId}`),
+      onClickHandler: (quizId) => {
+        navigator.clipboard.writeText(`http://localhost:8081/quiz/${quizId}`);
+      },
     },
   ];
   const isAuthConfig = [
@@ -36,10 +37,23 @@ const QuizItemsList = ({ isAuth, user, quizes }) => {
 
   const [btnConfig, setBtnConfig] = useState(config);
 
+  useEffect(() => {
+    const handleClickOutside = ({ target }) => {
+      if (
+        !hasIdFromParents(target, "popper-button") &&
+        !hasIdFromParents(target, "popper")
+      ) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
   const handleClick =
     (isOwner, quizId) =>
     ({ currentTarget }) => {
-      setQuizId(quizId);
+      setQuizID(quizId);
       if (isOwner) {
         setBtnConfig(isAuthConfig);
       } else {
@@ -53,18 +67,6 @@ const QuizItemsList = ({ isAuth, user, quizes }) => {
       }
     };
 
-  useEffect(() => {
-    const handleClickOutside = ({ target }) => {
-      if (
-        !hasIdFromParents(target, "popper-button") &&
-        !hasIdFromParents(target, "popper")
-      ) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
-  }, []);
   return (
     <>
       <Grid container spacing={3}>
@@ -110,7 +112,7 @@ const QuizItemsList = ({ isAuth, user, quizes }) => {
       >
         <Box sx={{ padding: `0px ${theme.spacing(1)}` }}>
           <Paper sx={{ background: grey[900], "& *": { color: grey[300] } }}>
-            <DropDownList config={btnConfig} />
+            <DropDownList config={btnConfig} quizId={quizID} />
           </Paper>
         </Box>
       </Popper>
