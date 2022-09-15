@@ -10,6 +10,7 @@ import {
   QUIZ_NEXT_QUESTION,
   QUIZ_RESET,
   CLEAR_QUIZES,
+  DELETE_QUIZ_FROM_STATE,
 } from "./actionTypes";
 import { QuizService } from "../../services/QuizService";
 import QuizDTO from "../../dtos/QuizDTO";
@@ -164,4 +165,17 @@ export const resetQuiz = () => ({
 
 export const clearQuizes = () => ({
   type: CLEAR_QUIZES,
+});
+
+export const deleteQuiz = (id) => async (dispatch) => {
+  try {
+    await QuizService.deleteQuizById(id);
+    dispatch(deleteQuizFromState(id));
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const deleteQuizFromState = (id) => ({
+  type: DELETE_QUIZ_FROM_STATE,
+  payload: id,
 });

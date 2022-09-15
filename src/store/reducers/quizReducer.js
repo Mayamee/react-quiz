@@ -10,6 +10,7 @@ import {
   QUIZ_NEXT_QUESTION,
   QUIZ_RESET,
   CLEAR_QUIZES,
+  DELETE_QUIZ_FROM_STATE,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -98,6 +99,11 @@ export function quizReducer(state = initialState, action) {
       results: {},
     };
   }
-
+  if (action.type === DELETE_QUIZ_FROM_STATE) {
+    return {
+      ...state,
+      quizes: state.quizes.filter((quiz) => quiz.id !== action.payload),
+    };
+  }
   return state;
 }

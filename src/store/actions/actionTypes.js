@@ -28,3 +28,5 @@ export const AUTH_REGISTER_ERROR = "AUTH_REGISTER_ERROR";
 export const SET_AUTH = "SET_AUTH";
 export const SET_USER = "SET_USER";
 export const AUTH_LOGOUT = "AUTH_LOGOUT";
+//DELETE
+export const DELETE_QUIZ_FROM_STATE = "DELETE_QUIZ_FROM_STATE";

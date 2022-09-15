@@ -13,4 +13,7 @@ export class QuizService {
   static getMyQuizes() {
     return $api.get("quiz/my");
   }
+  static deleteQuizById(id) {
+    return $api.delete(`quiz/${id}`);
+  }
 }

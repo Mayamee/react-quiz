@@ -7,10 +7,11 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { connect } from "react-redux";
 import { hasIdFromParents } from "../../helpers/DOMHelpers";
+import { deleteQuiz } from "../../store/actions/quizActions";
 import QuizCard from "../QuizCard/QuizCard";
 import DropDownList from "../UI/DropDownList/DropDownList";
 
-const QuizItemsList = ({ isAuth, user, quizes }) => {
+const QuizItemsList = ({ isAuth, user, quizes, deleteQuizById }) => {
   const theme = useTheme();
   const [quizID, setQuizID] = useState(null);
   const [anchor, setAnchor] = useState(null);
@@ -30,8 +31,8 @@ const QuizItemsList = ({ isAuth, user, quizes }) => {
     {
       title: "Удалить",
       icon: <Delete />,
-      onClickHandler: () => {
-        console.log("Deleted");
+      onClickHandler: (id) => {
+        deleteQuizById(id);
         setOpen(false);
       },
     },
@@ -120,5 +121,7 @@ const QuizItemsList = ({ isAuth, user, quizes }) => {
     </>
   );
 };
-
-export default connect(null, null)(QuizItemsList);
+const mapDispatchToProps = (dispatch) => ({
+  deleteQuizById: (quizId) => dispatch(deleteQuiz(quizId)),
+});
+export default connect(null, mapDispatchToProps)(QuizItemsList);
