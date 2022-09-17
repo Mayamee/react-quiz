@@ -1,4 +1,5 @@
 import {
+  AccountCircle,
   AddCircleOutline,
   ChevronLeft,
   ChevronRight,
@@ -24,7 +25,6 @@ import {
   Toolbar,
   Typography,
   Menu as MuiMenu,
-  Divider,
 } from "@mui/material";
 import { grey, indigo, teal } from "@mui/material/colors";
 import { useTheme } from "@mui/material/styles";
@@ -55,7 +55,6 @@ const Layout = ({ isAuth, user, children }) => {
   const handleDrawerOpen = () => setDrawerOpen(true);
   const handleDrawerClose = () => setDrawerOpen(false);
   const theme = useTheme();
-  console.log(location.pathname);
   let links = [
     makeLinkToDrawer("/my", "Мои тесты", <Radar />),
     makeLinkToDrawer("/", "Список тестов", <Quiz />),
@@ -209,7 +208,7 @@ const Layout = ({ isAuth, user, children }) => {
                     </Link>
                   ) : (
                     <Link to="/auth">
-                      <Login />
+                      <AccountCircle />
                       Авторизация
                     </Link>
                   )}
