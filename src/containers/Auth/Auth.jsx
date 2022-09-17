@@ -13,6 +13,14 @@ import { validateFormFields } from "../../helpers/valid";
 import { createValidationInputField } from "../../helpers/formInputCreator";
 import { connect } from "react-redux";
 import { authLogin, authRegister } from "../../store/actions/authorization";
+import { Box } from "@mui/system";
+import Loader from "../../components/UI/Loader/Loader";
+import PageContainer from "../../components/UI/styled/PageContainer/PageContainer";
+import ThreeLinesLoader from "../../components/UI/ThreeLinesLoader/ThreeLinesLoader";
+import FixedFullPage from "../../components/UI/styled/FixedFullPage/FixedFullPage";
+import FixedFullPageBody from "../../components/UI/styled/FixedFullPage/FixedFullPageBody";
+import FixedFullPageBackground from "../../components/UI/styled/FixedFullPage/FixedFullPageBackground";
+import { Paper } from "@mui/material";
 
 const initForm = () => [
   createValidationInputField("Email", [email(), onlyEnglishEmail()], "email"),
@@ -61,35 +69,77 @@ const Auth = ({ login, register, msg }) => {
     ));
 
   return (
-    <div className={classes.Auth}>
-      <div>
-        <h1>Авторизация</h1>
-        <div className="message">{msg}</div>
-        <form className={classes.AuthForm} onSubmit={(e) => e.preventDefault()}>
-          <div className="inputsContainer">{renderInputs()}</div>
-          <Button
-            btnType="success"
-            onClick={(e) => {
-              e.preventDefault();
-              loginHandler();
+    <>
+      <FixedFullPage bgColor="#fff" id="app-auth-wrapper">
+        <FixedFullPageBackground
+          sx={{
+            display: "flex",
+          }}
+        >
+          <Box
+            sx={{
+              backgroundColor: "#ECBC76",
+              flexBasis: "50%",
             }}
-            disabled={!isFormValid}
-          >
-            Войти
-          </Button>
-          <Button
-            btnType="primary"
-            onClick={(e) => {
-              e.preventDefault();
-              registerHandler();
+          />
+          <Box
+            sx={{
+              backgroundColor: "#FFFEF9",
+              flexBasis: "50%",
             }}
-            disabled={!isFormValid}
-          >
-            Регистрация
-          </Button>
-        </form>
-      </div>
-    </div>
+          />
+        </FixedFullPageBackground>
+        <FixedFullPageBody
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {/* <Box sx={{ width: "300px" }}>01</Box> */}
+          {/* Auth form component */}
+        </FixedFullPageBody>
+      </FixedFullPage>
+      <PageContainer
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#fff",
+        }}
+      >
+        <ThreeLinesLoader />
+      </PageContainer>
+    </>
+    // <div className={classes.Auth}>
+    //   <div>
+    //     <h1>Авторизация</h1>
+    //     <div className="message">{msg}</div>
+    //     <form className={classes.AuthForm} onSubmit={(e) => e.preventDefault()}>
+    //       <div className="inputsContainer">{renderInputs()}</div>
+    //       <Button
+    //         btnType="success"
+    //         onClick={(e) => {
+    //           e.preventDefault();
+    //           loginHandler();
+    //         }}
+    //         disabled={!isFormValid}
+    //       >
+    //         Войти
+    //       </Button>
+    //       <Button
+    //         btnType="primary"
+    //         onClick={(e) => {
+    //           e.preventDefault();
+    //           registerHandler();
+    //         }}
+    //         disabled={!isFormValid}
+    //       >
+    //         Регистрация
+    //       </Button>
+    //     </form>
+    //   </div>
+    // </div>
   );
 };
 

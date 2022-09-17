@@ -17,18 +17,13 @@ function App(props) {
       console.log("check is started");
       checkAuth();
     }
-    //TODO Make hook
   }, []);
   const { isAuth, checkAuth } = props;
   return (
     <Layout>
       <Routes>
         <Route path="auth" element={isAuth ? <Navigate to="/" /> : <Auth />} />
-        <Route
-          path="my"
-          // element={!isAuth ? <Navigate to="auth" /> : <MyQuizList />}
-          element={<MyQuizList />}
-        />
+        <Route path="my" element={<MyQuizList />} />
         <Route path="create" element={<QuizCreator />} />
         <Route path="quiz/:id" element={<Quiz />} />
         <Route path="/" element={<QuizList />} />
