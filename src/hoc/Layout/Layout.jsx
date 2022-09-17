@@ -20,8 +20,11 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  MenuItem,
   Toolbar,
   Typography,
+  Menu as MuiMenu,
+  Divider,
 } from "@mui/material";
 import { grey, indigo, teal } from "@mui/material/colors";
 import { useTheme } from "@mui/material/styles";
@@ -46,6 +49,8 @@ const drawerWidth = 220;
 const Layout = ({ isAuth, user, children }) => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [title, setTitle] = useState("");
+  const [anchor, setAnchor] = useState(null);
+  const isMenuOpen = Boolean(anchor);
   const location = useLocation();
   const handleDrawerOpen = () => setDrawerOpen(true);
   const handleDrawerClose = () => setDrawerOpen(false);
@@ -155,14 +160,61 @@ const Layout = ({ isAuth, user, children }) => {
               sx={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-between",
+                justifyContent: "flex-end",
                 gap: 1.2,
               }}
             >
               <Typography>{isAuth ? user.email : "Гость"}</Typography>
-              <Avatar sx={{ background: isAuth ? indigo[600] : teal[400] }}>
-                {isAuth ? user.email[0].toUpperCase() : "Г"}
-              </Avatar>
+              <IconButton
+                onClick={({ currentTarget }) => setAnchor(currentTarget)}
+              >
+                <Avatar sx={{ background: isAuth ? indigo[600] : teal[400] }}>
+                  {isAuth ? user.email[0].toUpperCase() : "Г"}
+                </Avatar>
+              </IconButton>
+              <MuiMenu
+                anchorEl={anchor}
+                id="account-menu"
+                open={isMenuOpen}
+                onClose={() => setAnchor(null)}
+                onClick={() => setAnchor(null)}
+                PaperProps={{
+                  elevation: 0,
+                  sx: {
+                    overflow: "visible",
+                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                    mt: 1.5,
+                  },
+                }}
+                transformOrigin={{ horizontal: "right", vertical: "top" }}
+                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+              >
+                <MenuItem
+                  sx={{
+                    padding: 0,
+                    "& a": {
+                      textDecoration: "none",
+                      color: "inherit",
+                      display: "flex",
+                      alignItems: "center",
+                      padding: `${theme.spacing(1)} ${theme.spacing(1.5)}`,
+                      gap: 1.2,
+                    },
+                  }}
+                >
+                  {isAuth ? (
+                    <Link to="/logout">
+                      <Login />
+                      Выйти
+                    </Link>
+                  ) : (
+                    <Link to="/auth">
+                      <Login />
+                      Авторизация
+                    </Link>
+                  )}
+                </MenuItem>
+              </MuiMenu>
             </Box>
           </Toolbar>
         </AppBar>
