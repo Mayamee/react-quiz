@@ -1,4 +1,4 @@
-import { EMAIL, MAX_LENGTH, MIN_LENGTH, ONLY_ENGLISH_EMAIL } from "./Rules";
+import { EMAIL, MAX_LENGTH, MIN_LENGTH, ONLY_ENGLISH_EMAIL } from "./rules";
 
 export default function validator(rule, value) {
   if (rule.type === MIN_LENGTH) {

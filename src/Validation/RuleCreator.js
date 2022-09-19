@@ -1,4 +1,4 @@
-import { EMAIL, MAX_LENGTH, MIN_LENGTH, ONLY_ENGLISH_EMAIL } from "./Rules";
+import { EMAIL, MAX_LENGTH, MIN_LENGTH, ONLY_ENGLISH_EMAIL } from "./rules";
 
 export const minLength = (length = 0) => ({
   type: MIN_LENGTH,

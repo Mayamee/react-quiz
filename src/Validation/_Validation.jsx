@@ -1,10 +1,9 @@
-import React from "react";
 import { createContext } from "react";
-import validator from "./Validator";
+import validator from "./validator";
 
 export const ValidationContext = createContext(null);
 
-const Validation = ({ rules, children }) => (
+export const Validation = ({ rules, children }) => (
   <ValidationContext.Provider
     value={(itemValue) =>
       [].concat(rules).reduce((isValid, rule) => {
@@ -15,5 +14,3 @@ const Validation = ({ rules, children }) => (
     {children}
   </ValidationContext.Provider>
 );
-
-export default Validation;

@@ -28,7 +28,13 @@ const Store = configureStore({
   middleware: [thunk],
 });
 
-const theme = createTheme({});
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#ECBC76",
+    },
+  },
+});
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const app = (

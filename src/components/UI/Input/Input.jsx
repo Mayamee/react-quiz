@@ -1,7 +1,7 @@
 import classes from "./Input.module.scss";
 import { getRandomHash } from "../../../helpers/random";
 import { useContext } from "react";
-import { ValidationContext } from "../../../validation/Validation";
+import { ValidationContext } from "../../../validation/_Validation";
 const Input = ({ label, type, onChange, value }) => {
   const validate = useContext(ValidationContext);
   const inputType = type || "text";

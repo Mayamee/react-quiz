@@ -1,73 +1,78 @@
-import { useState } from "react";
-import classes from "./Auth.module.scss";
-import Button from "../../components/UI/Button/Button";
-import Input from "../../components/UI/Input/Input";
-import Validation from "../../validation/Validation";
+import { useEffect, useState } from "react";
 import {
-  email,
+  email as emailRule,
   maxLength,
   minLength,
   onlyEnglishEmail,
-} from "../../validation/RuleCreator";
-import { validateFormFields } from "../../helpers/valid";
-import { createValidationInputField } from "../../helpers/formInputCreator";
+  required as requiredRule,
+} from "../../validation/ruleCreator";
 import { connect } from "react-redux";
 import { authLogin, authRegister } from "../../store/actions/authorization";
 import { Box } from "@mui/system";
-import Loader from "../../components/UI/Loader/Loader";
+import { LoadingButton } from "@mui/lab";
 import PageContainer from "../../components/UI/styled/PageContainer/PageContainer";
 import ThreeLinesLoader from "../../components/UI/ThreeLinesLoader/ThreeLinesLoader";
 import FixedFullPage from "../../components/UI/styled/FixedFullPage/FixedFullPage";
 import FixedFullPageBody from "../../components/UI/styled/FixedFullPage/FixedFullPageBody";
 import FixedFullPageBackground from "../../components/UI/styled/FixedFullPage/FixedFullPageBackground";
-import { Paper } from "@mui/material";
-
-const initForm = () => [
-  createValidationInputField("Email", [email(), onlyEnglishEmail()], "email"),
-  createValidationInputField(
-    "Password",
-    [minLength(6), maxLength(32)],
-    "password"
-  ),
-];
+import { Paper, TextField, Typography, useTheme } from "@mui/material";
+import {
+  FormBody,
+  FormBox,
+} from "../../components/UI/styled/FormElements/FormBody";
+import { Send } from "@mui/icons-material";
+import debounce from "../../helpers/debounce";
+import { PrimaryButton } from "../../components/UI/styled/Button/PrimaryButton";
+import { validate } from "../../validation/validate";
 
 const Auth = ({ login, register, msg }) => {
+  const theme = useTheme();
+  const [isLogin, setIsLogin] = useState(false);
   const [isFormValid, setFormValid] = useState(false);
-  const [formFields, setFormFields] = useState(initForm());
-
-  const loginHandler = () => {
-    login(formFields[0].value, formFields[1].value);
-    setFormValid(false);
-    setFormFields(initForm());
+  const [formControls, setFormControls] = useState({
+    email: { value: "", isValid: false },
+    username: { value: "", isValid: false },
+    password: { value: "", isValid: false },
+  });
+  const validationRules = {
+    email: [requiredRule(), emailRule(), onlyEnglishEmail()],
+    userName: [requiredRule(), minLength(3), maxLength(30)],
+    password: [requiredRule(), minLength(6), maxLength(30)],
   };
-  const registerHandler = () => {
-    register(formFields[0].value, formFields[1].value);
-    setFormValid(false);
-    setFormFields(initForm());
-  };
-
-  const onChangeHandler = (id, value, isValid) => {
-    const formFieldsCopy = [...formFields];
-    const field = formFieldsCopy[id];
-    field.value = value;
-    field.isValid = isValid;
-    formFieldsCopy[id] = field;
-    const isFormValid = validateFormFields(formFieldsCopy);
-    setFormValid(isFormValid);
-    setFormFields(formFieldsCopy);
-  };
-  const renderInputs = () =>
-    formFields.map((field, index) => (
-      <Validation rules={field.validationRules} key={`${field.label}-${index}`}>
-        <Input
-          type={field.type}
-          value={field.value}
-          label={field.label}
-          onChange={onChangeHandler.bind(this, index)}
-        />
-      </Validation>
-    ));
-
+  useEffect(() => {
+    console.log("formControls", formControls);
+  }, [
+    formControls.email.isValid,
+    formControls.username.isValid,
+    formControls.password.isValid,
+  ]);
+  const emailHandler = ({ target: { value } }) =>
+    setFormControls((prev) => ({
+      ...prev,
+      email: {
+        value,
+        isValid: validate(validationRules.email, value),
+      },
+    }));
+  const userNameHandler = ({ target: { value } }) =>
+    setFormControls((prev) => ({
+      ...prev,
+      username: {
+        value,
+        isValid: validate(validationRules.userName, value),
+      },
+    }));
+  const passwordHandler = ({ target: { value } }) =>
+    setFormControls((prev) => ({
+      ...prev,
+      password: {
+        value,
+        isValid: validate(validationRules.password, value),
+      },
+    }));
+  const submitHandler = debounce((e) => {
+    console.log("debounce");
+  }, 1000);
   return (
     <>
       <FixedFullPage bgColor="#fff" id="app-auth-wrapper">
@@ -96,8 +101,142 @@ const Auth = ({ login, register, msg }) => {
             justifyContent: "center",
           }}
         >
-          {/* <Box sx={{ width: "300px" }}>01</Box> */}
-          {/* Auth form component */}
+          <Paper
+            elevation={10}
+            sx={{
+              padding: `${theme.spacing(6.25)} ${theme.spacing(5)}`,
+              borderRadius: "10px",
+            }}
+          >
+            <Box
+              sx={{
+                width: 560,
+              }}
+            >
+              <Box
+                id="app-auth-title"
+                sx={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  justifyContent: "space-between",
+                  gap: "20px",
+                  marginBottom: theme.spacing(5.625),
+                }}
+              >
+                <Box sx={{ flexBasis: "60%" }}>
+                  <Typography
+                    component="h1"
+                    variant="h6"
+                    sx={{
+                      marginBottom: "10px",
+                    }}
+                  >
+                    Добро пожаловать в Quiz
+                  </Typography>
+                  <Typography component="h2" variant="h4">
+                    {isLogin ? "Регистрация" : "Войти"}
+                  </Typography>
+                </Box>
+                <Box sx={{ flexBasis: "40%" }}>
+                  <Typography component="p" variant="body2">
+                    {isLogin ? "Уже" : "Еще не"} зарегистрированы?
+                  </Typography>
+                  <PrimaryButton
+                    href="#void"
+                    onClick={(e) => {
+                      setIsLogin(!isLogin);
+                    }}
+                  >
+                    {isLogin ? "Войти" : "Зарегистрироваться"}
+                  </PrimaryButton>
+                </Box>
+              </Box>
+              <Box>
+                <form
+                  noValidate
+                  autoComplete="off"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    submitHandler(e);
+                  }}
+                >
+                  <FormBody>
+                    <FormBox
+                      quantity={isLogin ? 1 : 2}
+                      gutterBottom={theme.spacing(2.5)}
+                      gap={theme.spacing(1.5)}
+                      sx={{
+                        maxWidth: isLogin ? "100%" : 400,
+                      }}
+                    >
+                      <TextField
+                        onChange={emailHandler}
+                        value={formControls.email.value}
+                        className="gap-input"
+                        color="primary"
+                        label="Email"
+                        type="email"
+                        variant="outlined"
+                        fullWidth
+                        required
+                        error={false}
+                      />
+
+                      {isLogin && (
+                        <TextField
+                          onChange={userNameHandler}
+                          value={formControls.username.value}
+                          className="gap-input"
+                          color="primary"
+                          label="Username"
+                          variant="outlined"
+                          fullWidth
+                          required
+                          error={false}
+                        />
+                      )}
+                    </FormBox>
+                    <FormBox
+                      gutterBottom={theme.spacing(2.5)}
+                      sx={{
+                        maxWidth: isLogin ? "100%" : 400,
+                      }}
+                    >
+                      <TextField
+                        onChange={passwordHandler}
+                        value={formControls.password.value}
+                        className="gap-input"
+                        color="primary"
+                        label="Password"
+                        variant="outlined"
+                        type="password"
+                        fullWidth
+                        required
+                        error={false}
+                      />
+                    </FormBox>
+                    <FormBox>
+                      <LoadingButton
+                        sx={{
+                          maxWidth: isLogin ? "100%" : 160,
+                        }}
+                        size="large"
+                        color="primary"
+                        type="submit"
+                        endIcon={isLogin && <Send />}
+                        disabled={false}
+                        loading={false}
+                        loadingPosition="center"
+                        variant="contained"
+                      >
+                        Отправить
+                      </LoadingButton>
+                    </FormBox>
+                  </FormBody>
+                </form>
+              </Box>
+            </Box>
+          </Paper>
         </FixedFullPageBody>
       </FixedFullPage>
       <PageContainer
@@ -111,35 +250,6 @@ const Auth = ({ login, register, msg }) => {
         <ThreeLinesLoader />
       </PageContainer>
     </>
-    // <div className={classes.Auth}>
-    //   <div>
-    //     <h1>Авторизация</h1>
-    //     <div className="message">{msg}</div>
-    //     <form className={classes.AuthForm} onSubmit={(e) => e.preventDefault()}>
-    //       <div className="inputsContainer">{renderInputs()}</div>
-    //       <Button
-    //         btnType="success"
-    //         onClick={(e) => {
-    //           e.preventDefault();
-    //           loginHandler();
-    //         }}
-    //         disabled={!isFormValid}
-    //       >
-    //         Войти
-    //       </Button>
-    //       <Button
-    //         btnType="primary"
-    //         onClick={(e) => {
-    //           e.preventDefault();
-    //           registerHandler();
-    //         }}
-    //         disabled={!isFormValid}
-    //       >
-    //         Регистрация
-    //       </Button>
-    //     </form>
-    //   </div>
-    // </div>
   );
 };
 
