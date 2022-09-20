@@ -91,7 +91,17 @@ const Auth = ({ login, register, msg }) => {
     setFormControls(initFormControls());
   };
   const submitHandler = debounce((e) => {
-    console.log("debounce");
+    if (!isFormValid) return;
+    e.preventDefault();
+    if (isLogin) {
+      login(formControls.email.value, formControls.password.value);
+    } else {
+      register(
+        formControls.email.value,
+        formControls.username.value,
+        formControls.password.value
+      );
+    }
   }, 1000);
   return (
     <>
@@ -159,10 +169,10 @@ const Auth = ({ login, register, msg }) => {
                 </Box>
                 <Box sx={{ flexBasis: "40%" }}>
                   <Typography component="p" variant="body2">
-                    {isLogin ? "Уже" : "Еще не"} зарегистрированы?
+                    {isLogin ? "Еще не" : "Уже"} зарегистрированы?
                   </Typography>
                   <PrimaryButton href="#void" onClick={changeFormHandler}>
-                    {isLogin ? "Войти" : "Зарегистрироваться"}
+                    {isLogin ? "Зарегистрироваться" : "Войти"}
                   </PrimaryButton>
                 </Box>
               </Box>
@@ -207,6 +217,7 @@ const Auth = ({ login, register, msg }) => {
                           className="gap-input"
                           color="primary"
                           label="Username"
+                          type="text"
                           variant="outlined"
                           fullWidth
                           required
@@ -283,7 +294,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   login: (email, password) => dispatch(authLogin(email, password)),
-  register: (email, password) => dispatch(authRegister(email, password)),
+  register: (email, username, password) =>
+    dispatch(authRegister(email, username, password)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);

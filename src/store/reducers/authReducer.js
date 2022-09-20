@@ -71,6 +71,7 @@ export function authReducer(state = initialState, action) {
       user: {
         id: action.payload.id,
         email: action.payload.email,
+        username: action.payload.username,
         isActivated: action.payload.activated,
       },
     };

@@ -28,10 +28,10 @@ export const authLogin = (email, password) => async (dispatch) => {
     }
   }
 };
-export const authRegister = (email, password) => async (dispatch) => {
+export const authRegister = (email, username, password) => async (dispatch) => {
   try {
     dispatch(authRegisterStarted());
-    const res = await AuthService.register(email, password);
+    const res = await AuthService.register(email, username, password);
     const { data } = res;
     localStorage.setItem("token", data.accessToken);
     dispatch(authRegisterSuccess(data.accessToken));

@@ -25,6 +25,7 @@ import {
   Toolbar,
   Typography,
   Menu as MuiMenu,
+  Divider,
 } from "@mui/material";
 import { grey, indigo, teal } from "@mui/material/colors";
 import { useTheme } from "@mui/material/styles";
@@ -163,7 +164,7 @@ const Layout = ({ isAuth, user, children }) => {
                 gap: 1.2,
               }}
             >
-              <Typography>{isAuth ? user.email : "Гость"}</Typography>
+              <Typography>{isAuth ? user.username : "Гость"}</Typography>
               <IconButton
                 onClick={({ currentTarget }) => setAnchor(currentTarget)}
               >
@@ -188,6 +189,8 @@ const Layout = ({ isAuth, user, children }) => {
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
               >
+                {isAuth && <MenuItem>{user.email}</MenuItem>}
+                {isAuth && <Divider />}
                 <MenuItem
                   sx={{
                     padding: 0,
