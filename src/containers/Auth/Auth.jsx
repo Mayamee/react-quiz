@@ -25,22 +25,35 @@ import debounce from "../../helpers/debounce";
 import { PrimaryButton } from "../../components/UI/styled/Button/PrimaryButton";
 import { validate } from "../../validation/validate";
 
+const initFormControls = () => ({
+  email: { value: "", isValid: false, touched: false },
+  username: { value: "", isValid: false, touched: false },
+  password: { value: "", isValid: false, touched: false },
+});
+
 const Auth = ({ login, register, msg }) => {
   const theme = useTheme();
   const [isLogin, setIsLogin] = useState(false);
   const [isFormValid, setFormValid] = useState(false);
-  const [formControls, setFormControls] = useState({
-    email: { value: "", isValid: false },
-    username: { value: "", isValid: false },
-    password: { value: "", isValid: false },
-  });
+  const [formControls, setFormControls] = useState(initFormControls());
   const validationRules = {
     email: [requiredRule(), emailRule(), onlyEnglishEmail()],
     userName: [requiredRule(), minLength(3), maxLength(30)],
     password: [requiredRule(), minLength(6), maxLength(30)],
   };
+  const checkFormValidity = () => {
+    if (isLogin) {
+      return formControls.email.isValid && formControls.password.isValid;
+    } else {
+      return (
+        formControls.email.isValid &&
+        formControls.password.isValid &&
+        formControls.username.isValid
+      );
+    }
+  };
   useEffect(() => {
-    console.log("formControls", formControls);
+    setFormValid(checkFormValidity());
   }, [
     formControls.email.isValid,
     formControls.username.isValid,
@@ -52,6 +65,7 @@ const Auth = ({ login, register, msg }) => {
       email: {
         value,
         isValid: validate(validationRules.email, value),
+        touched: true,
       },
     }));
   const userNameHandler = ({ target: { value } }) =>
@@ -60,6 +74,7 @@ const Auth = ({ login, register, msg }) => {
       username: {
         value,
         isValid: validate(validationRules.userName, value),
+        touched: true,
       },
     }));
   const passwordHandler = ({ target: { value } }) =>
@@ -68,8 +83,13 @@ const Auth = ({ login, register, msg }) => {
       password: {
         value,
         isValid: validate(validationRules.password, value),
+        touched: true,
       },
     }));
+  const changeFormHandler = () => {
+    setIsLogin(!isLogin);
+    setFormControls(initFormControls());
+  };
   const submitHandler = debounce((e) => {
     console.log("debounce");
   }, 1000);
@@ -134,19 +154,14 @@ const Auth = ({ login, register, msg }) => {
                     Добро пожаловать в Quiz
                   </Typography>
                   <Typography component="h2" variant="h4">
-                    {isLogin ? "Регистрация" : "Войти"}
+                    {isLogin ? "Войти" : "Регистрация"}
                   </Typography>
                 </Box>
                 <Box sx={{ flexBasis: "40%" }}>
                   <Typography component="p" variant="body2">
                     {isLogin ? "Уже" : "Еще не"} зарегистрированы?
                   </Typography>
-                  <PrimaryButton
-                    href="#void"
-                    onClick={(e) => {
-                      setIsLogin(!isLogin);
-                    }}
-                  >
+                  <PrimaryButton href="#void" onClick={changeFormHandler}>
                     {isLogin ? "Войти" : "Зарегистрироваться"}
                   </PrimaryButton>
                 </Box>
@@ -166,7 +181,7 @@ const Auth = ({ login, register, msg }) => {
                       gutterBottom={theme.spacing(2.5)}
                       gap={theme.spacing(1.5)}
                       sx={{
-                        maxWidth: isLogin ? "100%" : 400,
+                        maxWidth: isLogin ? 400 : "100%",
                       }}
                     >
                       <TextField
@@ -179,10 +194,13 @@ const Auth = ({ login, register, msg }) => {
                         variant="outlined"
                         fullWidth
                         required
-                        error={false}
+                        error={
+                          formControls.email.touched &&
+                          !formControls.email.isValid
+                        }
                       />
 
-                      {isLogin && (
+                      {!isLogin && (
                         <TextField
                           onChange={userNameHandler}
                           value={formControls.username.value}
@@ -192,14 +210,17 @@ const Auth = ({ login, register, msg }) => {
                           variant="outlined"
                           fullWidth
                           required
-                          error={false}
+                          error={
+                            formControls.username.touched &&
+                            !formControls.username.isValid
+                          }
                         />
                       )}
                     </FormBox>
                     <FormBox
                       gutterBottom={theme.spacing(2.5)}
                       sx={{
-                        maxWidth: isLogin ? "100%" : 400,
+                        maxWidth: isLogin ? 400 : "100%",
                       }}
                     >
                       <TextField
@@ -212,19 +233,22 @@ const Auth = ({ login, register, msg }) => {
                         type="password"
                         fullWidth
                         required
-                        error={false}
+                        error={
+                          formControls.password.touched &&
+                          !formControls.password.isValid
+                        }
                       />
                     </FormBox>
                     <FormBox>
                       <LoadingButton
                         sx={{
-                          maxWidth: isLogin ? "100%" : 160,
+                          maxWidth: isLogin ? 160 : "100%",
                         }}
                         size="large"
                         color="primary"
                         type="submit"
-                        endIcon={isLogin && <Send />}
-                        disabled={false}
+                        endIcon={!isLogin && <Send />}
+                        disabled={!isFormValid}
                         loading={false}
                         loadingPosition="center"
                         variant="contained"
