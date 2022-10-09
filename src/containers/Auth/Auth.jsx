@@ -10,8 +10,6 @@ import { connect } from "react-redux";
 import { authLogin, authRegister } from "../../store/actions/authorization";
 import { Box } from "@mui/system";
 import { LoadingButton } from "@mui/lab";
-import PageContainer from "../../components/UI/styled/PageContainer/PageContainer";
-import ThreeLinesLoader from "../../components/UI/ThreeLinesLoader/ThreeLinesLoader";
 import FixedFullPage from "../../components/UI/styled/FixedFullPage/FixedFullPage";
 import FixedFullPageBody from "../../components/UI/styled/FixedFullPage/FixedFullPageBody";
 import FixedFullPageBackground from "../../components/UI/styled/FixedFullPage/FixedFullPageBackground";
@@ -38,7 +36,7 @@ const initFormControls = () => ({
   password: { value: "", isValid: false, touched: false },
 });
 
-const Auth = ({ login, register, msg }) => {
+const Auth = ({ login, register, isButtonLoading, msg }) => {
   const theme = useTheme();
   const [isLogin, setIsLogin] = useState(false);
   const [isFormValid, setFormValid] = useState(false);
@@ -273,7 +271,7 @@ const Auth = ({ login, register, msg }) => {
                       type="submit"
                       endIcon={!isLogin && <Send />}
                       disabled={!isFormValid}
-                      loading={false}
+                      loading={isButtonLoading}
                       loadingPosition="center"
                       variant="contained"
                     >
@@ -292,6 +290,7 @@ const Auth = ({ login, register, msg }) => {
 
 const mapStateToProps = (state) => ({
   msg: state.auth.msg,
+  isButtonLoading: state.auth.isButtonLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({
