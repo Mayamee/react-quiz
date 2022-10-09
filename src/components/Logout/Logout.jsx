@@ -1,17 +1,24 @@
 import { connect } from "react-redux";
 import classes from "./Logout.module.scss";
-import Loader from "../UI/Loader/Loader";
 import { useEffect } from "react";
 import { authLogout } from "../../store/actions/authorization";
 import { Navigate } from "react-router-dom";
+import ThreeLinesLoader from "../UI/ThreeLinesLoader/ThreeLinesLoader";
+import PageContainer from "../UI/styled/PageContainer/PageContainer";
 const Logout = ({ logout, isAuth }) => {
   useEffect(() => {
     logout();
   }, []);
   return (
-    <div className={classes.Logout}>
-      {isAuth ? <Loader /> : <Navigate to="/" />}
-    </div>
+    <PageContainer
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      {isAuth ? <ThreeLinesLoader /> : <Navigate to="/" />}
+    </PageContainer>
   );
 };
 
