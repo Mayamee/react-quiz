@@ -1,5 +1,4 @@
 import { connect } from "react-redux";
-import classes from "./Logout.module.scss";
 import { useEffect } from "react";
 import { authLogout } from "../../store/actions/authorization";
 import { Navigate } from "react-router-dom";
