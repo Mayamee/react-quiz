@@ -15,15 +15,22 @@ import ThreeLinesLoader from "../../components/UI/ThreeLinesLoader/ThreeLinesLoa
 import FixedFullPage from "../../components/UI/styled/FixedFullPage/FixedFullPage";
 import FixedFullPageBody from "../../components/UI/styled/FixedFullPage/FixedFullPageBody";
 import FixedFullPageBackground from "../../components/UI/styled/FixedFullPage/FixedFullPageBackground";
-import { Paper, TextField, Typography, useTheme } from "@mui/material";
+import {
+  IconButton,
+  Paper,
+  TextField,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import {
   FormBody,
   FormBox,
 } from "../../components/UI/styled/FormElements/FormBody";
-import { Send } from "@mui/icons-material";
+import { ChevronLeft, Send } from "@mui/icons-material";
 import debounce from "../../helpers/debounce";
 import { PrimaryButton } from "../../components/UI/styled/Button/PrimaryButton";
 import { validate } from "../../validation/validate";
+import { Link } from "react-router-dom";
 
 const initFormControls = () => ({
   email: { value: "", isValid: false, touched: false },
@@ -104,187 +111,182 @@ const Auth = ({ login, register, msg }) => {
     }
   }, 1000);
   return (
-    <>
-      <FixedFullPage bgColor="#fff" id="app-auth-wrapper">
-        <FixedFullPageBackground
-          sx={{
-            display: "flex",
-          }}
-        >
-          <Box
-            sx={{
-              backgroundColor: "#ECBC76",
-              flexBasis: "50%",
-            }}
-          />
-          <Box
-            sx={{
-              backgroundColor: "#FFFEF9",
-              flexBasis: "50%",
-            }}
-          />
-        </FixedFullPageBackground>
-        <FixedFullPageBody
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Paper
-            elevation={10}
-            sx={{
-              padding: `${theme.spacing(6.25)} ${theme.spacing(5)}`,
-              borderRadius: "10px",
-            }}
-          >
-            <Box
-              sx={{
-                width: 560,
-              }}
-            >
-              <Box
-                id="app-auth-title"
-                sx={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  justifyContent: "space-between",
-                  gap: "20px",
-                  marginBottom: theme.spacing(5.625),
-                }}
-              >
-                <Box sx={{ flexBasis: "60%" }}>
-                  <Typography
-                    component="h1"
-                    variant="h6"
-                    sx={{
-                      marginBottom: "10px",
-                    }}
-                  >
-                    Добро пожаловать в Quiz
-                  </Typography>
-                  <Typography component="h2" variant="h4">
-                    {isLogin ? "Войти" : "Регистрация"}
-                  </Typography>
-                </Box>
-                <Box sx={{ flexBasis: "40%" }}>
-                  <Typography component="p" variant="body2">
-                    {isLogin ? "Еще не" : "Уже"} зарегистрированы?
-                  </Typography>
-                  <PrimaryButton href="#void" onClick={changeFormHandler}>
-                    {isLogin ? "Зарегистрироваться" : "Войти"}
-                  </PrimaryButton>
-                </Box>
-              </Box>
-              <Box>
-                <form
-                  noValidate
-                  autoComplete="off"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    submitHandler(e);
-                  }}
-                >
-                  <FormBody>
-                    <FormBox
-                      quantity={isLogin ? 1 : 2}
-                      gutterBottom={theme.spacing(2.5)}
-                      gap={theme.spacing(1.5)}
-                      sx={{
-                        maxWidth: isLogin ? 400 : "100%",
-                      }}
-                    >
-                      <TextField
-                        onChange={emailHandler}
-                        value={formControls.email.value}
-                        className="gap-input"
-                        color="primary"
-                        label="Email"
-                        type="email"
-                        variant="outlined"
-                        fullWidth
-                        required
-                        error={
-                          formControls.email.touched &&
-                          !formControls.email.isValid
-                        }
-                      />
-
-                      {!isLogin && (
-                        <TextField
-                          onChange={userNameHandler}
-                          value={formControls.username.value}
-                          className="gap-input"
-                          color="primary"
-                          label="Username"
-                          type="text"
-                          variant="outlined"
-                          fullWidth
-                          required
-                          error={
-                            formControls.username.touched &&
-                            !formControls.username.isValid
-                          }
-                        />
-                      )}
-                    </FormBox>
-                    <FormBox
-                      gutterBottom={theme.spacing(2.5)}
-                      sx={{
-                        maxWidth: isLogin ? 400 : "100%",
-                      }}
-                    >
-                      <TextField
-                        onChange={passwordHandler}
-                        value={formControls.password.value}
-                        className="gap-input"
-                        color="primary"
-                        label="Password"
-                        variant="outlined"
-                        type="password"
-                        fullWidth
-                        required
-                        error={
-                          formControls.password.touched &&
-                          !formControls.password.isValid
-                        }
-                      />
-                    </FormBox>
-                    <FormBox>
-                      <LoadingButton
-                        sx={{
-                          maxWidth: isLogin ? 160 : "100%",
-                        }}
-                        size="large"
-                        color="primary"
-                        type="submit"
-                        endIcon={!isLogin && <Send />}
-                        disabled={!isFormValid}
-                        loading={false}
-                        loadingPosition="center"
-                        variant="contained"
-                      >
-                        Отправить
-                      </LoadingButton>
-                    </FormBox>
-                  </FormBody>
-                </form>
-              </Box>
-            </Box>
-          </Paper>
-        </FixedFullPageBody>
-      </FixedFullPage>
-      <PageContainer
+    <FixedFullPage bgColor="#fff" id="app-auth-wrapper">
+      <FixedFullPageBackground
         sx={{
           display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "#fff",
         }}
       >
-        <ThreeLinesLoader />
-      </PageContainer>
-    </>
+        <Box
+          sx={{
+            backgroundColor: "#ECBC76",
+            flexBasis: "50%",
+          }}
+        />
+        <Box
+          sx={{
+            backgroundColor: "#FFFEF9",
+            flexBasis: "50%",
+          }}
+        />
+      </FixedFullPageBackground>
+      <FixedFullPageBody
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Paper
+          elevation={10}
+          sx={{
+            padding: `${theme.spacing(6.25)} ${theme.spacing(5)}`,
+            borderRadius: "10px",
+          }}
+        >
+          <Box
+            sx={{
+              width: 560,
+            }}
+          >
+            <Box>
+              <Link to="/">
+                <IconButton color="primary">
+                  <ChevronLeft />
+                </IconButton>
+              </Link>
+            </Box>
+            <Box
+              id="app-auth-title"
+              sx={{
+                display: "flex",
+                alignItems: "flex-start",
+                justifyContent: "space-between",
+                gap: "20px",
+                marginBottom: theme.spacing(5.625),
+              }}
+            >
+              <Box sx={{ flexBasis: "60%" }}>
+                <Typography
+                  component="h1"
+                  variant="h6"
+                  sx={{
+                    marginBottom: "10px",
+                  }}
+                >
+                  Добро пожаловать в Quiz
+                </Typography>
+                <Typography component="h2" variant="h4">
+                  {isLogin ? "Войти" : "Регистрация"}
+                </Typography>
+              </Box>
+              <Box sx={{ flexBasis: "40%" }}>
+                <Typography component="p" variant="body2">
+                  {isLogin ? "Еще не" : "Уже"} зарегистрированы?
+                </Typography>
+                <PrimaryButton href="#void" onClick={changeFormHandler}>
+                  {isLogin ? "Зарегистрироваться" : "Войти"}
+                </PrimaryButton>
+              </Box>
+            </Box>
+            <Box>
+              <form
+                noValidate
+                autoComplete="off"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  submitHandler(e);
+                }}
+              >
+                <FormBody>
+                  <FormBox
+                    quantity={isLogin ? 1 : 2}
+                    gutterBottom={theme.spacing(2.5)}
+                    gap={theme.spacing(1.5)}
+                    sx={{
+                      maxWidth: isLogin ? 400 : "100%",
+                    }}
+                  >
+                    <TextField
+                      onChange={emailHandler}
+                      value={formControls.email.value}
+                      className="gap-input"
+                      color="primary"
+                      label="Email"
+                      type="email"
+                      variant="outlined"
+                      fullWidth
+                      required
+                      error={
+                        formControls.email.touched &&
+                        !formControls.email.isValid
+                      }
+                    />
+
+                    {!isLogin && (
+                      <TextField
+                        onChange={userNameHandler}
+                        value={formControls.username.value}
+                        className="gap-input"
+                        color="primary"
+                        label="Username"
+                        type="text"
+                        variant="outlined"
+                        fullWidth
+                        required
+                        error={
+                          formControls.username.touched &&
+                          !formControls.username.isValid
+                        }
+                      />
+                    )}
+                  </FormBox>
+                  <FormBox
+                    gutterBottom={theme.spacing(2.5)}
+                    sx={{
+                      maxWidth: isLogin ? 400 : "100%",
+                    }}
+                  >
+                    <TextField
+                      onChange={passwordHandler}
+                      value={formControls.password.value}
+                      className="gap-input"
+                      color="primary"
+                      label="Password"
+                      variant="outlined"
+                      type="password"
+                      fullWidth
+                      required
+                      error={
+                        formControls.password.touched &&
+                        !formControls.password.isValid
+                      }
+                    />
+                  </FormBox>
+                  <FormBox>
+                    <LoadingButton
+                      sx={{
+                        maxWidth: isLogin ? 160 : "100%",
+                      }}
+                      size="large"
+                      color="primary"
+                      type="submit"
+                      endIcon={!isLogin && <Send />}
+                      disabled={!isFormValid}
+                      loading={false}
+                      loadingPosition="center"
+                      variant="contained"
+                    >
+                      Отправить
+                    </LoadingButton>
+                  </FormBox>
+                </FormBody>
+              </form>
+            </Box>
+          </Box>
+        </Paper>
+      </FixedFullPageBody>
+    </FixedFullPage>
   );
 };
 

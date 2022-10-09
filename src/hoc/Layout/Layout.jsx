@@ -40,10 +40,7 @@ import AppWrapper from "../../components/UI/styled/AppWrapper/AppWrapper";
 import Drawer from "../../components/UI/styled/Drawer/Drawer";
 import DrawerHeader from "../../components/UI/styled/Drawer/DrawerHeader";
 import Footer from "../../components/UI/styled/Footer/Footer";
-import {
-  makeLinkToDrawer,
-  removeLinksFromDrawer,
-} from "../../helpers/makeLinksToDrawer";
+import { makeLinkToDrawer } from "../../helpers/makeLinksToDrawer";
 
 const drawerWidth = 220;
 
@@ -57,22 +54,14 @@ const Layout = ({ isAuth, user, children }) => {
   const handleDrawerClose = () => setDrawerOpen(false);
   const theme = useTheme();
   let links = [
-    makeLinkToDrawer("/my", "Мои тесты", <Radar />),
     makeLinkToDrawer("/", "Список тестов", <Quiz />),
     makeLinkToDrawer("/create", "Создать", <AddCircleOutline />),
-    makeLinkToDrawer("/logout", "Выйти", <Logout />),
-    makeLinkToDrawer("/auth", "Авторизация", <Login />),
   ];
   useEffect(() => {
     const link = links.find((link) => link.to === location.pathname);
     setTitle(link ? link.label : "");
   }, [location.pathname]);
   const renderLinks = (links) => {
-    if (isAuth) {
-      links = removeLinksFromDrawer(["/auth"], links);
-    } else {
-      links = removeLinksFromDrawer(["/logout", "/my"], links);
-    }
     return links.map((link, index) => (
       <ListItem
         key={`${link.to}-${index}`}
