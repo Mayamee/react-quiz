@@ -9,6 +9,7 @@ import {
 } from "../../store/actions/quizActions";
 import PageContainer from "../../components/UI/styled/PageContainer/PageContainer";
 import QuizItemsList from "../../components/QuizItemsList/QuizItemsList";
+import ThreeLinesLoader from "../../components/UI/ThreeLinesLoader/ThreeLinesLoader";
 
 const QuizList = ({
   quizes,
@@ -39,7 +40,7 @@ const QuizList = ({
           alignItems: "center",
         }}
       >
-        <Loader />
+        <ThreeLinesLoader />
       </PageContainer>
     );
   }

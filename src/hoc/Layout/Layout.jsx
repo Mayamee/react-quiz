@@ -7,6 +7,7 @@ import {
   Login,
   Logout,
   Menu,
+  People,
   Quiz,
   Radar,
   Telegram,
@@ -62,6 +63,9 @@ const Layout = ({ isAuth, user, children }) => {
     setTitle(link ? link.label : "");
   }, [location.pathname]);
   const renderLinks = (links) => {
+    if (isAuth) {
+      links.unshift(makeLinkToDrawer("/my", "Мои тесты", <People />));
+    }
     return links.map((link, index) => (
       <ListItem
         key={`${link.to}-${index}`}
