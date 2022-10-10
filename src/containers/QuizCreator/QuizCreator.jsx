@@ -1,19 +1,20 @@
 import { connect } from "react-redux";
-import classes from "./QuizCreator.module.scss";
-import Button from "../../components/UI/Button/Button";
+import { Button as MuiButton, ButtonGroup } from "@mui/material";
 import TouchInput from "../../components/UI/TouchInput/TouchInput";
-import Input from "../../components/UI/Input/Input";
-import Select from "../../components/UI/Select/Select";
+import { NativeSelect as MuiSelect, Paper, TextField } from "@mui/material";
 import {
   addQuestionToQuiz,
   createQuiz,
 } from "../../store/actions/createQuizAction";
 import AppendButton from "../../components/UI/AppendButton/AppendButton";
-import { Validation } from "../../validation/_Validation";
 import { required } from "../../validation/ruleCreator";
-import { validateFormFields } from "../../helpers/valid";
 import { createValidationInputField } from "../../helpers/formInputCreator";
 import { useState } from "react";
+import PageContainer from "../../components/UI/styled/PageContainer/PageContainer";
+import { useTheme } from "@emotion/react";
+import { Add, Create } from "@mui/icons-material";
+import { validate } from "../../validation/validate";
+import { useEffect } from "react";
 
 const initForm = () => [
   createValidationInputField("Введите вопрос", required()),
@@ -22,6 +23,7 @@ const initForm = () => [
 ];
 
 const QuizCreator = ({ quiz, addQuestionToQuiz, createQuiz }) => {
+  const theme = useTheme();
   const [isFormValid, setFormValid] = useState(false);
   const [rightAnswerId, setRightAnswerId] = useState(1);
   const [formFields, setFormFields] = useState(initForm());
@@ -55,16 +57,15 @@ const QuizCreator = ({ quiz, addQuestionToQuiz, createQuiz }) => {
 
     createQuiz(touchInputValue);
   };
-  const onChangeHandler = (id, value, isValid) => {
+  const onChangeHandler = (id, { target: { value } }) => {
     const formFieldsCopy = [...formFields];
     const field = formFieldsCopy[id];
     field.value = value;
-    field.isValid = isValid;
+    field.touched = true;
+    field.isValid = validate(field.validationRules, value);
+    console.log(field);
     formFieldsCopy[id] = field;
-    const isFormValidCopy = validateFormFields(formFieldsCopy);
-
     setFormFields(formFieldsCopy);
-    setFormValid(isFormValidCopy);
   };
 
   const selectChangeHandler = ({ target: { value } }) => {
@@ -72,14 +73,21 @@ const QuizCreator = ({ quiz, addQuestionToQuiz, createQuiz }) => {
   };
   const renderOpts = () => {
     return formFields.map((field, index) => (
-      <Validation rules={field.validationRules} key={`${field.label}-${index}`}>
-        <Input
-          label={field.label}
-          value={field.value}
-          type={field.type}
-          onChange={onChangeHandler.bind(this, index)}
-        />
-      </Validation>
+      <TextField
+        sx={{
+          margin: `${theme.spacing(1)} 0`,
+        }}
+        key={`${field.label}-${index}`}
+        onChange={onChangeHandler.bind(null, index)}
+        value={field.value}
+        color="primary"
+        label={field.label}
+        type="text"
+        variant="outlined"
+        fullWidth
+        required
+        error={field.touched && !field.isValid}
+      />
     ));
   };
   const addOption = () => {
@@ -91,9 +99,28 @@ const QuizCreator = ({ quiz, addQuestionToQuiz, createQuiz }) => {
     setFormValid(false);
   };
 
+  useEffect(() => {
+    const isFormValid = formFields.every((field) => field.isValid);
+    setFormValid(isFormValid);
+  }, [formFields]);
+
   return (
-    <div className={classes.QuizCreator}>
-      <div>
+    <PageContainer
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: `${theme.spacing(3)} 0`,
+      }}
+    >
+      <Paper
+        sx={{
+          padding: `${theme.spacing(3)}`,
+          maxWidth: "800px",
+          borderRadius: `${theme.spacing(2)}`,
+        }}
+        elevation={3}
+      >
         <h1>
           <TouchInput
             touchInputValue={touchInputValue}
@@ -114,34 +141,43 @@ const QuizCreator = ({ quiz, addQuestionToQuiz, createQuiz }) => {
               Добавить вариант ответа
             </AppendButton>
           )}
-          <Select
-            label="Выберите правильный ответ"
+          <MuiSelect
+            id="select"
             value={rightAnswerId}
+            sx={{ width: "100%", marginBottom: "20px" }}
             onChange={selectChangeHandler}
-            options={formFields
-              .map((option, index) => ({
-                text: index,
-                value: index,
-              }))
+          >
+            {formFields
+              .map((_, index) => (
+                <option value={index} key={index}>
+                  {index}
+                </option>
+              ))
               .splice(1)}
-          />
-          <Button
-            btnType="primary"
-            onClick={addQuestionHandler}
-            disabled={!isFormValid}
-          >
-            Добавить вопрос
-          </Button>
-          <Button
-            btnType="success"
-            onClick={createQuizHandler.bind(this)}
-            disabled={quiz.length === 0}
-          >
-            Создать тест
-          </Button>
+          </MuiSelect>
+          <ButtonGroup variant="outlined">
+            <MuiButton
+              endIcon={<Add />}
+              color="primary"
+              variant="outlined"
+              onClick={addQuestionHandler}
+              disabled={!isFormValid}
+            >
+              Добавить вопрос
+            </MuiButton>
+            <MuiButton
+              endIcon={<Create />}
+              color="primary"
+              variant="outlined"
+              onClick={createQuizHandler.bind(this)}
+              disabled={quiz.length === 0}
+            >
+              Создать тест
+            </MuiButton>
+          </ButtonGroup>
         </form>
-      </div>
-    </div>
+      </Paper>
+    </PageContainer>
   );
 };
 
