@@ -159,7 +159,7 @@ const QuizCreator = ({ quiz, addQuestionToQuiz, createQuiz }) => {
             <MuiButton
               endIcon={<Add />}
               color="primary"
-              variant="outlined"
+              variant="contained"
               onClick={addQuestionHandler}
               disabled={!isFormValid}
             >
@@ -168,7 +168,7 @@ const QuizCreator = ({ quiz, addQuestionToQuiz, createQuiz }) => {
             <MuiButton
               endIcon={<Create />}
               color="primary"
-              variant="outlined"
+              variant="contained"
               onClick={createQuizHandler.bind(this)}
               disabled={quiz.length === 0}
             >

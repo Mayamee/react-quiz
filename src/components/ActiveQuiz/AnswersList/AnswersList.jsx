@@ -1,9 +1,9 @@
-import classes from "./AnswersList.module.scss";
 import AnswerItem from "./AnswerItem/AnswerItem";
+import { List } from "@mui/material";
 
 const AnswersList = (props) => {
   return (
-    <ul className={classes.AnswersList}>
+    <List>
       {props.answers.map((answer, index) => {
         return (
           <AnswerItem
@@ -14,7 +14,7 @@ const AnswersList = (props) => {
           />
         );
       })}
-    </ul>
+    </List>
   );
 };
 

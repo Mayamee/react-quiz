@@ -4,7 +4,8 @@ import classes from "./Quiz.module.scss";
 import ActiveQuiz from "../../components/ActiveQuiz/ActiveQuiz";
 import FinishedQuiz from "../../components/FinishedQuiz/FinishedQuiz";
 import Nodata from "../../components/Nodata/Nodata";
-import Loader from "../../components/UI/Loader/Loader";
+import ThreeLinesLoader from "../../components/UI/ThreeLinesLoader/ThreeLinesLoader";
+import PageContainer from "../../components/UI/styled/PageContainer/PageContainer";
 import { connect } from "react-redux";
 import {
   fetchQuizById,
@@ -40,7 +41,7 @@ const Quiz = ({
 
   const getQuiz = () => {
     if (isLoading) {
-      return <Loader />;
+      return <ThreeLinesLoader />;
     }
     if (isQuizFinished) {
       return <FinishedQuiz results={results} quiz={quiz} onRetry={resetQuiz} />;
@@ -64,12 +65,21 @@ const Quiz = ({
     );
   };
   return (
-    <div className={classes.Quiz}>
-      <div className={classes.QuizWrapper}>
-        <h1>{title}</h1>
-        {getQuiz()}
+    <PageContainer
+      id="quiz-page-wrapper"
+      sx={{
+        "& > div": {
+          height: "100%",
+        },
+      }}
+    >
+      <div className={classes.Quiz}>
+        <div className={classes.QuizWrapper}>
+          <h1>{title}</h1>
+          {getQuiz()}
+        </div>
       </div>
-    </div>
+    </PageContainer>
   );
 };
 const mapStateToProps = (state) => ({

@@ -1,8 +1,10 @@
 import classes from "./FinishedQuiz.module.scss";
 import Button from "../UI/Button/Button";
-import { Link } from "react-router-dom";
+import { Button as MuiButton, ButtonGroup } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 
 const FinishedQuiz = (props) => {
+  const navigate = useNavigate();
   const countResults = Object.keys(props.results).reduce((total, key) => {
     if (props.results[key] === "success") {
       total++;
@@ -30,14 +32,15 @@ const FinishedQuiz = (props) => {
       <p>
         Правильно {countResults} из {props.quiz.length}
       </p>
-      <div>
-        <Button btnType="primary" onClick={props.onRetry}>
+      <ButtonGroup>
+        <MuiButton variant="contained" onClick={props.onRetry}>
           Повторить
-        </Button>
-        <Link to="/">
-          <Button btnType="success">Перейти в список тестов</Button>
-        </Link>
-      </div>
+        </MuiButton>
+
+        <MuiButton variant="contained" onClick={() => navigate("/")}>
+          Перейти в список тестов
+        </MuiButton>
+      </ButtonGroup>
     </div>
   );
 };

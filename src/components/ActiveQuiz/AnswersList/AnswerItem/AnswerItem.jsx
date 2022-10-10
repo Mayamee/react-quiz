@@ -1,19 +1,18 @@
+import { ListItem } from "@mui/material";
 import classes from "./AnswerItem.module.scss";
 
-const AnswerItem = (props) => {
+const AnswerItem = ({ answer, state, onAnswerClick }) => {
   const classesOfAnswer = [classes.AnswerItem];
-  if (props.state) {
-    classesOfAnswer.push(classes[props.state]);
+  if (state) {
+    classesOfAnswer.push(classes[state]);
   }
   return (
-    <li
+    <ListItem
       className={classesOfAnswer.join(" ")}
-      onClick={() => {
-        props.onAnswerClick(props.answer.id);
-      }}
+      onClick={onAnswerClick.bind(null, answer.id)}
     >
-      {props.answer.text}
-    </li>
+      {answer.text}
+    </ListItem>
   );
 };
 export default AnswerItem;
