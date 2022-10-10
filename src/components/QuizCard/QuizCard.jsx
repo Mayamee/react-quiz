@@ -29,7 +29,6 @@ const QuizCard = ({ quiz, isAuth, user, onActionClick }) => {
           </Typography>
         </CardContent>
       </Link>
-
       {isAuth && (
         <>
           <Divider variant="middle" />

@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
-import Button from "../UI/Button/Button";
+import { Button as MuiButton } from "@mui/material";
 import classes from "./Nodata.module.scss";
+import { useNavigate } from "react-router-dom";
 
 const Nodata = ({ iconColor = "red", isShowButton = true }) => {
+  const navigate = useNavigate();
   return (
     <div className={classes.Nodata}>
       <p>
@@ -15,9 +16,9 @@ const Nodata = ({ iconColor = "red", isShowButton = true }) => {
 
       {isShowButton ? (
         <div className="btns">
-          <Link to="/">
-            <Button btnType="success">Вернуться к списку тестов</Button>
-          </Link>
+          <MuiButton variant="contained" onClick={() => navigate("/")}>
+            Вернуться к списку тестов
+          </MuiButton>
         </div>
       ) : null}
     </div>
