@@ -7,11 +7,7 @@ import Nodata from '../../components/Nodata/Nodata'
 import ThreeLinesLoader from '../../components/UI/ThreeLinesLoader/ThreeLinesLoader'
 import PageContainer from '../../components/UI/styled/PageContainer/PageContainer'
 import { connect } from 'react-redux'
-import {
-  fetchQuizById,
-  quizAnswerClick,
-  resetQuiz,
-} from '../../store/actions/quizActions'
+import { fetchQuizById, quizAnswerClick, resetQuiz } from '../../store/actions/quizActions'
 import { Box } from '@mui/material'
 
 const Quiz = ({
