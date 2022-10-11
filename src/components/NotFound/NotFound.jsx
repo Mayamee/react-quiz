@@ -23,9 +23,6 @@ const NotFound = () => {
         <Box
           component="span"
           sx={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
             marginLeft: `${theme.spacing(1)}`,
             width: `${theme.spacing(4)}`,
             height: `${theme.spacing(4)}`,
