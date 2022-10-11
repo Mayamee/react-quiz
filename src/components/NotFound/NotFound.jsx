@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import classes from "./NotFound.module.scss";
+import { Link } from 'react-router-dom'
+import classes from './NotFound.module.scss'
 
 const NotFound = () => {
   return (
@@ -15,7 +15,7 @@ const NotFound = () => {
         </Link>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default NotFound;
+export default NotFound

@@ -1,14 +1,8 @@
-import { useTheme } from "@emotion/react";
-import {
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
+import { useTheme } from '@emotion/react'
+import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 
 const DropDownList = ({ config, quizId }) => {
-  const theme = useTheme();
+  const theme = useTheme()
   return (
     <List disablePadding>
       {config.map((item, index) => (
@@ -26,7 +20,7 @@ const DropDownList = ({ config, quizId }) => {
         </ListItem>
       ))}
     </List>
-  );
-};
+  )
+}
 
-export default DropDownList;
+export default DropDownList

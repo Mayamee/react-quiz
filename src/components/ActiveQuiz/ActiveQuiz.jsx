@@ -1,14 +1,7 @@
-import classes from "./ActiveQuiz.module.scss";
-import AnswersList from "./AnswersList/AnswersList";
+import classes from './ActiveQuiz.module.scss'
+import AnswersList from './AnswersList/AnswersList'
 
-const ActiveQuiz = ({
-  answerNumber,
-  question,
-  quizLength,
-  state,
-  answers,
-  onAnswerClick,
-}) => {
+const ActiveQuiz = ({ answerNumber, question, quizLength, state, answers, onAnswerClick }) => {
   return (
     <div className={classes.ActiveQuiz}>
       <p className={classes.Question}>
@@ -20,13 +13,9 @@ const ActiveQuiz = ({
           {answerNumber} из {quizLength}
         </small>
       </p>
-      <AnswersList
-        state={state}
-        answers={answers}
-        onAnswerClick={onAnswerClick}
-      />
+      <AnswersList state={state} answers={answers} onAnswerClick={onAnswerClick} />
     </div>
-  );
-};
+  )
+}
 
-export default ActiveQuiz;
+export default ActiveQuiz

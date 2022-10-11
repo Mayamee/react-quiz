@@ -1,19 +1,19 @@
-import { $api } from "../http/axiosRequests";
+import { $api } from '../http/axiosRequests'
 
 export class QuizService {
   static getQuizes() {
-    return $api.get("quiz");
+    return $api.get('quiz')
   }
   static getQuizById(id) {
-    return $api.get(`quiz/${id}`);
+    return $api.get(`quiz/${id}`)
   }
   static createQuiz(payload) {
-    return $api.post("quiz", payload);
+    return $api.post('quiz', payload)
   }
   static getMyQuizes() {
-    return $api.get("quiz/my");
+    return $api.get('quiz/my')
   }
   static deleteQuizById(id) {
-    return $api.delete(`quiz/${id}`);
+    return $api.delete(`quiz/${id}`)
   }
 }

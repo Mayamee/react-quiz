@@ -1,8 +1,8 @@
-import classes from "./Loader.module.scss";
+import classes from './Loader.module.scss'
 
 const Loader = () => {
   return (
-    <div style={{ textAlign: "center" }}>
+    <div style={{ textAlign: 'center' }}>
       <div className={classes.Loader}>
         <div />
         <div />
@@ -14,7 +14,7 @@ const Loader = () => {
         <div />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Loader;
+export default Loader

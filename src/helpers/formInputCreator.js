@@ -1,8 +1,8 @@
 export const createValidationInputField = (
-  label = "Empty",
+  label = 'Empty',
   validationRules = [],
-  type = "text",
-  value = "",
+  type = 'text',
+  value = '',
   isValid = false,
   touched = false
 ) => ({
@@ -12,4 +12,4 @@ export const createValidationInputField = (
   validationRules,
   isValid,
   touched,
-});
+})

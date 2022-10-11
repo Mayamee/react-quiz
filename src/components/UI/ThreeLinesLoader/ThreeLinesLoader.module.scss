@@ -9,7 +9,7 @@
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
   &::after {
-    content: "";
+    content: '';
     box-sizing: border-box;
     position: absolute;
     left: 0;
@@ -27,7 +27,7 @@
     transform-origin: center center;
   }
   &::before {
-    content: "";
+    content: '';
     box-sizing: border-box;
     position: absolute;
     left: 0;

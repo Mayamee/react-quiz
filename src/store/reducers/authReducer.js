@@ -8,7 +8,7 @@ import {
   AUTH_REGISTER_SUCCESS,
   SET_AUTH,
   SET_USER,
-} from "../actions/actionTypes";
+} from '../actions/actionTypes'
 
 const initialState = {
   isAuthentificated: false,
@@ -20,50 +20,50 @@ const initialState = {
   },
   accessToken: null,
   msg: null,
-};
+}
 
 export function authReducer(state = initialState, action) {
   if (action.type === AUTH_LOGIN_STARTED) {
-    return { ...state, msg: "Login Started", isButtonLoading: true };
+    return { ...state, msg: 'Login Started', isButtonLoading: true }
   }
   if (action.type === AUTH_LOGIN_SUCCESS) {
     return {
       ...state,
       accessToken: action.payload.accessToken,
-      msg: "Login Success",
+      msg: 'Login Success',
       isButtonLoading: false,
-    };
+    }
   }
   if (action.type === AUTH_LOGIN_ERROR) {
     return {
       ...state,
       msg: `${action.payload}`,
       isButtonLoading: false,
-    };
+    }
   }
   if (action.type === AUTH_REGISTER_STARTED) {
-    return { ...state, msg: "Register Started", isButtonLoading: true };
+    return { ...state, msg: 'Register Started', isButtonLoading: true }
   }
   if (action.type === AUTH_REGISTER_SUCCESS) {
     return {
       ...state,
       accessToken: action.payload.accessToken,
-      msg: "Register Success",
+      msg: 'Register Success',
       isButtonLoading: false,
-    };
+    }
   }
   if (action.type === AUTH_REGISTER_ERROR) {
     return {
       ...state,
       msg: `${action.payload}`,
       isButtonLoading: false,
-    };
+    }
   }
   if (action.type === SET_AUTH) {
     return {
       ...state,
       isAuthentificated: action.payload,
-    };
+    }
   }
   if (action.type === SET_USER) {
     return {
@@ -74,7 +74,7 @@ export function authReducer(state = initialState, action) {
         username: action.payload.username,
         isActivated: action.payload.activated,
       },
-    };
+    }
   }
   if (action.type === AUTH_LOGOUT) {
     return {
@@ -82,7 +82,7 @@ export function authReducer(state = initialState, action) {
       user: { ...state.user, id: null, email: null, isActivated: null },
       accessToken: null,
       msg: null,
-    };
+    }
   }
-  return state;
+  return state
 }

@@ -1,36 +1,33 @@
-import { connect } from "react-redux";
-import { Button as MuiButton, ButtonGroup } from "@mui/material";
-import TouchInput from "../../components/UI/TouchInput/TouchInput";
-import { NativeSelect as MuiSelect, Paper, TextField } from "@mui/material";
-import {
-  addQuestionToQuiz,
-  createQuiz,
-} from "../../store/actions/createQuizAction";
-import AppendButton from "../../components/UI/AppendButton/AppendButton";
-import { required } from "../../validation/ruleCreator";
-import { createValidationInputField } from "../../helpers/formInputCreator";
-import { useState } from "react";
-import PageContainer from "../../components/UI/styled/PageContainer/PageContainer";
-import { useTheme } from "@emotion/react";
-import { Add, Create } from "@mui/icons-material";
-import { validate } from "../../validation/validate";
-import { useEffect } from "react";
+import { connect } from 'react-redux'
+import { Button as MuiButton, ButtonGroup } from '@mui/material'
+import TouchInput from '../../components/UI/TouchInput/TouchInput'
+import { NativeSelect as MuiSelect, Paper, TextField } from '@mui/material'
+import { addQuestionToQuiz, createQuiz } from '../../store/actions/createQuizAction'
+import AppendButton from '../../components/UI/AppendButton/AppendButton'
+import { required } from '../../validation/ruleCreator'
+import { createValidationInputField } from '../../helpers/formInputCreator'
+import { useState } from 'react'
+import PageContainer from '../../components/UI/styled/PageContainer/PageContainer'
+import { useTheme } from '@emotion/react'
+import { Add, Create } from '@mui/icons-material'
+import { validate } from '../../validation/validate'
+import { useEffect } from 'react'
 
 const initForm = () => [
-  createValidationInputField("Введите вопрос", required()),
-  createValidationInputField("Введите вариант ответа", required()),
-  createValidationInputField("Введите вариант ответа", required()),
-];
+  createValidationInputField('Введите вопрос', required()),
+  createValidationInputField('Введите вариант ответа', required()),
+  createValidationInputField('Введите вариант ответа', required()),
+]
 
 const QuizCreator = ({ quiz, addQuestionToQuiz, createQuiz }) => {
-  const theme = useTheme();
-  const [isFormValid, setFormValid] = useState(false);
-  const [rightAnswerId, setRightAnswerId] = useState(1);
-  const [formFields, setFormFields] = useState(initForm());
-  const [touchInputValue, setTouchInputValue] = useState("Мой тест");
+  const theme = useTheme()
+  const [isFormValid, setFormValid] = useState(false)
+  const [rightAnswerId, setRightAnswerId] = useState(1)
+  const [formFields, setFormFields] = useState(initForm())
+  const [touchInputValue, setTouchInputValue] = useState('Мой тест')
 
   const addQuestionHandler = () => {
-    const [question, ...inputs] = [...formFields];
+    const [question, ...inputs] = [...formFields]
     const questionItem = {
       question: question.value,
       id: quiz.length + 1,
@@ -39,38 +36,38 @@ const QuizCreator = ({ quiz, addQuestionToQuiz, createQuiz }) => {
         text: input.value,
         id: index + 1,
       })),
-    };
-    addQuestionToQuiz(questionItem);
+    }
+    addQuestionToQuiz(questionItem)
 
-    setRightAnswerId(1);
-    setFormFields(initForm());
-    setFormValid(false);
-  };
+    setRightAnswerId(1)
+    setFormFields(initForm())
+    setFormValid(false)
+  }
 
   const createQuizHandler = (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
-    setRightAnswerId(1);
-    setFormFields(initForm());
-    setFormValid(false);
-    setTouchInputValue("Мой тест");
+    setRightAnswerId(1)
+    setFormFields(initForm())
+    setFormValid(false)
+    setTouchInputValue('Мой тест')
 
-    createQuiz(touchInputValue);
-  };
+    createQuiz(touchInputValue)
+  }
   const onChangeHandler = (id, { target: { value } }) => {
-    const formFieldsCopy = [...formFields];
-    const field = formFieldsCopy[id];
-    field.value = value;
-    field.touched = true;
-    field.isValid = validate(field.validationRules, value);
-    console.log(field);
-    formFieldsCopy[id] = field;
-    setFormFields(formFieldsCopy);
-  };
+    const formFieldsCopy = [...formFields]
+    const field = formFieldsCopy[id]
+    field.value = value
+    field.touched = true
+    field.isValid = validate(field.validationRules, value)
+    console.log(field)
+    formFieldsCopy[id] = field
+    setFormFields(formFieldsCopy)
+  }
 
   const selectChangeHandler = ({ target: { value } }) => {
-    setRightAnswerId(+value);
-  };
+    setRightAnswerId(+value)
+  }
   const renderOpts = () => {
     return formFields.map((field, index) => (
       <TextField
@@ -88,35 +85,33 @@ const QuizCreator = ({ quiz, addQuestionToQuiz, createQuiz }) => {
         required
         error={field.touched && !field.isValid}
       />
-    ));
-  };
+    ))
+  }
   const addOption = () => {
-    const formFieldsCopy = [...formFields];
-    formFieldsCopy.push(
-      createValidationInputField("Введите вариант ответа", required())
-    );
-    setFormFields(formFieldsCopy);
-    setFormValid(false);
-  };
+    const formFieldsCopy = [...formFields]
+    formFieldsCopy.push(createValidationInputField('Введите вариант ответа', required()))
+    setFormFields(formFieldsCopy)
+    setFormValid(false)
+  }
 
   useEffect(() => {
-    const isFormValid = formFields.every((field) => field.isValid);
-    setFormValid(isFormValid);
-  }, [formFields]);
+    const isFormValid = formFields.every((field) => field.isValid)
+    setFormValid(isFormValid)
+  }, [formFields])
 
   return (
     <PageContainer
       sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         padding: `${theme.spacing(3)} 0`,
       }}
     >
       <Paper
         sx={{
           padding: `${theme.spacing(3)}`,
-          maxWidth: "800px",
+          maxWidth: '800px',
           borderRadius: `${theme.spacing(2)}`,
         }}
         elevation={3}
@@ -126,25 +121,23 @@ const QuizCreator = ({ quiz, addQuestionToQuiz, createQuiz }) => {
             touchInputValue={touchInputValue}
             touchInputonChangeHandler={(target, value) => {
               if (value.length > 50) {
-                return;
+                return
               }
-              setTouchInputValue(value);
-              target.style.height = "inherit";
-              target.style.height = target.scrollHeight + "px";
+              setTouchInputValue(value)
+              target.style.height = 'inherit'
+              target.style.height = target.scrollHeight + 'px'
             }}
           />
         </h1>
         <form onSubmit={(e) => e.preventDefault()}>
           {renderOpts()}
           {formFields.length < 5 && (
-            <AppendButton onClick={addOption.bind(this)}>
-              Добавить вариант ответа
-            </AppendButton>
+            <AppendButton onClick={addOption.bind(this)}>Добавить вариант ответа</AppendButton>
           )}
           <MuiSelect
             id="select"
             value={rightAnswerId}
-            sx={{ width: "100%", marginBottom: "20px" }}
+            sx={{ width: '100%', marginBottom: '20px' }}
             onChange={selectChangeHandler}
           >
             {formFields
@@ -178,17 +171,17 @@ const QuizCreator = ({ quiz, addQuestionToQuiz, createQuiz }) => {
         </form>
       </Paper>
     </PageContainer>
-  );
-};
+  )
+}
 
 const mapStateToProps = (state) => {
   return {
     quiz: state.createQuiz.quiz,
-  };
-};
+  }
+}
 const mapDispatchToProps = (dispatch) => ({
   addQuestionToQuiz: (question) => dispatch(addQuestionToQuiz(question)),
   createQuiz: (touchInputValue) => dispatch(createQuiz(touchInputValue)),
-});
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(QuizCreator);
+export default connect(mapStateToProps, mapDispatchToProps)(QuizCreator)

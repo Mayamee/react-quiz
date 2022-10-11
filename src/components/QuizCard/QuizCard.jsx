@@ -1,4 +1,4 @@
-import { MoreVert } from "@mui/icons-material";
+import { MoreVert } from '@mui/icons-material'
 import {
   Avatar,
   Card,
@@ -8,16 +8,16 @@ import {
   Divider,
   IconButton,
   Typography,
-} from "@mui/material";
-import { Link } from "react-router-dom";
+} from '@mui/material'
+import { Link } from 'react-router-dom'
 
 const QuizCard = ({ quiz, isAuth, user, onActionClick }) => {
   return (
     <Card
       sx={{
-        "& a": {
-          textDecoration: "none",
-          color: "inherit",
+        '& a': {
+          textDecoration: 'none',
+          color: 'inherit',
         },
       }}
     >
@@ -48,7 +48,7 @@ const QuizCard = ({ quiz, isAuth, user, onActionClick }) => {
         </>
       )}
     </Card>
-  );
-};
+  )
+}
 
-export default QuizCard;
+export default QuizCard

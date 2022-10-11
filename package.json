@@ -27,6 +27,7 @@
   "scripts": {
     "start": "cross-env PORT=8081 react-scripts start",
     "build": "react-scripts build",
+    "prettify": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "update": "yarn install"
@@ -50,6 +51,7 @@
     ]
   },
   "devDependencies": {
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "prettier": "^2.7.1"
   }
 }

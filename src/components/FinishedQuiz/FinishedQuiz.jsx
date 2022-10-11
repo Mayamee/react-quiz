@@ -1,32 +1,32 @@
-import classes from "./FinishedQuiz.module.scss";
-import Button from "../UI/Button/Button";
-import { Button as MuiButton, ButtonGroup } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import classes from './FinishedQuiz.module.scss'
+import Button from '../UI/Button/Button'
+import { Button as MuiButton, ButtonGroup } from '@mui/material'
+import { Link, useNavigate } from 'react-router-dom'
 
 const FinishedQuiz = (props) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const countResults = Object.keys(props.results).reduce((total, key) => {
-    if (props.results[key] === "success") {
-      total++;
+    if (props.results[key] === 'success') {
+      total++
     }
-    return total;
-  }, 0);
+    return total
+  }, 0)
   return (
     <div className={classes.FinishedQuiz}>
       <ul>
         {props.quiz.map((quizItem, index) => {
           const cls = [
-            "fa",
-            props.results[quizItem.id] === "success" ? "fa-check" : "fa-times",
+            'fa',
+            props.results[quizItem.id] === 'success' ? 'fa-check' : 'fa-times',
             classes[props.results[quizItem.id]],
-          ];
+          ]
           return (
             <li key={index}>
               <strong>{index + 1}</strong>.&nbsp;
               {quizItem.question}
-              <i className={cls.join(" ")} />
+              <i className={cls.join(' ')} />
             </li>
-          );
+          )
         })}
       </ul>
       <p>
@@ -37,11 +37,11 @@ const FinishedQuiz = (props) => {
           Повторить
         </MuiButton>
 
-        <MuiButton variant="contained" onClick={() => navigate("/")}>
+        <MuiButton variant="contained" onClick={() => navigate('/')}>
           Перейти в список тестов
         </MuiButton>
       </ButtonGroup>
     </div>
-  );
-};
-export default FinishedQuiz;
+  )
+}
+export default FinishedQuiz

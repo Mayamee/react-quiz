@@ -1,7 +1,7 @@
-import classes from "./Select.module.scss";
-import { getRandomHash } from "../../../helpers/random";
+import classes from './Select.module.scss'
+import { getRandomHash } from '../../../helpers/random'
 const Select = ({ label, value, options, onChange }) => {
-  const htmlFor = `${label}-${getRandomHash(5)}`;
+  const htmlFor = `${label}-${getRandomHash(5)}`
   return (
     <div className={classes.Select}>
       <label htmlFor={htmlFor}>{label}</label>
@@ -11,11 +11,11 @@ const Select = ({ label, value, options, onChange }) => {
             <option key={option.value + index} value={option.value}>
               {option.text}
             </option>
-          );
+          )
         })}
       </select>
     </div>
-  );
-};
+  )
+}
 
-export default Select;
+export default Select

@@ -1,18 +1,18 @@
-import { useParams } from "react-router-dom";
-import { useEffect } from "react";
-import classes from "./Quiz.module.scss";
-import ActiveQuiz from "../../components/ActiveQuiz/ActiveQuiz";
-import FinishedQuiz from "../../components/FinishedQuiz/FinishedQuiz";
-import Nodata from "../../components/Nodata/Nodata";
-import ThreeLinesLoader from "../../components/UI/ThreeLinesLoader/ThreeLinesLoader";
-import PageContainer from "../../components/UI/styled/PageContainer/PageContainer";
-import { connect } from "react-redux";
+import { useParams } from 'react-router-dom'
+import { useEffect } from 'react'
+import classes from './Quiz.module.scss'
+import ActiveQuiz from '../../components/ActiveQuiz/ActiveQuiz'
+import FinishedQuiz from '../../components/FinishedQuiz/FinishedQuiz'
+import Nodata from '../../components/Nodata/Nodata'
+import ThreeLinesLoader from '../../components/UI/ThreeLinesLoader/ThreeLinesLoader'
+import PageContainer from '../../components/UI/styled/PageContainer/PageContainer'
+import { connect } from 'react-redux'
 import {
   fetchQuizById,
   getQuizFromCacheById,
   quizAnswerClick,
   resetQuiz,
-} from "../../store/actions/quizActions";
+} from '../../store/actions/quizActions'
 
 const Quiz = ({
   isAuth,
@@ -28,29 +28,29 @@ const Quiz = ({
   quizAnswerClick,
   resetQuiz,
 }) => {
-  const params = useParams();
+  const params = useParams()
   useEffect(() => {
-    const { id } = params;
+    const { id } = params
     if (isAuth) {
-      fetchQuizById(id);
+      fetchQuizById(id)
     } else {
-      getQuizFromCacheById(id);
+      getQuizFromCacheById(id)
     }
-    return resetQuiz;
-  }, [isAuth]);
+    return resetQuiz
+  }, [isAuth])
 
   const getQuiz = () => {
     if (isLoading) {
-      return <ThreeLinesLoader />;
+      return <ThreeLinesLoader />
     }
     if (isQuizFinished) {
-      return <FinishedQuiz results={results} quiz={quiz} onRetry={resetQuiz} />;
+      return <FinishedQuiz results={results} quiz={quiz} onRetry={resetQuiz} />
     }
     if (!quiz) {
-      return <Nodata />;
+      return <Nodata />
     }
     if (quiz.length === 0) {
-      return <Nodata />;
+      return <Nodata />
     }
 
     return (
@@ -62,14 +62,14 @@ const Quiz = ({
         answerNumber={activeQuestion + 1}
         state={answerState}
       />
-    );
-  };
+    )
+  }
   return (
     <PageContainer
       id="quiz-page-wrapper"
       sx={{
-        "& > div": {
-          height: "100%",
+        '& > div': {
+          height: '100%',
         },
       }}
     >
@@ -80,8 +80,8 @@ const Quiz = ({
         </div>
       </div>
     </PageContainer>
-  );
-};
+  )
+}
 const mapStateToProps = (state) => ({
   results: state.quiz.results,
   isQuizFinished: state.quiz.isQuizFinished,
@@ -91,12 +91,12 @@ const mapStateToProps = (state) => ({
   title: state.quiz.quiz?.title,
   isLoading: state.quiz.isLoading,
   isAuth: state.auth.isAuthentificated,
-});
+})
 const mapDispatchToProps = (dispatch) => ({
   fetchQuizById: (id) => dispatch(fetchQuizById(id)),
   getQuizFromCacheById: (id) => dispatch(getQuizFromCacheById(id)),
   quizAnswerClick: (answerId) => dispatch(quizAnswerClick(answerId)),
   resetQuiz: () => dispatch(resetQuiz()),
-});
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(Quiz);
+export default connect(mapStateToProps, mapDispatchToProps)(Quiz)

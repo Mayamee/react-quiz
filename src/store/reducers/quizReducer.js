@@ -11,7 +11,7 @@ import {
   QUIZ_RESET,
   CLEAR_QUIZES,
   DELETE_QUIZ_FROM_STATE,
-} from "../actions/actionTypes";
+} from '../actions/actionTypes'
 
 const initialState = {
   quizes: [],
@@ -22,73 +22,73 @@ const initialState = {
   activeQuestion: 0,
   answerState: null,
   quiz: null,
-  title: "Ответьте на все вопросы",
-};
+  title: 'Ответьте на все вопросы',
+}
 export function quizReducer(state = initialState, action) {
   if (action.type === FETCH_QUIZES_START) {
     return {
       ...state,
       isLoading: true,
-    };
+    }
   }
   if (action.type === FETCH_QUIZES_SUCCESS) {
     return {
       ...state,
       quizes: action.payload,
       isLoading: false,
-    };
+    }
   }
   if (action.type === FETCH_QUIZES_ERROR) {
     return {
       ...state,
       isLoading: false,
       error: action.payload,
-    };
+    }
   }
   if (action.type === FETCH_QUIZES_NOT_FOUND) {
     return {
       ...state,
       isLoading: false,
-    };
+    }
   }
   if (action.type === FETCH_QUIZ_END) {
     return {
       ...state,
       isLoading: false,
-    };
+    }
   }
   if (action.type === CLEAR_QUIZES) {
     return {
       ...state,
       quizes: [],
-    };
+    }
   }
   if (action.type === FETCH_QUIZ_SUCCESS) {
     return {
       ...state,
       isLoading: false,
       quiz: action.payload,
-    };
+    }
   }
   if (action.type === QUIZ_SET_STATE) {
     return {
       ...state,
       answerState: action.payload.answerState,
       results: action.payload.results,
-    };
+    }
   }
   if (action.type === QUIZ_FINISHED) {
     return {
       ...state,
       isQuizFinished: true,
-    };
+    }
   }
   if (action.type === QUIZ_NEXT_QUESTION) {
     return {
       ...state,
       activeQuestion: action.payload,
       answerState: null,
-    };
+    }
   }
   if (action.type === QUIZ_RESET) {
     return {
@@ -97,13 +97,13 @@ export function quizReducer(state = initialState, action) {
       answerState: null,
       isQuizFinished: false,
       results: {},
-    };
+    }
   }
   if (action.type === DELETE_QUIZ_FROM_STATE) {
     return {
       ...state,
       quizes: state.quizes.filter((quiz) => quiz.id !== action.payload),
-    };
+    }
   }
-  return state;
+  return state
 }

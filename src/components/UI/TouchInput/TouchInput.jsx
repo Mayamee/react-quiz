@@ -1,4 +1,4 @@
-import classes from "./TouchInput.module.scss";
+import classes from './TouchInput.module.scss'
 
 const TouchInput = ({ touchInputValue, touchInputonChangeHandler }) => {
   return (
@@ -10,11 +10,11 @@ const TouchInput = ({ touchInputValue, touchInputonChangeHandler }) => {
         placeholder="Мой тест"
         value={touchInputValue}
         onChange={({ target }) => {
-          touchInputonChangeHandler(target, target.value);
+          touchInputonChangeHandler(target, target.value)
         }}
       />
     </div>
-  );
-};
+  )
+}
 
-export default TouchInput;
+export default TouchInput

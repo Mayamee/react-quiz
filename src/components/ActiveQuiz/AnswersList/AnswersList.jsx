@@ -1,5 +1,5 @@
-import AnswerItem from "./AnswerItem/AnswerItem";
-import { List } from "@mui/material";
+import AnswerItem from './AnswerItem/AnswerItem'
+import { List } from '@mui/material'
 
 const AnswersList = (props) => {
   return (
@@ -12,10 +12,10 @@ const AnswersList = (props) => {
             key={index}
             onAnswerClick={props.onAnswerClick}
           />
-        );
+        )
       })}
     </List>
-  );
-};
+  )
+}
 
-export default AnswersList;
+export default AnswersList
