@@ -75,7 +75,8 @@ const Auth = ({ login, register, isButtonLoading }) => {
         touched: true,
       },
     }))
-  const changeFormHandler = () => {
+  const changeFormHandler = (e) => {
+		e.preventDefault()
     setIsLogin(!isLogin)
     setFormControls(initFormControls())
   }

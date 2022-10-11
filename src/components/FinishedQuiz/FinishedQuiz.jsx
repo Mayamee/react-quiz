@@ -1,7 +1,6 @@
 import classes from './FinishedQuiz.module.scss'
-import Button from '../UI/Button/Button'
 import { Button as MuiButton, ButtonGroup } from '@mui/material'
-import { Link, useNavigate } from 'react-router-dom'
+import {  useNavigate } from 'react-router-dom'
 
 const FinishedQuiz = (props) => {
   const navigate = useNavigate()

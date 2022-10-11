@@ -9,7 +9,6 @@ import PageContainer from '../../components/UI/styled/PageContainer/PageContaine
 import { connect } from 'react-redux'
 import {
   fetchQuizById,
-  getQuizFromCacheById,
   quizAnswerClick,
   resetQuiz,
 } from '../../store/actions/quizActions'

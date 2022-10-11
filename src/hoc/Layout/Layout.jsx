@@ -1,5 +1,4 @@
 import {
-  AccountCircle,
   AddCircleOutline,
   ChevronLeft,
   ChevronRight,
@@ -26,13 +25,13 @@ import {
   Menu as MuiMenu,
   Divider,
 } from '@mui/material'
-import { grey, indigo, teal } from '@mui/material/colors'
+import { grey, indigo } from '@mui/material/colors'
 import { useTheme } from '@mui/material/styles'
 import { Box } from '@mui/system'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { connect } from 'react-redux'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import AppBar from '../../components/UI/styled/AppBar/AppBar'
 import AppBarGutter from '../../components/UI/styled/AppBar/AppBarGutter'
 import AppWrapper from '../../components/UI/styled/AppWrapper/AppWrapper'
@@ -46,6 +45,7 @@ import { authLogout } from '../../store/actions/authorization'
 const drawerWidth = 220
 
 const Layout = ({ isAuth, user, children, logout }) => {
+  const navigate = useNavigate()
   const [isDrawerOpen, setDrawerOpen] = useState(false)
   const [title, setTitle] = useState('')
   const [anchor, setAnchor] = useState(null)
@@ -54,6 +54,7 @@ const Layout = ({ isAuth, user, children, logout }) => {
   const handleDrawerOpen = () => setDrawerOpen(true)
   const handleDrawerClose = () => setDrawerOpen(false)
   const theme = useTheme()
+
   let links = [
     makeLinkToDrawer('/my', 'Мои тесты', <People />),
     makeLinkToDrawer('/', 'Список тестов', <Quiz />),
@@ -99,6 +100,10 @@ const Layout = ({ isAuth, user, children, logout }) => {
         </Link>
       </ListItem>
     ))
+  }
+  const logoutHandler = () => {
+    logout()
+    navigate('/')
   }
 
   return (
@@ -182,7 +187,7 @@ const Layout = ({ isAuth, user, children, logout }) => {
                           padding: `${theme.spacing(1)} ${theme.spacing(1.5)}`,
                           gap: 1.2,
                         }}
-                        onClick={logout.bind(null)}
+                        onClick={logoutHandler}
                       >
                         <Login />
                         Выйти

@@ -2,7 +2,6 @@ import { checkObjectPropertyDeepByPath } from '../../helpers/valid'
 import { QuizService } from '../../services/QuizService'
 import { ADD_QUESTION_TO_QUIZ, QUIZ_CREATOR_RESET } from './actionTypes'
 import { authLogout } from './authorization'
-import { getRandomHash } from '../../helpers/random'
 export const addQuestionToQuiz = (question) => ({
   type: ADD_QUESTION_TO_QUIZ,
   payload: question,
