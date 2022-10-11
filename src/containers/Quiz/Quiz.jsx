@@ -13,6 +13,7 @@ import {
   quizAnswerClick,
   resetQuiz,
 } from '../../store/actions/quizActions'
+import { Box } from '@mui/material'
 
 const Quiz = ({
   isAuth,
@@ -24,25 +25,17 @@ const Quiz = ({
   title,
   isLoading,
   fetchQuizById,
-  getQuizFromCacheById,
   quizAnswerClick,
   resetQuiz,
 }) => {
   const params = useParams()
   useEffect(() => {
     const { id } = params
-    if (isAuth) {
-      fetchQuizById(id)
-    } else {
-      getQuizFromCacheById(id)
-    }
+    fetchQuizById(id)
     return resetQuiz
   }, [isAuth])
 
   const getQuiz = () => {
-    if (isLoading) {
-      return <ThreeLinesLoader />
-    }
     if (isQuizFinished) {
       return <FinishedQuiz results={results} quiz={quiz} onRetry={resetQuiz} />
     }
@@ -73,12 +66,26 @@ const Quiz = ({
         },
       }}
     >
-      <div className={classes.Quiz}>
-        <div className={classes.QuizWrapper}>
-          <h1>{title}</h1>
-          {getQuiz()}
+      {isLoading && (
+        <Box
+          id="loader-box"
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <ThreeLinesLoader />
+        </Box>
+      )}
+      {!isLoading && (
+        <div className={classes.Quiz}>
+          <div className={classes.QuizWrapper}>
+            <h1>{title}</h1>
+            {getQuiz()}
+          </div>
         </div>
-      </div>
+      )}
     </PageContainer>
   )
 }
@@ -94,7 +101,6 @@ const mapStateToProps = (state) => ({
 })
 const mapDispatchToProps = (dispatch) => ({
   fetchQuizById: (id) => dispatch(fetchQuizById(id)),
-  getQuizFromCacheById: (id) => dispatch(getQuizFromCacheById(id)),
   quizAnswerClick: (answerId) => dispatch(quizAnswerClick(answerId)),
   resetQuiz: () => dispatch(resetQuiz()),
 })

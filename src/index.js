@@ -9,7 +9,6 @@ import thunk from 'redux-thunk'
 import { quizReducer } from './store/reducers/quizReducer'
 import { createQuizReducer } from './store/reducers/createQuizReducer'
 import { authReducer } from './store/reducers/authReducer'
-import { cacheReducer } from './store/reducers/cacheQuizReducer'
 import { StyledEngineProvider, ThemeProvider, createTheme } from '@mui/material/styles'
 
 const Store = configureStore({
@@ -17,7 +16,6 @@ const Store = configureStore({
     quiz: quizReducer,
     createQuiz: createQuizReducer,
     auth: authReducer,
-    cache: cacheReducer,
   },
   devTools: true,
   middleware: [thunk],

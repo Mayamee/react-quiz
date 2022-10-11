@@ -13,13 +13,12 @@ import { LoadingButton } from '@mui/lab'
 import FixedFullPage from '../../components/UI/styled/FixedFullPage/FixedFullPage'
 import FixedFullPageBody from '../../components/UI/styled/FixedFullPage/FixedFullPageBody'
 import FixedFullPageBackground from '../../components/UI/styled/FixedFullPage/FixedFullPageBackground'
-import { IconButton, Paper, TextField, Typography, useTheme } from '@mui/material'
+import { Paper, TextField, Typography, useTheme } from '@mui/material'
 import { FormBody, FormBox } from '../../components/UI/styled/FormElements/FormBody'
-import { ChevronLeft, Send } from '@mui/icons-material'
+import { Send } from '@mui/icons-material'
 import debounce from '../../helpers/debounce'
 import { PrimaryButton } from '../../components/UI/styled/Button/PrimaryButton'
 import { validate } from '../../validation/validate'
-import { Link } from 'react-router-dom'
 
 const initFormControls = () => ({
   email: { value: '', isValid: false, touched: false },
@@ -27,7 +26,7 @@ const initFormControls = () => ({
   password: { value: '', isValid: false, touched: false },
 })
 
-const Auth = ({ login, register, isButtonLoading, msg }) => {
+const Auth = ({ login, register, isButtonLoading }) => {
   const theme = useTheme()
   const [isLogin, setIsLogin] = useState(false)
   const [isFormValid, setFormValid] = useState(false)
@@ -128,13 +127,6 @@ const Auth = ({ login, register, isButtonLoading, msg }) => {
               width: 560,
             }}
           >
-            <Box>
-              <Link to="/">
-                <IconButton color="primary">
-                  <ChevronLeft />
-                </IconButton>
-              </Link>
-            </Box>
             <Box
               id="app-auth-title"
               sx={{
@@ -261,7 +253,6 @@ const Auth = ({ login, register, isButtonLoading, msg }) => {
 }
 
 const mapStateToProps = (state) => ({
-  msg: state.auth.msg,
   isButtonLoading: state.auth.isButtonLoading,
 })
 

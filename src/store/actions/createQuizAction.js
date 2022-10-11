@@ -2,7 +2,6 @@ import { checkObjectPropertyDeepByPath } from '../../helpers/valid'
 import { QuizService } from '../../services/QuizService'
 import { ADD_QUESTION_TO_QUIZ, QUIZ_CREATOR_RESET } from './actionTypes'
 import { authLogout } from './authorization'
-import { cacheQuiz } from './cacheQuizActions'
 import { getRandomHash } from '../../helpers/random'
 export const addQuestionToQuiz = (question) => ({
   type: ADD_QUESTION_TO_QUIZ,
@@ -11,18 +10,11 @@ export const addQuestionToQuiz = (question) => ({
 export const createQuiz = (touchInputValue) => async (dispatch, getState) => {
   const state = getState().createQuiz
   const {
-    isAuthentificated,
     user: { id, email },
   } = getState().auth
   const payload = {
     title: touchInputValue || 'Мой тест',
     body: state.quiz,
-  }
-  if (!isAuthentificated) {
-    payload.id = getRandomHash(20)
-    dispatch(cacheQuiz(payload))
-    dispatch(resetQuiz())
-    return
   }
   try {
     const ownerInfo = { userId: id, name: email }

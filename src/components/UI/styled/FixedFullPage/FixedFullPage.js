@@ -7,5 +7,5 @@ export default styled('div')(({ theme, bgColor }) => ({
   right: 0,
   bottom: 0,
   backgroundColor: bgColor || theme.palette.background.default,
-  zIndex: theme.zIndex.drawer + 1,
+  zIndex: theme.zIndex.drawer + 1000,
 }))

@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { connect } from 'react-redux'
-import Loader from '../../components/UI/Loader/Loader'
 import Nodata from '../../components/Nodata/Nodata'
 import { clearQuizes, fetchQuizEnd, fetchQuizes } from '../../store/actions/quizActions'
 import PageContainer from '../../components/UI/styled/PageContainer/PageContainer'
