@@ -11,7 +11,7 @@ import {
 } from '@mui/material'
 import { Link } from 'react-router-dom'
 
-const QuizCard = ({ quiz, isAuth, user, onActionClick }) => {
+const QuizCard = ({ quiz, user, onActionClick }) => {
   return (
     <Card
       sx={{
@@ -29,24 +29,20 @@ const QuizCard = ({ quiz, isAuth, user, onActionClick }) => {
           </Typography>
         </CardContent>
       </Link>
-      {isAuth && (
-        <>
-          <Divider variant="middle" />
-          <CardHeader
-            avatar={<Avatar>{quiz.ownerName[0].toUpperCase()}</Avatar>}
-            title={quiz.ownerName}
-            action={
-              <IconButton
-                aria-label="settings"
-                id="popper-button"
-                onClick={onActionClick(quiz.ownerId === user.id, quiz.id)}
-              >
-                <MoreVert />
-              </IconButton>
-            }
-          />
-        </>
-      )}
+      <Divider variant="middle" />
+      <CardHeader
+        avatar={<Avatar>{quiz.ownerName[0].toUpperCase()}</Avatar>}
+        title={quiz.ownerName}
+        action={
+          <IconButton
+            aria-label="settings"
+            id="popper-button"
+            onClick={onActionClick(quiz.ownerId === user.id, quiz.id)}
+          >
+            <MoreVert />
+          </IconButton>
+        }
+      />
     </Card>
   )
 }

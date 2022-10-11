@@ -26,7 +26,7 @@ const QuizItemsList = ({ isAuth, user, quizes, deleteQuizById }) => {
       },
     },
   ]
-  const isAuthConfig = [
+  const AuthConfig = [
     ...config,
     {
       title: 'Удалить',
@@ -54,7 +54,7 @@ const QuizItemsList = ({ isAuth, user, quizes, deleteQuizById }) => {
     ({ currentTarget }) => {
       setQuizID(quizId)
       if (isOwner) {
-        setBtnConfig(isAuthConfig)
+        setBtnConfig(AuthConfig)
       } else {
         setBtnConfig(config)
       }
@@ -69,9 +69,9 @@ const QuizItemsList = ({ isAuth, user, quizes, deleteQuizById }) => {
   return (
     <>
       <Grid container spacing={3}>
-        {quizes.map((quiz, index) => (
+        {quizes.map((quiz) => (
           <Grid item xs={12} md={6} lg={3} key={quiz.id}>
-            <QuizCard quiz={quiz} isAuth={isAuth} user={user} onActionClick={handleClick} />
+            <QuizCard quiz={quiz} user={user} onActionClick={handleClick} />
           </Grid>
         ))}
       </Grid>

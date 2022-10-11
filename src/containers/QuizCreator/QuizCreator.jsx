@@ -60,7 +60,6 @@ const QuizCreator = ({ quiz, addQuestionToQuiz, createQuiz }) => {
     field.value = value
     field.touched = true
     field.isValid = validate(field.validationRules, value)
-    console.log(field)
     formFieldsCopy[id] = field
     setFormFields(formFieldsCopy)
   }
