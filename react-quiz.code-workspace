@@ -7,5 +7,7 @@
       "path": "..\\react-quiz-backend"
     }
   ],
-  "settings": {}
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "react-quiz"
+	}
 }
