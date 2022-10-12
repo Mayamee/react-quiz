@@ -27,7 +27,7 @@ export const fetchQuizes =
         return dispatch(fetchQuizesNotFound())
       }
       const quizes = response.data.data.map((question) => new QuizDTO(question))
-			dispatch(fetchQuizesSuccess(quizes))
+      dispatch(fetchQuizesSuccess(quizes))
     } catch (error) {
       dispatch(fetchQuizesError(error))
     }

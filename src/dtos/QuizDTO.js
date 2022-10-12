@@ -5,6 +5,6 @@ export default class QuizDTO {
     this.body = data.body
     this.ownerName = data.ownerName
     this.ownerId = data.ownerId
-		this.logoPath = data.logoPath
+    this.logoPath = data.logoPath
   }
 }
