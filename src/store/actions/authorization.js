@@ -89,8 +89,6 @@ export const authRegisterError = (msg) => ({
 })
 
 export const authCheck = () => async (dispatch) => {
-  //TODO setLoading <==
-  console.log('cheching auth')
   try {
     const res = await AuthService.checkAuth()
     const { data } = res

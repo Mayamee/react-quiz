@@ -15,7 +15,6 @@ export const createQuiz = (touchInputValue, logo) => async (dispatch, getState) 
   try {
     await QuizService.createQuiz(formData)
   } catch (error) {
-    console.log(error)
     if (error.isRefreshFailed) {
       dispatch(authLogout())
     }

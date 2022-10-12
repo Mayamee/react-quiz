@@ -74,7 +74,6 @@ export const fetchQuizById = (id) => async (dispatch) => {
     }
     dispatch(fetchQuizSuccess(quiz))
   } catch (error) {
-    console.log(error)
     dispatch(fetchQuizEnd())
   }
 }

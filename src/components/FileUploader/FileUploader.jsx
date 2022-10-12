@@ -12,7 +12,6 @@ const FileUploader = ({ file: fileState, onFile }) => {
   const handleFileChange = (event) => {
     const file = event.target.files[0]
     if (acceptedTypes.includes(file.type)) {
-      console.log(event.target.files[0])
       onFile(file)
     }
   }
