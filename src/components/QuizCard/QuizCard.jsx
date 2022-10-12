@@ -13,7 +13,6 @@ import { Link } from 'react-router-dom'
 import { SERVER_URL } from '../../vars'
 
 const QuizCard = ({ quiz, user, onActionClick }) => {
-  console.log(quiz)
   return (
     <Card
       sx={{
