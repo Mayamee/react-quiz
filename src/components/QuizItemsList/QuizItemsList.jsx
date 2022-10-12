@@ -8,10 +8,11 @@ import { useState } from 'react'
 import { connect } from 'react-redux'
 import { hasIdFromParents } from '../../helpers/DOMHelpers'
 import { deleteQuiz } from '../../store/actions/quizActions'
+import { APP_URL } from '../../vars'
 import QuizCard from '../QuizCard/QuizCard'
 import DropDownList from '../UI/DropDownList/DropDownList'
 
-const QuizItemsList = ({ isAuth, user, quizes, deleteQuizById }) => {
+const QuizItemsList = ({ user, quizes, deleteQuizById }) => {
   const theme = useTheme()
   const [quizID, setQuizID] = useState(null)
   const [anchor, setAnchor] = useState(null)
@@ -21,7 +22,7 @@ const QuizItemsList = ({ isAuth, user, quizes, deleteQuizById }) => {
       title: 'Поделиться',
       icon: <Share />,
       onClickHandler: (quizId) => {
-        navigator.clipboard.writeText(`http://localhost:8081/quiz/${quizId}`)
+        navigator.clipboard.writeText(`${APP_URL}/quiz/${quizId}`)
         setOpen(false)
       },
     },

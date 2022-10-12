@@ -21,16 +21,13 @@ export const fetchQuizes =
     dispatch(fetchQuizesStart())
     try {
       let response
-      console.log(self)
       response = self ? await QuizService.getMyQuizes() : await QuizService.getQuizes()
 
       if (response.data.data.length === 0) {
         return dispatch(fetchQuizesNotFound())
       }
-      console.log(response.data.data)
       const quizes = response.data.data.map((question) => new QuizDTO(question))
-      console.log({ quizes })
-      dispatch(fetchQuizesSuccess(quizes))
+			dispatch(fetchQuizesSuccess(quizes))
     } catch (error) {
       dispatch(fetchQuizesError(error))
     }
@@ -58,17 +55,6 @@ export const fetchQuizesError = (error) => {
 export const fetchQuizesNotFound = () => {
   return {
     type: FETCH_QUIZES_NOT_FOUND,
-  }
-}
-
-export const getQuizFromCacheById = (id) => (dispatch, getState) => {
-  const { cached } = getState().cache
-  dispatch(fetchQuizesStart())
-  const quiz = cached.find((quiz) => quiz.id === id)
-  if (quiz) {
-    dispatch(fetchQuizSuccess(quiz))
-  } else {
-    dispatch(fetchQuizEnd())
   }
 }
 

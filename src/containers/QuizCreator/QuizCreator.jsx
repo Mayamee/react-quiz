@@ -12,6 +12,7 @@ import { useTheme } from '@emotion/react'
 import { Add, Create } from '@mui/icons-material'
 import { validate } from '../../validation/validate'
 import { useEffect } from 'react'
+import FileUploader from '../../components/FileUploader/FileUploader'
 
 const initForm = () => [
   createValidationInputField('Введите вопрос', required()),
@@ -25,6 +26,7 @@ const QuizCreator = ({ quiz, addQuestionToQuiz, createQuiz }) => {
   const [rightAnswerId, setRightAnswerId] = useState(1)
   const [formFields, setFormFields] = useState(initForm())
   const [touchInputValue, setTouchInputValue] = useState('Мой тест')
+  const [file, setFile] = useState(null)
 
   const addQuestionHandler = () => {
     const [question, ...inputs] = [...formFields]
@@ -46,13 +48,12 @@ const QuizCreator = ({ quiz, addQuestionToQuiz, createQuiz }) => {
 
   const createQuizHandler = (event) => {
     event.preventDefault()
-
     setRightAnswerId(1)
     setFormFields(initForm())
     setFormValid(false)
     setTouchInputValue('Мой тест')
-
-    createQuiz(touchInputValue)
+    setFile(null)
+    createQuiz(touchInputValue, file)
   }
   const onChangeHandler = (id, { target: { value } }) => {
     const formFieldsCopy = [...formFields]
@@ -147,6 +148,9 @@ const QuizCreator = ({ quiz, addQuestionToQuiz, createQuiz }) => {
               ))
               .splice(1)}
           </MuiSelect>
+
+          <FileUploader file={file} onFile={(file) => setFile(file)} />
+
           <ButtonGroup variant="outlined">
             <MuiButton
               endIcon={<Add />}
@@ -180,7 +184,7 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => ({
   addQuestionToQuiz: (question) => dispatch(addQuestionToQuiz(question)),
-  createQuiz: (touchInputValue) => dispatch(createQuiz(touchInputValue)),
+  createQuiz: (touchInputValue, logo) => dispatch(createQuiz(touchInputValue, logo)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuizCreator)
