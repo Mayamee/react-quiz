@@ -13,6 +13,7 @@ import { StyledEngineProvider, ThemeProvider, createTheme } from '@mui/material/
 import thunk from 'redux-thunk'
 
 const PORT = process.env.PORT || 3000
+const HOST = process.env.HOST || '0.0.0.0'
 const server = express()
 
 const store = configureStore({
@@ -57,6 +58,6 @@ server.use(/\/[^.]*$/, (req, res) => {
 
 server.use(express.static(path.resolve(__dirname, '../client')))
 
-server.listen(PORT, () => {
-  console.log(`SSR server is working on port ${PORT}/tcp`)
+server.listen(PORT, HOST, () => {
+  console.log(`SSR server is working on ${HOST} port ${PORT}/tcp`)
 })
