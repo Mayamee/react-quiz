@@ -5,7 +5,7 @@ import {
   minLength,
   onlyEnglishEmail,
   required as requiredRule,
-} from '../../validation/ruleCreator'
+} from '../../validation-rules/ruleCreator'
 import { connect } from 'react-redux'
 import { authLogin, authRegister } from '../../store/actions/authorization'
 import { Box } from '@mui/system'
@@ -18,7 +18,7 @@ import { FormBody, FormBox } from '../../components/UI/styled/FormElements/FormB
 import { Send } from '@mui/icons-material'
 import debounce from '../../helpers/debounce'
 import { PrimaryButton } from '../../components/UI/styled/Button/PrimaryButton'
-import { validate } from '../../validation/validate'
+import { validate } from '../../validation-rules/validate'
 
 const initFormControls = () => ({
   email: { value: '', isValid: false, touched: false },
