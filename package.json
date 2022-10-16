@@ -23,19 +23,20 @@
     "redux-thunk": "^2.4.1"
   },
   "scripts": {
-    "prettify": "prettier --write \"(src|config|public)/**/*.{js,jsx,ts,tsx,json,css,scss,sass,md,html}\"",
+    "prettify": "prettier --write .",
     "dev": "cross-env PORT=8081 react-scripts start",
-    "build": "yarn build:front && yarn build:server",
-    "dev:server": "yarn build:front && yarn watch:server",
+    "build": "npm-run-all --parallel build:front build:server",
+    "yarn-audit": "yarn install --audit",
+    "docker:build": "npm-run-all --serial docker:prepare docker:build-container",
+    "dev:server": "npm-run-all --serial build:front watch:server",
     "watch:server": "cross-env PORT=8081 webpack --config config/webpack.server.config.js --watch",
     "build:front": "cross-env BUILD_PATH='./build/client' react-scripts build",
     "build:server": "webpack --config config/webpack.server.config.js",
     "test:front": "react-scripts test",
-    "update": "yarn install",
     "docker:clear-build": "cf build",
     "docker:move-configs": "copyfiles package.json yarn.lock build",
-    "docker:prepare": "yarn docker:clear-build && yarn build && yarn docker:move-configs",
-    "docker:build": "yarn docker:prepare && docker build -t react-quiz ."
+    "docker:prepare": "npm-run-all --serial docker:clear-build build docker:move-configs",
+    "docker:build-container": "docker build -t react-quiz ."
   },
   "eslintConfig": {
     "extends": [
@@ -61,13 +62,14 @@
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "nodemon-webpack-plugin": "^4.8.1",
+    "npm-run-all": "^4.1.5",
     "prettier": "^2.7.1",
-    "sass-loader": "^13.1.0",
-    "url-loader": "^4.1.1",
-    "webpack-cli": "^4.10.0",
-    "webpack-node-externals": "^3.0.0",
     "react-scripts": "5.0.1",
     "sass": "^1.53.0",
-    "web-vitals": "^2.1.0"
+    "sass-loader": "^13.1.0",
+    "url-loader": "^4.1.1",
+    "web-vitals": "^2.1.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-node-externals": "^3.0.0"
   }
 }
