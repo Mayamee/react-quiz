@@ -5,4 +5,4 @@ EXPOSE 8081
 WORKDIR /usr/src/app
 COPY build .
 RUN ["yarn", "install", "--production=true"]
-CMD ["node", "backend/bundle.js"]
+ENTRYPOINT ["node", "backend/bundle.js"]
