@@ -36,7 +36,7 @@
     "docker:clear-build": "cf build",
     "docker:move-configs": "copyfiles package.json yarn.lock build",
     "docker:prepare": "npm-run-all --serial docker:clear-build build docker:move-configs",
-    "docker:build-container": "docker build -t react-quiz ."
+    "docker:build-container": "docker build -t app-frontend ."
   },
   "eslintConfig": {
     "extends": [
