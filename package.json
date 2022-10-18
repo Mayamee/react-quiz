@@ -25,17 +25,16 @@
   "scripts": {
     "prettify": "prettier --write .",
     "dev": "cross-env PORT=8081 react-scripts start",
-    "build": "npm-run-all --parallel build:front build:server",
-    "yarn-audit": "yarn install --audit",
-    "docker:build": "npm-run-all --serial docker:prepare docker:build-container",
     "dev:server": "npm-run-all --serial build:front watch:server",
+    "build": "npm-run-all --serial build:clear-folder build:code build:move-configs",
     "watch:server": "cross-env PORT=8081 webpack --config config/webpack.server.config.js --watch",
+    "build:code": "npm-run-all --parallel build:front build:server",
+    "docker:build": "npm-run-all --serial build docker:build-container",
     "build:front": "cross-env BUILD_PATH='./build/client' react-scripts build",
     "build:server": "webpack --config config/webpack.server.config.js",
     "test:front": "react-scripts test",
-    "docker:clear-build": "cf build",
-    "docker:move-configs": "copyfiles package.json yarn.lock build",
-    "docker:prepare": "npm-run-all --serial docker:clear-build build docker:move-configs",
+    "build:clear-folder": "cf build",
+    "build:move-configs": "copyfiles package.json yarn.lock build",
     "docker:build-container": "docker build -t app-frontend ."
   },
   "eslintConfig": {
