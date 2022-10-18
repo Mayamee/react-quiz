@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@mui/material'
 import { Link } from 'react-router-dom'
-import { SERVER_URL } from '../../vars'
+import { BACKEND_URL } from '../../vars'
 
 const QuizCard = ({ quiz, user, onActionClick }) => {
   return (
@@ -26,7 +26,7 @@ const QuizCard = ({ quiz, user, onActionClick }) => {
         <CardMedia
           component="img"
           height="200"
-          image={quiz.logoPath ? `${SERVER_URL}/${quiz.logoPath}` : 'img/template.png'}
+          image={quiz.logoPath ? `${BACKEND_URL}/${quiz.logoPath}` : 'img/template.png'}
         />
         <CardContent>
           <Typography variant="h6" component="div">
